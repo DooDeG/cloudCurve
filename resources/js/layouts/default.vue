@@ -2,7 +2,9 @@
   <div class="main-layout">
     <navbar />
 
-    <div class="container mt-4">
+    <!-- <div class="container mt-4"> -->
+      
+    <div class="">
       <child />
     </div>
   </div>
