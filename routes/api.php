@@ -24,6 +24,10 @@ Route::group(['middleware' => 'auth:api'], function () {
 
 Route::group(['middleware' => 'guest:api'], function () {
     Route::post('login', 'Auth\LoginController@login');
+    Route::post('getShoppingCart', 'testController@login');
+
+    Route::get('getPlanList','planController@getAllPlan');
+
     Route::post('register', 'Auth\RegisterController@register');
 
     Route::post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail');
