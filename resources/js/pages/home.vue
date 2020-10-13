@@ -150,9 +150,9 @@ export default {
     this.updateInfo()
   },
   methods:{
-      updateInfo () {
-    //   this.$http({
-        $.ajax({
+      async updateInfo () {
+      this.$http({
+        // $.ajax({
         url: `/api/getPlanList`,
         method: 'POST'
       })
@@ -161,7 +161,7 @@ export default {
             this.plan = res.data.result
             this.planList = this.plan
           } else {
-            alert('Unable to get plan form')
+            alert('Unable to get plan form12345')
           }
         }, (res) => {
           alert('Unable to get plan form')

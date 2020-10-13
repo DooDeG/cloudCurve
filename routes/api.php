@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,9 +25,9 @@ Route::group(['middleware' => 'auth:api'], function () {
 
 Route::group(['middleware' => 'guest:api'], function () {
     Route::post('login', 'Auth\LoginController@login');
-    Route::post('getShoppingCart', 'testController@login');
+    Route::post('getShoppingCart', 'planController@getAllPlan');
 
-    Route::get('getPlanList','planController@getAllPlan');
+    Route::post('getPlanList','planController@getAllPlan');
 
     Route::post('register', 'Auth\RegisterController@register');
 

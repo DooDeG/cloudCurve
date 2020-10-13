@@ -8,7 +8,7 @@
             </div>
             <div class=" text-left -mt-8 font-serif text-5xl">Study, Learn & <br>Live a New Language!</div>
             <div class="text-left font-serif text-2xl mt-3 mb-5">
-                <button  @click="getCartList" class="text-white px-10 py-2 rounded-full shadow-2xl"  style="background-color: #F34241 ">start now!</button>
+                <button  @click="updateInfo" class="text-white px-10 py-2 rounded-full shadow-2xl"  style="background-color: #F34241 ">start now!</button>
             </div>
         </div>
     </div>
@@ -26,17 +26,19 @@ export default {
   },
   methods:{
       updateInfo () {
-    //   this.$http({
-        $.ajax({
-        url: `/api/getPlanList`,
-        method: 'POST'
+          this.$http({
+        url: `/api/getShoppingCart`,
+        method: 'POST',
+        data: {
+        //   select: '123456'
+        }
       })
         .then((res) => {
           if (res.data.result) {
             this.plan = res.data.result
             this.planList = this.plan
           } else {
-            alert('Unable to get plan form')
+            alert('Unable to get plan form123')
           }
         }, (res) => {
           alert('Unable to get plan form')

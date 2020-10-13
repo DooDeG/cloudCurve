@@ -4,9 +4,12 @@ import Meta from 'vue-meta'
 import routes from './routes'
 import Router from 'vue-router'
 import { sync } from 'vuex-router-sync'
+import axios from 'axios'
+import VueAxios from 'vue-axios'
 
 Vue.use(Meta)
 Vue.use(Router)
+Vue.use(VueAxios, axios)
 
 // The middleware for every page of the application.
 const globalMiddleware = ['locale', 'check-auth']
