@@ -7,6 +7,16 @@ export default [
   { path: '/', name: 'home', component: page('home.vue') },
   
   { path: '/test', name: 'test', component: page('test.vue') },
+  // { path: '/learning', name: 'learning', component: page('learning.vue'), redirect: '/test', },
+  { path: '/mains',
+    name: 'mains',
+    component: page('mains/index.vue'),
+    children: [
+      { path: '', redirect: { name: 'settings.profile' } },
+      { path: 'profile', name: 'settings.profile', component: page('settings/profile.vue') },
+      { path: 'password', name: 'settings.password', component: page('settings/password.vue') }
+    ] },
+
 
   { path: '/login', name: 'login', component: page('auth/login.vue') },
   { path: '/register', name: 'register', component: page('auth/register.vue') },

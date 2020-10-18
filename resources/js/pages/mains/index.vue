@@ -1,36 +1,69 @@
 <template>
 
-      <!-- ===== Website ====  -->
-    <div style="background-color: #F4F4F4 ">
-        12345
-    </div>
+    <div class="row">
+      <div class="col-md-3">
+          <ul class="nav flex-column nav-pills">
+              <li v-for="tab in tabs" :key="tab.route" class="nav-item">
+                  <router-link :to="{ name: tab.route }" class="nav-link" active-class="active">
+                      <fa :icon="tab.icon" fixed-width />
+                      {{ tab.name }}
+                  </router-link>
+              </li>
+          </ul>
+      </div>
+      
+
+      <div class="col-md-9">
+          <transition name="fade" mode="out-in">
+              <router-view />
+          </transition>
+      </div>
+
+      
+  </div>
+
+  
 </template>
 
 <script>
 export default {
-  // middleware: 'auth',
+  middleware: 'auth',
 
   metaInfo () {
-    return { title: this.$t('home') }
+    // return { title: this.$t('home') }
   },
   created () {
-    this.updateInfo()
+    // this.updateInfo()
+  },
+  computed: {
+    tabs () {
+      return [
+        {
+          icon: 'user',
+          name: this.$t('profile'),
+          route: 'settings.profile'
+        },
+        {
+          icon: 'lock',
+          name: this.$t('password'),
+          route: 'settings.password'
+        }
+      ]
+    }
   },
   methods:{
-      updateInfo () {
-          this.$http({
-        url: `/api/getShoppingCart`,
-        method: 'POST',
-        data: {
-        //   select: '123456'
-        }
+      async updateInfo () {
+      this.$http({
+        // $.ajax({
+        url: `/api/getPlanList`,
+        method: 'POST'
       })
         .then((res) => {
           if (res.data.result) {
             this.plan = res.data.result
             this.planList = this.plan
           } else {
-            alert('Unable to get plan form123')
+            alert('Unable to get plan form12345')
           }
         }, (res) => {
           alert('Unable to get plan form')
