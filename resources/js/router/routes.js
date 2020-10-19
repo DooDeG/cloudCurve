@@ -12,11 +12,13 @@ export default [
     name: 'mains',
     component: page('mains/index.vue'),
     children: [
-      { path: '', redirect: { name: 'settings.profile' } },
-      { path: 'profile', name: 'settings.profile', component: page('settings/profile.vue') },
-      { path: 'password', name: 'settings.password', component: page('settings/password.vue') }
+      { path: '', redirect: { name: 'mains/index' } },
+      { path: 'course', name: 'mains/course', component: page('mains/course.vue') },
+      { path: 'exercise', name: 'mains/exercise', component: page('mains/exercise.vue') },
+      { path: 'visualization', name: 'mains/visualization', component: page('mains/visualization.vue') }
     ] },
-
+  { path: '/lesson', name: 'lesson', component: page('curriculum/lesson.vue') },
+  { path: '/exam', name: 'exam', component: page('curriculum/exam.vue') },
 
   { path: '/login', name: 'login', component: page('auth/login.vue') },
   { path: '/register', name: 'register', component: page('auth/register.vue') },
