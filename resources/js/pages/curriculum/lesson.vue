@@ -42,7 +42,7 @@
                 <button @click="nextWord" class="text-white px-4 py-2 rounded-xl shadow-md bg-green-500">Next</button>
             </div>
             <div class="text-center font-serif text-xl ml-5" v-show="no == 19">
-                <button @click="updateLearningInfo" class="text-white px-4 py-2 rounded-xl shadow-md bg-green-500">Done</button>
+                <button @click="updateGroupInfo" class="text-white px-4 py-2 rounded-xl shadow-md bg-green-500">Done</button>
             </div>
         </div>
     </div>
@@ -99,7 +99,7 @@ export default {
             this.currentEn = this.currentWord[this.no].english
             this.currentCh = this.currentWord[this.no].chinese
         },
-        updateLearningInfo () {
+        updateGroupInfo () {
             this.$http({
                 url: `/api/getPlanList`,
                 method: 'POST',
