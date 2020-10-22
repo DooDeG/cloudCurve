@@ -14,7 +14,7 @@
                             <div class="text-left font-serif text-2xl mt-3">
                                 <!-- <router-link :to="{ name:'exam' }"> -->
                                 <router-link :to="{ name: user ? 'lesson' : 'login' }">
-                                    <button  @click="getCartList" class="text-white px-10 py-2 rounded-full shadow-xl"  style="background-color: #F34241 ">start now!</button>
+                                    <button class="text-white px-10 py-2 rounded-full shadow-xl"  style="background-color: #F34241 ">start now!</button>
                                 </router-link>
                             </div>
                         </div>

@@ -21,12 +21,16 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     Route::patch('settings/profile', 'Settings\ProfileController@update');
     Route::patch('settings/password', 'Settings\PasswordController@update');
+    
+    Route::get('getEnWorldList', 'examController@getWords');
+
 });
 
 Route::group(['middleware' => 'guest:api'], function () {
     Route::post('login', 'Auth\LoginController@login');
     Route::post('getShoppingCart', 'planController@getAllPlan');
 
+    
     Route::post('getPlanList','planController@getAllPlan');
 
     Route::post('register', 'Auth\RegisterController@register');
