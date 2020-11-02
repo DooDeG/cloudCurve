@@ -13,38 +13,14 @@ class examController extends Controller
 {
     public function getWords(){
 
-        $tw = en_word::all();
-        $item = 20;
-
-        // $gw = Group_word::all();
         $gw = Group_word::count();
+        $maxgw = $gw+20;
         $result = '';
-        // if(empty($gw)){
-        //     $result = en_word::where('id', '<', '21')->get();
-        // }else{
-        //     $result = '1234';
-        // };
-
-        // if(gettype($gw)){
-        //     $result = en_word::where('id', '<', '21')->get();
-        // }else{
-        //     $result = '1234';
-        // };
-        if($gw == 0){
-            $result = en_word::where('id', '<=', '20')->get();
-            unset($result->id);
-            unset($result->level);
-            foreach($result as $item){
-                unset($item->level);
-                unset($item->id);
-            }
-        }else{
-            $result = '1234';
-        };
-
-
-
+        $result = en_word::where('id', '>', $gw)->where('id', '<=', $maxgw)->get();
         
+        foreach($result as $item){
+            unset($item->level);
+        }
         return response()->json(['status' => 'success', "result" => $result], 200);
     }
 }

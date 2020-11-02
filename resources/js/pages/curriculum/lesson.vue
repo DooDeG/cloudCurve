@@ -50,36 +50,39 @@
 
 <script>
 export default {
-  middleware: 'auth',
+    middleware: 'auth',
 
-  metaInfo () {
-    // return { title: this.$t('home') }
-  },
-  data: () => ({
-    wordList: [],
-    currentEn: '',
-    currentCh: '',
-    no: '0'
-  }),
-  created () {
-    // this.updateInfo()
-    this.getEnWorldList();
-  },
-  methods:{
+    metaInfo () {
+        // return { title: this.$t('home') }
+    },
+    data: () => ({
+        wordList: [],
+        currentEn: '',
+        currentCh: '',
+        no: '0',
+        wId: []
+    }),
+    created () {
+        // this.updateInfo()
+        this.getEnWorldList();
+    },
+    methods:{
         getEnWorldList(){
             this.$http({
                 url: `/api/getEnWorldList`,
                 method: 'GET',
-                data: {
-                    // bt: window.localStorage.getItem('bt')
-                }
             })
             .then((res) => {
                 if(res){
                     this.currentWord = res.data.result
+                    this.wordList = res.data.result
                     this.currentEn = this.currentWord[this.no].english
                     this.currentCh = this.currentWord[this.no].chinese
                     console.log(this.currentEn)
+                    res.data.result.forEach((item, index) => {
+                        this.wId.push(item.id);
+                    })
+                    
                 }else{
                     alert('無法取得後台數據')
                 }
@@ -100,23 +103,23 @@ export default {
             this.currentCh = this.currentWord[this.no].chinese
         },
         updateGroupInfo () {
+            console.log(this.wordList)
+            console.log(this.wId)
             this.$http({
-                url: `/api/getPlanList`,
+                url: `/api/updateGroupInfo`,
                 method: 'POST',
                 data: {
-                    select: this.selectedList
+                    select: this.wordList,
+                    wId: this.wId
                 }
             })
                 .then((res) => {
-                if (res.data.result) {
-                } else {
-                    alert('Unable to get plan form12345')
-                }
+                    this.$router.push({ name: 'mains/course' })
                 }, (res) => {
-                alert('Unable to get plan form')
+                    alert('Unable to get plan form')
                 })
             },
-  }
+    }
 }
 </script>
 <style scoped>

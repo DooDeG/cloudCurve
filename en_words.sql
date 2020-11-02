@@ -4466,7 +4466,6 @@ INSERT IGNORE INTO `en_words` (`id`, `english`, `chinese`, `sent`, `level`) VALU
 	(4445, 'yoke', 'n.轭，牛轭；枷锁', '/jәuk/', '6'),
 	(4446, 'youngster', 'n.儿童，少年，年轻人', '/‘jΛŋstә/', '6'),
 	(4447, 'zinc', 'n.锌', '/ziŋk/', '6');
-/*!40000 ALTER TABLE `cet` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;

@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Group_word extends Model
+class group_word extends Model
 {
     protected $fillable = [
         'ENo', 'GNo', 'createTime', 'level'
