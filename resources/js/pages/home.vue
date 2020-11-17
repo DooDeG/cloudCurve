@@ -79,7 +79,7 @@
             </div>
             <div class=" text-center font-serif mt-5 text-2xl">Study, Learn & <br>Live a New Language!</div>
             <div class="text-center font-serif text-2xl mt-3 mb-5">
-                <router-link :to="{ name: 'login' }">
+                <router-link :to="{ name: user ? 'mains' : 'login' }">
                     <button  @click="getCartList" class="text-white px-10 py-2 rounded-full shadow-2xl"  style="background-color: #F34241 ">start now!</button>
                 </router-link>
             </div>
