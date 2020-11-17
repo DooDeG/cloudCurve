@@ -10,7 +10,7 @@
                         </div>
                     </div>
                     <div class="flex justify-between">
-                        <div></div>
+                        <div class="mt-10 ml-8 text-gray-700 text-center text-xl bold font-serif">Chapter: {{chap}}</div>
                         <div class="text-gray-700 text-center px-4 py-2 m-2">
                             <div class="text-left font-serif text-2xl mt-3">
                                 <!-- <router-link :to="{ name:'exam' }"> -->
@@ -27,24 +27,47 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-export default {
-  middleware: 'auth',
+  import { mapGetters } from 'vuex'
+  export default {
+    middleware: 'auth',
 
-  metaInfo () {
-    // return { title: this.$t('home') }
-  },
-  computed: mapGetters({
-    authenticated: 'auth/check',
-    user: 'auth/user'
-  }),
-  created () {
-    // this.updateInfo()
-  },
-  methods:{
-      
+    metaInfo () {
+      // return { title: this.$t('home') }
+    },
+    computed: mapGetters({
+        authenticated: 'auth/check',
+        user: 'auth/user'
+    }),
+    data: () => ({
+              chap: 1
+          }),
+    created () {
+        this.getChapter()
+    },
+    methods:{
+        getChapter(){
+            this.$http({
+                url: `/api/getChapter`,
+                method: 'GET',
+            })
+            .then((res) => {
+                if(res){
+                    if(res.data.result){
+                        this.chap = res.data.result
+                    }else{
+                        this.chap = 1;
+                    }
+                    
+                }else{
+                    alert('無法取得後台數據123')
+                }
+            }, (res) => {
+                // alert(res.response);
+                alert("無法取得數據");
+            })
+        },
+    }
   }
-}
 </script>
 <style scoped>
 </style>>

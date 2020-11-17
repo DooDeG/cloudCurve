@@ -37,7 +37,7 @@ class GroupController extends Controller
                     $group->GNo = $currentGNo;
                     $group->UserId = $id;
                     $group->States = "undo";
-                    $group->isActive = "0";
+                    $group->isActive = "1";
                     $group->createTime = date("Y-m-d H:i:s");
                     $group->save();
                 }
@@ -57,7 +57,6 @@ class GroupController extends Controller
                     'States' => $request->states,
                 ]);
             }
-
             return response()->json(['status' => 'success'], 200);
         }else{
             

@@ -17,6 +17,7 @@ class CreateExerciseInfosTable extends Migration
             $table->id();
             $table->string('GId');
             $table->date('preparation');
+            $table->date('times');
         });
     }
 

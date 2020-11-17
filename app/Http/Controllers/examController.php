@@ -45,6 +45,47 @@ class examController extends Controller
         
         return response()->json(['status' => 'success', "result" => $result], 200);
 
-
     }
+    public function getExerciseChapter(){
+        $id = Auth::id(); 
+        $result = '';
+        $gw = Group_word::where('UserId','=', $id)->where('States', '=', 'undo')->first();
+        if(!$gw){
+            return response()->json(['status' => 'success', "result" => "Nothing can be do"], 200);
+        }
+        $result = $gw->GNo;
+        return response()->json(['status' => 'success', "result" => $result], 200);
+    }
+
+    public function getExercise(){
+        $id = Auth::id(); 
+        //1 2 6 12 20
+        $result = '';
+        $gw = Group_word::where('UserId','=', $id)->where('States', '=', 'done')->select('GId')->groupByRaw('GId')->get();
+        // return response()->json(['status' => 'success', "result" => $gw], 200);
+        $result =[];
+        $currentNo = 0;
+        $currentDay = date("Y-m-d");
+        foreach($gw as $item){
+            $tm = "";
+            $temp = Group_word::where('GId','=', $item->GId)->select('ENo','GNo','GId', 'createTime')->first();
+                if($result == null || $result == []){
+                    $tm = abs((strtotime(date("Y-m-d"))-strtotime($temp->createTime))/86400);
+                    if($tm == 1 || $tm == 3 || $tm == 6 || $tm == 12 || $tm == 20){
+                        $temp->ENo = $tm;
+                        array_push($result, $temp);
+                    }
+                }else if($result[$currentNo] != $temp ){
+                    $tm =strtotime($currentDay) - strtotime($temp->createTime)/86400;
+                    if($tm == 1 || $tm == 3 || $tm == 6 || $tm == 12 || $tm == 20){
+                        $temp->ENo = $tm;
+                        array_push($result, $temp);
+                        $currentNo ++;
+                    }
+                }
+            }
+        
+         return response()->json(['status' => 'success', "result" => $result], 200);
+    }
+    
 }

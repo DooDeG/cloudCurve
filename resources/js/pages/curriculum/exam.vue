@@ -56,7 +56,7 @@
         
         
         <div v-if="wrongAns" >
-            12345
+            
         </div>
         <div class="text-center font-serif text-xl ml-5" v-show="no == 20">
             <button @click="saveGroupStates" class="text-white px-4 py-2 rounded-xl shadow-md bg-green-500">Done</button>
@@ -84,7 +84,7 @@
             currentAns: '',
             currentEn: '',
             currentAnsList: [],
-            no: 0,
+            no: 19,
             state: '1',
             wId: [],
             temp: [],
