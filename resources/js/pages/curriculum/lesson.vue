@@ -113,12 +113,12 @@ export default {
                     wId: this.wId
                 }
             })
-                .then((res) => {
-                    this.$router.push({ name: 'mains/course' })
-                }, (res) => {
-                    alert('Unable to get plan form')
-                })
-            },
+            .then((res) => {
+                this.$router.push({ name: 'mains/course' })
+            }, (res) => {
+                alert('Unable to get plan form')
+            })
+        },
     }
 }
 </script>

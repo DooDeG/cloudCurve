@@ -59,7 +59,7 @@
             12345
         </div>
         <div class="text-center font-serif text-xl ml-5" v-show="no == 20">
-            <button @click="updateExerciseInfo" class="text-white px-4 py-2 rounded-xl shadow-md bg-green-500">Done</button>
+            <button @click="saveGroupStates" class="text-white px-4 py-2 rounded-xl shadow-md bg-green-500">Done</button>
         </div>
         <transition name="ModalAppear">
             <lesson v-if="wrongAns  == true" v-on:closedModal="closeModal" :Ch="currentAns" :En="currentQuestion"/>
@@ -106,7 +106,11 @@
                     method: 'GET',
                 })
                 .then((res) => {
-                    if(res){
+                    if(res.data.result == "undo"){
+                        alert('You need to learn one chapter')
+                        this.$router.push({ name: 'mains/course' })
+                    
+                    }else if(res){
                         this.currentWord = res.data.result
                         this.wordList = res.data.result
                         this.currentQuestion = this.currentWord[this.no].english
@@ -120,12 +124,29 @@
                         
                         
                     }else{
-                        alert('無法取得後台數據')
+                        alert('You need to learn one chapter')
                     }
 
                 }, (res) => {
                     // alert(res.response);
                     alert("無法取得數據");
+                })
+            },
+            saveGroupStates() {
+            // console.log(this.wordList)
+            console.log(this.wId)
+            this.$http({
+                url: `/api/updateGroupStates`,
+                method: 'POST',
+                data: {
+                    states: "done",
+                    wId: this.wId
+                }
+            })
+                .then((res) => {
+                    this.$router.push({ name: 'mains/course' })
+                }, (res) => {
+                    alert('Unable to get plan form')
                 })
             },
             randomAnsList(ansNo, listLength, min){

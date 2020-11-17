@@ -19,6 +19,7 @@ class CreateGroupWordsTable extends Migration
             $table->string('GNo');
             $table->string('GId');
             $table->string('UserId');
+            $table->string('States');
             $table->date('createTime');
             $table->boolean('isActive');
             $table->timestamps();

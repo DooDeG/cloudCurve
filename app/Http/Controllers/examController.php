@@ -29,10 +29,12 @@ class examController extends Controller
     public function getExerciseWords(){
 
         $id = Auth::id(); 
-
-        $gw = Group_word::where('UserId','=', $id)->count();
         
-        $gw = Group_word::where('UserId','=', $id)->where('isActive', '=', '0')->first();
+        
+        $gw = Group_word::where('UserId','=', $id)->where('States', '=', 'undo')->first();
+        if(!$gw){
+            return response()->json(['status' => 'fail to get en word, user did not start learn', "result" => "undo"], 200);
+        }
 
         $gwEn = Group_word::where('UserId','=', $id)->where('GId', '=', $gw->GId)->get();
         $result = '';
