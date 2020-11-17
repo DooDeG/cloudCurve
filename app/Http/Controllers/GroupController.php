@@ -36,7 +36,7 @@ class GroupController extends Controller
                     $group->GId = $id.'G'.$currentGNo;
                     $group->GNo = $currentGNo;
                     $group->UserId = $id;
-                    $group->isActive = "1";
+                    $group->isActive = "0";
                     $group->createTime = date("Y-m-d H:i:s");
                     $group->save();
                 }

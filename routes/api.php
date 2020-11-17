@@ -23,6 +23,8 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::patch('settings/password', 'Settings\PasswordController@update');
     
     Route::get('getEnWorldList', 'examController@getWords');
+
+    Route::get('getGroupWorldList', 'examController@getExerciseWords');
     Route::post('updateGroupInfo', 'GroupController@saveGroupWorld');
 
 });

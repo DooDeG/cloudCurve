@@ -7,6 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 class group_word extends Model
 {
     protected $fillable = [
-        'ENo', 'GNo', 'GId', 'UserId', 'createTime', 'level'
+        'ENo', 'GNo', 'GId', 'UserId', 'createTime', 'isActive'
     ];
 }

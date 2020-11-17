@@ -31,13 +31,18 @@ class examController extends Controller
         $id = Auth::id(); 
 
         $gw = Group_word::where('UserId','=', $id)->count();
-        $maxgw = $gw+20;
-        $result = '';
-        $result = en_word::where('id', '>', $gw)->where('id', '<=', $maxgw)->get();
         
+        $gw = Group_word::where('UserId','=', $id)->where('isActive', '=', '0')->first();
+
+        $gwEn = Group_word::where('UserId','=', $id)->where('GId', '=', $gw->GId)->get();
+        $result = '';
+        $result = en_word::where('id', '>=', $gwEn[0]->ENo)->where('id', '<=', $gwEn[19]->ENo)->get();
         foreach($result as $item){
             unset($item->level);
         }
+        
         return response()->json(['status' => 'success', "result" => $result], 200);
+
+
     }
 }

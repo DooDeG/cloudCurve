@@ -102,7 +102,7 @@
         methods:{
             getEnWorldList(){
                 this.$http({
-                    url: `/api/getEnWorldList`,
+                    url: `/api/getGroupWorldList`,
                     method: 'GET',
                 })
                 .then((res) => {
