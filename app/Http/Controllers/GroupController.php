@@ -33,6 +33,7 @@ class GroupController extends Controller
                 if(!$ENoCheck && $ENoCheck == null){
                     $group = new group_word();
                     $group->ENo = $item;
+                    $group->GId = $id.'G'.$currentGNo;
                     $group->GNo = $currentGNo;
                     $group->UserId = $id;
                     $group->isActive = "1";

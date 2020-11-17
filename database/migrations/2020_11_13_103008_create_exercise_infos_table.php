@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateGroupWordsTable extends Migration
+class CreateExerciseInfosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,10 @@ class CreateGroupWordsTable extends Migration
      */
     public function up()
     {
-        Schema::create('group_words', function (Blueprint $table) {
+        Schema::create('exercise_infos', function (Blueprint $table) {
             $table->id();
-            $table->string('ENo');
-            $table->string('GNo');
             $table->string('GId');
-            $table->string('UserId');
-            $table->date('createTime');
-            $table->boolean('isActive');
-            $table->timestamps();
+            $table->date('preparation');
         });
     }
 
@@ -32,6 +27,6 @@ class CreateGroupWordsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('group_words');
+        Schema::dropIfExists('exercise_infos');
     }
 }
