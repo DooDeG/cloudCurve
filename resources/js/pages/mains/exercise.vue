@@ -34,7 +34,8 @@
                     <div class="text-sm">
                         <div class="text-left font-serif text-2xl mt-3">
                                 <!-- <router-link :to="{ name:'exam' }"> -->
-                                <router-link :to="{ name: user ? 'exam' : 'login' }">
+                                <!-- <router-link :to="{ name: user ? 'review' : 'login',params:{id: review.id } }"> -->
+                                <router-link :to="{ name: user ? 'review' : 'login' }">
                                     <button class="text-white px-10 py-2 rounded-full shadow-xl"  style="background-color: #F34241 ">Review</button>
                                 </router-link>
                         </div>
@@ -93,7 +94,7 @@ export default {
                 url: `/api/getExercise`,
                 method: 'GET',
             })
-            .then((res) => {
+            .then((res) => {    
                 if(res){
                    res.data.result.forEach((item, index) => {
                         this.reviewChap.push(item.GNo);
@@ -112,4 +113,4 @@ export default {
 }
 </script>
 <style scoped>
-</style>>
+</style>

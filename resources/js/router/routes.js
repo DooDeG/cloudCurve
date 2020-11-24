@@ -19,6 +19,7 @@ export default [
     ] },
   { path: '/lesson', name: 'lesson', component: page('curriculum/lesson.vue') },
   { path: '/exam', name: 'exam', component: page('curriculum/exam.vue') },
+  { path: '/review', name: 'review', component: page('curriculum/review.vue') },
 
   { path: '/login', name: 'login', component: page('auth/login.vue') },
   { path: '/register', name: 'register', component: page('auth/register.vue') },

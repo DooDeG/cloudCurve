@@ -1,19 +1,21 @@
 <template>
 
-    <div class="row">
-      <div class="col-md-2">
-          <ul class="nav flex-column nav-pills">
-              <li v-for="tab in tabs" :key="tab.route" class="nav-item mt-5 ml-2 font-serif text-2xl">
-                  <router-link :to="{ name: tab.route }" class="nav-link" active-class="active">
+    <div class="row mr-0">
+      <div class="col-md-3">
+          <ul class="nav flex-column nav-pills bg-white mt-16 rounded-lg ml-10 shadow-2xl" style="height: 800px;">
+              <li v-for="tab in tabs" :key="tab.route" class="nav-item mt-5 font-serif text-2xl ">
+                  <router-link :to="{ name: tab.route }" class="nav-link divide-y-4 " active-class="active">
                       <!-- <fa :icon="tab.icon" fixed-width /> -->
-                      {{ tab.name }}
+                      <div class="flex justify-center">{{ tab.name }}</div>
                   </router-link>
+                  <div class="flex justify-center">
+                   <hr class="border-0 bg-gray-500 text-gray-500 h-px sm:w-3/4">
+                  </div>
               </li>
           </ul>
+          
       </div>
-      
-
-      <div class="col-md-9">
+      <div class="col-md-8">
           <transition name="fade" mode="out-in">
               <router-view />
           </transition>
@@ -114,4 +116,4 @@ export default {
 }
 </script>
 <style scoped>
-</style>>
+</style>
