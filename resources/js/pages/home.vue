@@ -14,7 +14,7 @@
                 </div>
                 <div class=" text-left -mt-8 font-serif text-5xl">Study, Learn & <br>Live a New Language!</div>
                 <div class="text-left font-serif text-2xl mt-3 mb-5">
-                    <router-link :to="{ name: user ? 'mains' : 'login' }">
+                    <router-link :to="{ name: user ? 'mains/course' : 'login' }">
                         <button  @click="getCartList" class="text-white px-10 py-2 rounded-full shadow-2xl"  style="background-color: #F34241 ">start now!</button>
                    </router-link>
                     </div>
@@ -34,7 +34,7 @@
                             <div class="font-serif text-2xl font-bold  md:-ml-16">Online Learning</div>
                             <div class="font-serif text-lg md:-ml-24 md:mt-5">Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Vivamus suscipit tortor eget felis porttitor volutpat. </div>
                             <div class="text-right md:pt-16">
-                                <router-link :to="{ name: user ? 'learning' : 'login' }">
+                                <router-link :to="{ name: user ? 'mains/course' : 'login' }">
                                     <button class="text-white px-10 py-2 rounded-full shadow-2xl"  style="background-color: #F34241 ">Learning now！</button>
                                 </router-link>
                                
@@ -46,7 +46,7 @@
                             <div class="font-serif text-2xl font-bold  ">Online Exercise</div>
                             <div class="font-serif text-lg md:mt-5">Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Vivamus suscipit tortor eget felis porttitor volutpat. </div>
                             <div class="text-right md:pt-16">
-                                <router-link :to="{ name: user ? 'learning' : 'login' }">
+                                <router-link :to="{ name: user ? 'mains/course' : 'login' }">
                                     <button class="text-white px-10 py-2 rounded-full shadow-2xl" style="background-color: #F34241 ">Learning now！</button>
                                 </router-link>
                             </div>
@@ -60,7 +60,7 @@
                     <div>
                         <h3 class="text-4xl font-bold font-serif text-white leading-tight mb-5 border-black mb-12 relative z-10 text-center border-b-2 border-white">Visualization</h3>
                         <p class="relative z-10 mt-24 pt-4 flex justify-center">
-                            <router-link :to="{ name: user ? 'learning' : 'login' }">
+                            <router-link :to="{ name: user ? 'mains/course' : 'login' }">
                                 <a href="#" class="py-2 px-10 rounded-full shadow-2xl text-white bg-gray-900 hover:bg-black focus:outline-none transition-all duration-300 ease-in-out" style="background-color: #F34241">View your own data.</a>
                             </router-link>
                         </p>
@@ -79,7 +79,7 @@
             </div>
             <div class=" text-center font-serif mt-5 text-2xl">Study, Learn & <br>Live a New Language!</div>
             <div class="text-center font-serif text-2xl mt-3 mb-5">
-                <router-link :to="{ name: user ? 'mains' : 'login' }">
+                <router-link :to="{ name: user ? 'mains/course' : 'login' }">
                     <button  @click="getCartList" class="text-white px-10 py-2 rounded-full shadow-2xl"  style="background-color: #F34241 ">start now!</button>
                 </router-link>
             </div>
@@ -193,4 +193,4 @@ export default {
 }
 </script>
 <style scoped>
-</style>>
+</style>
