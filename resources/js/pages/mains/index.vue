@@ -18,12 +18,12 @@
                   </div>
               </div>
           </div> -->
-          <div class="antialiased z-0" id="app">
+          <div class="antialiased z-0 hidden md:flex" id="app">
               <transition name="slide">
-                <div class="pt-24 w-64 min-h-screen p-8 bg-gray-200 fixed left-0 top-0 shadow-2xl ease-in-out  transition-transform transition-medium">
+                <div class="pt-24 w-64 min-h-screen p-8 bg-white fixed left-0 top-0 shadow-2xl ease-in-out  transition-transform transition-medium">
                   <div class="flex justify-center">
                     <nav class="w-56 relative">
-                      <span class="absolute h-14 w-full bg-white rounded-lg shadow ease-out transition-transform transition-medium" :style="{ transform: `translateY(calc(110% * ${selected}))` }"></span>
+                      <span class="absolute h-14 w-full bg-white rounded-lg shadow ease-out transition-transform transition-medium rounded-md border-red-600 border-l-2" :style="{ transform: `translateY(calc(110% * ${selected}))` }"></span>
                       <ul class="relative">
                           <li>
                               <router-link :to="{ name:  'home'  }">
@@ -80,7 +80,7 @@
                         <li>
                           
                         <router-link :to="{ name:  'mains/visualization'  }">
-                          <button type="button" @click="select(2)" :aria-selected="selected === 2" class="py-3 px-4 w-full flex items-center focus:outline-none focus-visible:underline">
+                          <button type="button" @click="select(2)" :aria-selected="selected === 2" class="py-3 px-4 w-full flex items-center focus:outline-none focus-visible:underline" >
                         <svg
                           :class="selected === 2 ? 'text-indigo-400' : 'text-gray-500'"
                           class="h-6 w-6 transition-all ease-out transition-medium"

@@ -1,8 +1,8 @@
 <template>
     <div class="container">
         <div class="flex flex-col mt-20">
-          <!-- ===== Course ====  -->
-            <div class="flex justify-around">
+            <!-- ===== Course ====  -->
+            <!-- <div class="flex justify-around">
                 <div class="text-left bg-white px-4 py-2 md:w-3/4  rounded-md shadow-xl border-t-4 border-red-600 ">
                     <div class="flex justify-between">
                         <div class="text-gray-700 text-center px-4 py-2 m-2 underline bold text-3xl font-serif">Course</div>
@@ -10,26 +10,26 @@
                             <div class="mt-4 text-gray-700 text-center text-xl bold font-serif">Chapter: {{chap}}</div>
                         </div>
                     </div>
-                    <div class="flex justify-between">
+                    <div class="flex justify-around">
                         <div class="flex flex-col">
                             <div>
                                 <div class="ml-8 text-gray-700 text-center text-xl bold font-serif">Learning</div>
                             </div>
-                            <div class="flex justify-center">
+                            <div class="flex justify-center mt-2">
                                 <router-link :to="{ name: user ? 'lesson' : 'login' }">
                                     <button class="items-center"><font-awesome-icon icon="play-circle" size="3x" style="color:red !important;"/></button>
                                 </router-link>
                             </div>
                         </div>
                        
-                        <div>
-                            <span class="text-6xl text-red-500">&#47;</span>
+                        <div class=" -mt-16">
+                            <span class="text-9xl text-red-500">&#47;</span>
                         </div>
                         <div class="flex flex-col">
                             <div>
                                 <div class="ml-8 text-gray-700 text-center text-xl bold font-serif">Exercise</div>
                             </div>
-                            <div class="flex justify-center">
+                            <div class="flex justify-center mt-2">
                                 <router-link :to="{ name: user ? 'review' : 'login' }">
                                     <button class="items-center"><font-awesome-icon icon="play-circle" size="3x" style="color:red !important;"/></button>
                                 </router-link>
@@ -37,229 +37,140 @@
                         </div>
                     </div>
                 </div>
+
+                
+            </div> -->
+            <div class="flex justify-center 2xl:justify-start text-gray-600 bold text-3xl font-serif">
+                
+                <div class=" 2xl:ml-52 underline">Today Lesson</div>
             </div>
-            <!-- test -->
-            <div class="container mx-auto px-4 sm:px-8 antialiased font-sans bg-gray-200">
-        <div class="py-8">
-            <div>
-                <h2 class="text-2xl font-semibold leading-tight">Users</h2>
-            </div>
-            <div class="my-2 flex sm:flex-row flex-col">
-                <div class="flex flex-row mb-1 sm:mb-0">
-                    <div class="relative">
-                        <select
-                            class="appearance-none h-full rounded-l border block appearance-none w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
-                            <option>5</option>
-                            <option>10</option>
-                            <option>20</option>
-                        </select>
-                        <div
-                            class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                            <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-                            </svg>
+            <div class="flex 2xl:justify-evenly mt-3">
+                <div class="flex justify-center mr-5">
+                    <div class="bg-white p-4 shadow rounded-md shadow-xl border-t-4 border-red-600 w-96">
+                        <div class="flex">
+                            <div class="w-2/3">
+                                <h1 class="underline bold text-xl font-serif">
+                                Course
+                                </h1>
+                                <span class="block text-xs uppercase text-blue-400 mt-1">Learning</span>
+                            </div>
+                            <div class="w-1/3">
+                                <span class="float-right text-xs px-2 text-white">
+                                    <router-link :to="{ name: user ? 'lesson' : 'login' }">
+                                        <button class="items-center"><font-awesome-icon icon="play-circle" size="3x" style="color:red !important;"/></button>
+                                    </router-link>
+                                </span>
+                            </div>
                         </div>
-                    </div>
-                    <div class="relative">
-                        <select
-                            class="appearance-none h-full rounded-r border-t sm:rounded-r-none sm:border-r-0 border-r border-b block appearance-none w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:border-l focus:border-r focus:bg-white focus:border-gray-500">
-                            <option>All</option>
-                            <option>Active</option>
-                            <option>Inactive</option>
-                        </select>
-                        <div
-                            class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                            <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-                            </svg>
+                        
+                        <div class="flex mt-2">
+                            <div class="w-1/2 flex-col">
+                                <span class="flex justify-center text-2xl font-semibold">{{chap}}</span>
+                                <span class="flex justify-center text-gray-500">Lessons</span>
+                            </div>
+                            <div class="w-1/2 flex-col">
+                                <span class="flex justify-center text-2xl font-semibold">0.3</span>
+                                <span class="flex justify-center text-gray-500">Minute</span>
+                            </div>
                         </div>
-                    </div>
-                </div>
-                <div class="block relative">
-                    <span class="h-full absolute inset-y-0 left-0 flex items-center pl-2">
-                        <svg viewBox="0 0 24 24" class="h-4 w-4 fill-current text-gray-500">
-                            <path
-                                d="M10 4a6 6 0 100 12 6 6 0 000-12zm-8 6a8 8 0 1114.32 4.906l5.387 5.387a1 1 0 01-1.414 1.414l-5.387-5.387A8 8 0 012 10z">
-                            </path>
-                        </svg>
-                    </span>
-                    <input placeholder="Search"
-                        class="appearance-none rounded-r rounded-l sm:rounded-l-none border border-gray-400 border-b block pl-8 pr-6 py-2 w-full bg-white text-sm placeholder-gray-400 text-gray-700 focus:bg-white focus:placeholder-gray-600 focus:text-gray-700 focus:outline-none" />
-                </div>
-            </div>
-            <div class="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
-                <div class="inline-block min-w-full shadow rounded-lg overflow-hidden">
-                    <table class="min-w-full leading-normal">
-                        <thead>
-                            <tr>
-                                <th
-                                    class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                    User
-                                </th>
-                                <th
-                                    class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                    Rol
-                                </th>
-                                <th
-                                    class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                    Created at
-                                </th>
-                                <th
-                                    class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                    Status
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                    <div class="flex items-center">
-                                        <div class="flex-shrink-0 w-10 h-10">
-                                            <img class="w-full h-full rounded-full"
-                                                src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2.2&w=160&h=160&q=80"
-                                                alt="" />
-                                        </div>
-                                        <div class="ml-3">
-                                            <p class="text-gray-900 whitespace-no-wrap">
-                                                Vera Carpenter
-                                            </p>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                    <p class="text-gray-900 whitespace-no-wrap">Admin</p>
-                                </td>
-                                <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                    <p class="text-gray-900 whitespace-no-wrap">
-                                        Jan 21, 2020
-                                    </p>
-                                </td>
-                                <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                    <span
-                                        class="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
-                                        <span aria-hidden
-                                            class="absolute inset-0 bg-green-200 opacity-50 rounded-full"></span>
-                                        <span class="relative">Activo</span>
-                                    </span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                    <div class="flex items-center">
-                                        <div class="flex-shrink-0 w-10 h-10">
-                                            <img class="w-full h-full rounded-full"
-                                                src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2.2&w=160&h=160&q=80"
-                                                alt="" />
-                                        </div>
-                                        <div class="ml-3">
-                                            <p class="text-gray-900 whitespace-no-wrap">
-                                                Blake Bowman
-                                            </p>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                    <p class="text-gray-900 whitespace-no-wrap">Editor</p>
-                                </td>
-                                <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                    <p class="text-gray-900 whitespace-no-wrap">
-                                        Jan 01, 2020
-                                    </p>
-                                </td>
-                                <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                    <span
-                                        class="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
-                                        <span aria-hidden
-                                            class="absolute inset-0 bg-green-200 opacity-50 rounded-full"></span>
-                                        <span class="relative">Activo</span>
-                                    </span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                    <div class="flex items-center">
-                                        <div class="flex-shrink-0 w-10 h-10">
-                                            <img class="w-full h-full rounded-full"
-                                                src="https://images.unsplash.com/photo-1540845511934-7721dd7adec3?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2.2&w=160&h=160&q=80"
-                                                alt="" />
-                                        </div>
-                                        <div class="ml-3">
-                                            <p class="text-gray-900 whitespace-no-wrap">
-                                                Dana Moore
-                                            </p>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                    <p class="text-gray-900 whitespace-no-wrap">Editor</p>
-                                </td>
-                                <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                    <p class="text-gray-900 whitespace-no-wrap">
-                                        Jan 10, 2020
-                                    </p>
-                                </td>
-                                <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                    <span
-                                        class="relative inline-block px-3 py-1 font-semibold text-orange-900 leading-tight">
-                                        <span aria-hidden
-                                            class="absolute inset-0 bg-orange-200 opacity-50 rounded-full"></span>
-                                        <span class="relative">Suspended</span>
-                                    </span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="px-5 py-5 bg-white text-sm">
-                                    <div class="flex items-center">
-                                        <div class="flex-shrink-0 w-10 h-10">
-                                            <img class="w-full h-full rounded-full"
-                                                src="https://images.unsplash.com/photo-1522609925277-66fea332c575?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2.2&h=160&w=160&q=80"
-                                                alt="" />
-                                        </div>
-                                        <div class="ml-3">
-                                            <p class="text-gray-900 whitespace-no-wrap">
-                                                Alonzo Cox
-                                            </p>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="px-5 py-5 bg-white text-sm">
-                                    <p class="text-gray-900 whitespace-no-wrap">Admin</p>
-                                </td>
-                                <td class="px-5 py-5 bg-white text-sm">
-                                    <p class="text-gray-900 whitespace-no-wrap">Jan 18, 2020</p>
-                                </td>
-                                <td class="px-5 py-5 bg-white text-sm">
-                                    <span
-                                        class="relative inline-block px-3 py-1 font-semibold text-red-900 leading-tight">
-                                        <span aria-hidden
-                                            class="absolute inset-0 bg-red-200 opacity-50 rounded-full"></span>
-                                        <span class="relative">Inactive</span>
-                                    </span>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <div
-                        class="px-5 py-5 bg-white border-t flex flex-col xs:flex-row items-center xs:justify-between          ">
-                        <span class="text-xs xs:text-sm text-gray-900">
-                            Showing 1 to 4 of 50 Entries
-                        </span>
-                        <div class="inline-flex mt-2 xs:mt-0">
-                            <button
-                                class="text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-l">
-                                Prev
-                            </button>
-                            <button
-                                class="text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-r">
-                                Next
-                            </button>
+                        <div class="flex  mt-2">
+                            <span class="text-xs font-semibold py-1">Progress</span>
+                            <span class="text-xs font-semibold py-1 ml-auto text-blue-600">100%</span>
                         </div>
+                        <div class="flex mt-2">
+                            <div class="w-full h-2 rounded rounded-r-none bg-blue-400"></div>
+                            <!-- <div class="w-1/4 h-2 rounded rounded-l-none bg-blue-100"></div> -->
+                        </div>
+                        
                     </div>
+                
                 </div>
+                <div class="flex justify-center">
+                    <div class="bg-white p-4 shadow rounded-md shadow-xl border-t-4 border-red-600 w-96">
+                        <div class="flex">
+                            <div class="w-2/3">
+                                <h1 class="underline bold text-xl font-serif">
+                                Course
+                                </h1>
+                                <span class="block text-xs uppercase text-blue-400 mt-1">Exercise</span>
+                            </div>
+                            <div class="w-1/3">
+                                <span class="float-right text-xs px-2 text-white">
+                                    <router-link :to="{ name: user ? 'review' : 'login' }">
+                                        <button class="items-center"><font-awesome-icon icon="play-circle" size="3x" style="color:red !important;"/></button>
+                                    </router-link>
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <div class="flex mt-2">
+                            <div class="w-1/2 flex-col">
+                                <span class="flex justify-center text-2xl font-semibold">{{chapExer}}</span>
+                                <span class="flex justify-center text-gray-500">Lessons</span>
+                            </div>
+                            <div class="w-1/2 flex-col">
+                                <span class="flex justify-center text-2xl font-semibold">0.3</span>
+                                <span class="flex justify-center text-gray-500">Minute</span>
+                            </div>
+                        </div>
+                        <div class="flex  mt-2">
+                            <span class="text-xs font-semibold py-1">Progress</span>
+                            <span class="text-xs font-semibold py-1 ml-auto text-blue-600">100%</span>
+                        </div>
+                        <div class="flex mt-2">
+                            <div class="w-full h-2 rounded rounded-r-none bg-blue-400"></div>
+                            <!-- <div class="w-1/4 h-2 rounded rounded-l-none bg-blue-100"></div> -->
+                        </div>
+                        
+                    </div>
+                
+                </div>
+                
+                
+                
+            
             </div>
+            <!-- table list  -->
+            <div class="flex justify-center 2xl:justify-start text-gray-600 bold text-3xl font-serif mt-5">
+                
+                <div class=" 2xl:ml-52 underline">Total lesson list</div>
+            </div>
+        <div class="flex justify-center text-gray-900 mt-3">
+            <table class="md:w-3/4 text-md bg-white rounded-md shadow-xl">
+                <tbody>
+                    <tr class="border-b">
+                        <th class="text-left p-3 px-5">Name</th>
+                        <!-- <th class="text-left p-3 px-5">Email</th> -->
+                        <th class="text-left p-3 px-5">state</th>
+                        <th class="p-3 px-5 flex justify-end">Chapter:&nbsp;
+                            <select v-model="selected" class="border-solid border-gray-100 font-bold" @change="onChange( $event)">
+                                <option disabled value=""> </option>
+                                <option> 1</option>
+                                <option> 2</option>
+                                <option> 3</option>
+                                <option> 4</option>
+                                <option> 5</option>
+                            </select>
+                        </th>
+                    </tr>
+                    <tr class="border-b hover:bg-blue-100" v-for="(le, i) in Clist" :key="i">
+                        <td class="p-3 px-5">Chaper {{le}}</td>
+                        <!-- <td class="p-3 px-5">chapter 2</td> -->
+                        <td class="p-3 px-5">
+                            done
+                        </td>
+                        <td class="p-3 px-5 flex justify-end"><button type="button" class="mr-3 text-sm bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline">Review</button><button type="button" class="text-sm bg-red-500 hover:bg-red-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline">Exercise</button></td>
+                    </tr>
+                    
+                    
+                    
+                </tbody>
+            </table>
         </div>
+                       
+            
+
     </div>
-        </div>
     </div>
 </template>
 
@@ -276,12 +187,23 @@
         user: 'auth/user'
     }),
     data: () => ({
-              chap: 1
+              chap: 1,
+              chapExer: 1,
+              selected:1,
+              Clist:[],
+              tlist:[],
           }),
     created () {
         this.getChapter()
+        this.getChapterExer()
+        // this.getExercise()
+        this.getAllList()
     },
     methods:{
+        onChange(event){
+            
+            this.selectChapter(this.tlist, event.target.value);
+        },
         getChapter(){
             this.$http({
                 url: `/api/getChapter`,
@@ -303,6 +225,75 @@
                 alert("無法取得數據");
             })
         },
+        getChapterExer(){
+            this.$http({
+                url: `/api/getExerciseChapter`,
+                method: 'GET',
+            })
+            .then((res) => {
+                if(res){
+                    if(res.data.result){
+                        this.chap = res.data.result
+                    }else{
+                        this.chapExer = 1;
+                    }
+                    
+                }else{
+                    alert('無法取得後台數據')
+                }
+
+            }, (res) => {
+                // alert(res.response);
+                alert("無法取得數據");
+            })
+        },
+        // getExercise(){
+        //     this.$http({
+        //         url: `/api/getExercise`,
+        //         method: 'GET',
+        //     })
+        //     .then((res) => {    
+        //         if(res){
+        //            res.data.result.forEach((item, index) => {
+        //                 this.reviewChap.push(item.GNo);
+        //             })
+                    
+        //         }else{
+        //             alert('無法取得後台數據')
+        //         }
+
+        //     }, (res) => {
+        //         // alert(res.response);
+        //         alert("無法取得數據");
+        //     })
+        // },
+        getAllList(){
+            this.$http({
+                url: `/api/getAllList`,
+                method: 'GET',
+            })
+            .then((res) => {    
+                if(res){
+                //    res.data.result.forEach((item, index) => {
+                //         this.reviewChap.push(item.GNo);
+                //     })
+                
+                    this.tlist = res.data.result;
+                    this.Clist = res.data.result;
+                    this.selectChapter(this.Clist, 1);
+                    
+                }else{
+                    alert('無法取得後台數據')
+                }
+
+            }, (res) => {
+                // alert(res.response);
+                alert("無法取得數據");
+            })
+        },
+        selectChapter(arr, range){
+            this.Clist = arr.slice(range*10-10, range*10);
+        }
     }
   }
 </script>

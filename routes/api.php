@@ -24,14 +24,17 @@ Route::group(['middleware' => 'auth:api'], function () {
     
     Route::get('getEnWorldList', 'examController@getWords');
     
+    //course.vue
     Route::get('getChapter', 'courseController@getChapter');
     Route::post('updateGroupInfo', 'GroupController@saveGroupWorld');
+    Route::get('getExerciseChapter', 'examController@getExerciseChapter');
+    Route::get('getExercise', 'examController@getExercise');
+    
+    Route::get('getAllList', 'courseController@getAllList');
 
     Route::get('getGroupWorldList', 'examController@getExerciseWords');
     Route::post('updateGroupStates', 'GroupController@saveGroupStates');
     
-    Route::get('getExerciseChapter', 'examController@getExerciseChapter');
-    Route::get('getExercise', 'examController@getExercise');
 
 });
 

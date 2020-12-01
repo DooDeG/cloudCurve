@@ -12,7 +12,7 @@ export default [
     name: 'mains',
     component: page('mains/index.vue'),
     children: [
-      { path: '', redirect: { name: 'mains/index' } },
+      { path: '', redirect: { name: 'mains/course.vue' } },
       { path: 'course', name: 'mains/course', component: page('mains/course.vue') },
       { path: 'exercise', name: 'mains/exercise', component: page('mains/exercise.vue') },
       { path: 'visualization', name: 'mains/visualization', component: page('mains/visualization.vue') }
