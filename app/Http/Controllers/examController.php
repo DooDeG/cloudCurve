@@ -87,5 +87,22 @@ class examController extends Controller
         
          return response()->json(['status' => 'success', "result" => $result], 200);
     }
+    public function getReviewListWithId(Request $request){
+        $id = Auth::id(); 
+        $result = [];
+        $maxgw = $request->slug*20;
+
+        if(isset($request) && $request != null && isset($request->slug) && $request->slug != null){
+            $result = en_word::where('id', '>', $maxgw-20)->where('id', '<=', $maxgw)->get();
+        
+            foreach($result as $item){
+                unset($item->level);
+            }
+            return response()->json(['status' => 'success', "result" => $result], 200);
+        }else{
+            return response()->json(['status' => 'fail'], 200);
+
+        }
+    }
     
 }

@@ -37,6 +37,11 @@ Route::group(['middleware' => 'auth:api'], function () {
     
     //Visualization.vue
     Route::get('getFinshWord', 'GroupController@getFinshWord');
+
+    //lessondata.vue pass data
+    Route::post('getEnWorldListWithId', 'courseController@getEnListWithId');
+    //review.vue pass data
+    Route::post('getReviewListWithId', 'examController@getReviewListWithId');
     
 });
 

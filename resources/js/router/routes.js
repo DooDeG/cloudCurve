@@ -18,8 +18,10 @@ export default [
       { path: 'visualization', name: 'mains/visualization', component: page('mains/visualization.vue') }
     ] },
   { path: '/lesson', name: 'lesson', component: page('curriculum/lesson.vue') },
+  { path: '/lessondata/:id', name: 'lessondata', component: page('curriculum/lessondata.vue') },
   { path: '/exam', name: 'exam', component: page('curriculum/exam.vue') },
   { path: '/review', name: 'review', component: page('curriculum/review.vue') },
+  { path: '/reviewdata/:id', name: 'reviewdata', component: page('curriculum/reviewdata.vue') },
 
   { path: '/login', name: 'login', component: page('auth/login.vue') },
   { path: '/register', name: 'register', component: page('auth/register.vue') },

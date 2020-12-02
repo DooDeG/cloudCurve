@@ -44,88 +44,91 @@
                 
                 <div class=" 2xl:ml-52 underline">Today Lesson</div>
             </div>
-            <div class="flex 2xl:justify-evenly mt-3">
-                <div class="flex justify-center mr-5">
-                    <div class="bg-white p-4 shadow rounded-md shadow-xl border-t-4 border-red-600 w-96">
-                        <div class="flex">
-                            <div class="w-2/3">
-                                <h1 class="underline bold text-xl font-serif">
-                                Course
-                                </h1>
-                                <span class="block text-xs uppercase text-blue-400 mt-1">Learning</span>
+            <div class="flex justify-center">
+                <div class="flex xl:justify-around w-2/3 mt-3">
+                    <div class="flex justify-center mr-5">
+                        <div class="bg-white p-4 shadow rounded-md shadow-xl border-t-4 border-red-600 w-96">
+                            <div class="flex">
+                                <div class="w-2/3">
+                                    <h1 class="underline bold text-xl font-serif">
+                                    Course
+                                    </h1>
+                                    <span class="block text-xs uppercase text-blue-400 mt-1">Learning</span>
+                                </div>
+                                <div class="w-1/3">
+                                    <span class="float-right text-xs px-2 text-white">
+                                        <router-link :to="{ name: user ? 'lesson' : 'login' }">
+                                            <button class="items-center"><font-awesome-icon icon="play-circle" size="3x" style="color:red !important;"/></button>
+                                        </router-link>
+                                    </span>
+                                </div>
                             </div>
-                            <div class="w-1/3">
-                                <span class="float-right text-xs px-2 text-white">
-                                    <router-link :to="{ name: user ? 'lesson' : 'login' }">
-                                        <button class="items-center"><font-awesome-icon icon="play-circle" size="3x" style="color:red !important;"/></button>
-                                    </router-link>
-                                </span>
+                            
+                            <div class="flex mt-2">
+                                <div class="w-1/2 flex-col">
+                                    <span class="flex justify-center text-2xl font-semibold">{{chap}}</span>
+                                    <span class="flex justify-center text-gray-500">Lessons</span>
+                                </div>
+                                <div class="w-1/2 flex-col">
+                                    <span class="flex justify-center text-2xl font-semibold">20</span>
+                                    <span class="flex justify-center text-gray-500">Minute</span>
+                                </div>
                             </div>
-                        </div>
-                        
-                        <div class="flex mt-2">
-                            <div class="w-1/2 flex-col">
-                                <span class="flex justify-center text-2xl font-semibold">{{chap}}</span>
-                                <span class="flex justify-center text-gray-500">Lessons</span>
+                            <div class="flex  mt-2">
+                                <span class="text-xs font-semibold py-1">Progress</span>
+                                <span class="text-xs font-semibold py-1 ml-auto text-blue-600">100%</span>
                             </div>
-                            <div class="w-1/2 flex-col">
-                                <span class="flex justify-center text-2xl font-semibold">0.3</span>
-                                <span class="flex justify-center text-gray-500">Minute</span>
+                            <div class="flex mt-2">
+                                <div class="w-full h-2 rounded rounded-r-none bg-blue-400"></div>
+                                <!-- <div class="w-1/4 h-2 rounded rounded-l-none bg-blue-100"></div> -->
                             </div>
+                            
                         </div>
-                        <div class="flex  mt-2">
-                            <span class="text-xs font-semibold py-1">Progress</span>
-                            <span class="text-xs font-semibold py-1 ml-auto text-blue-600">100%</span>
-                        </div>
-                        <div class="flex mt-2">
-                            <div class="w-full h-2 rounded rounded-r-none bg-blue-400"></div>
-                            <!-- <div class="w-1/4 h-2 rounded rounded-l-none bg-blue-100"></div> -->
-                        </div>
-                        
+                    
                     </div>
+                    <div class="flex justify-center">
+                        <div class="bg-white p-4 shadow rounded-md shadow-xl border-t-4 border-red-600 w-96">
+                            <div class="flex">
+                                <div class="w-2/3">
+                                    <h1 class="underline bold text-xl font-serif">
+                                    Course
+                                    </h1>
+                                    <span class="block text-xs uppercase text-blue-400 mt-1">Exercise</span>
+                                </div>
+                                <div class="w-1/3">
+                                    <span class="float-right text-xs px-2 text-white">
+                                        <router-link :to="{ name: user ? 'review' : 'login' }">
+                                            <button class="items-center"><font-awesome-icon icon="play-circle" size="3x" style="color:red !important;"/></button>
+                                        </router-link>
+                                    </span>
+                                </div>
+                            </div>
+                            
+                            <div class="flex mt-2">
+                                <div class="w-1/2 flex-col">
+                                    <span class="flex justify-center text-2xl font-semibold">{{chapExer}}</span>
+                                    <span class="flex justify-center text-gray-500">Lessons</span>
+                                </div>
+                                <div class="w-1/2 flex-col">
+                                    <span class="flex justify-center text-2xl font-semibold">20</span>
+                                    <span class="flex justify-center text-gray-500">Minute</span>
+                                </div>
+                            </div>
+                            <div class="flex  mt-2">
+                                <span class="text-xs font-semibold py-1">Progress</span>
+                                <span class="text-xs font-semibold py-1 ml-auto text-blue-600">100%</span>
+                            </div>
+                            <div class="flex mt-2">
+                                <div class="w-full h-2 rounded rounded-r-none bg-blue-400"></div>
+                                <!-- <div class="w-1/4 h-2 rounded rounded-l-none bg-blue-100"></div> -->
+                            </div>
+                            
+                        </div>
+                    
+                    </div>
+                    
                 
                 </div>
-                <div class="flex justify-center">
-                    <div class="bg-white p-4 shadow rounded-md shadow-xl border-t-4 border-red-600 w-96">
-                        <div class="flex">
-                            <div class="w-2/3">
-                                <h1 class="underline bold text-xl font-serif">
-                                Course
-                                </h1>
-                                <span class="block text-xs uppercase text-blue-400 mt-1">Exercise</span>
-                            </div>
-                            <div class="w-1/3">
-                                <span class="float-right text-xs px-2 text-white">
-                                    <router-link :to="{ name: user ? 'review' : 'login' }">
-                                        <button class="items-center"><font-awesome-icon icon="play-circle" size="3x" style="color:red !important;"/></button>
-                                    </router-link>
-                                </span>
-                            </div>
-                        </div>
-                        
-                        <div class="flex mt-2">
-                            <div class="w-1/2 flex-col">
-                                <span class="flex justify-center text-2xl font-semibold">{{chapExer}}</span>
-                                <span class="flex justify-center text-gray-500">Lessons</span>
-                            </div>
-                            <div class="w-1/2 flex-col">
-                                <span class="flex justify-center text-2xl font-semibold">0.3</span>
-                                <span class="flex justify-center text-gray-500">Minute</span>
-                            </div>
-                        </div>
-                        <div class="flex  mt-2">
-                            <span class="text-xs font-semibold py-1">Progress</span>
-                            <span class="text-xs font-semibold py-1 ml-auto text-blue-600">100%</span>
-                        </div>
-                        <div class="flex mt-2">
-                            <div class="w-full h-2 rounded rounded-r-none bg-blue-400"></div>
-                            <!-- <div class="w-1/4 h-2 rounded rounded-l-none bg-blue-100"></div> -->
-                        </div>
-                        
-                    </div>
-                
-                </div>
-                
             
             </div>
             <!-- table list  -->
@@ -167,20 +170,31 @@
                         </td>
                         <td class="p-3 px-5 flex justify-end">
                             <div v-if="le.status.States == 'undo'">
-                                <button type="button" class="mr-3 text-sm bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline">
-                                    Learn
-                                </button>
-                                <button v-if='le.status.GNo == chapExer' type="button" class="text-sm bg-red-500 hover:bg-red-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline">
-                                    Exercise
-                                </button>
+                                <router-link :to="{ name:'lessondata', params:{id: le.id } }">           
+                                <!-- <button type="button" class="mr-3 text-sm bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline" @click="onSends(le.id)"> -->
+                                    <button type="button" class="mr-3 text-sm bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline">
+                                        Learn
+                                    </button>
+                                </router-link>
+                                
+                                <router-link :to="{ name:'reviewdata', params:{id: le.id } }">  
+                                    <button v-if='le.status.GNo == chapExer' type="button" class="text-sm bg-red-500 hover:bg-red-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline">
+                                        Test
+                                    </button>
+                                </router-link>
                             </div>
                             <div v-if="le.status.States == 'done'">
-                                <button type="button" class="mr-3 text-sm bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline">
-                                    Review
-                                </button>
-                                <button type="button" class="text-sm bg-red-500 hover:bg-red-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline">
-                                    Exercise
-                                </button>
+                                
+                                <router-link :to="{ name:'lessondata', params:{id: le.id } }">  
+                                    <button type="button" class="mr-3 text-sm bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline">
+                                        Review
+                                    </button>
+                                </router-link>
+                                <router-link :to="{ name:'reviewdata', params:{id: le.id } }">  
+                                    <button type="button" class="text-sm bg-red-500 hover:bg-red-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline">
+                                        Test
+                                    </button>
+                                </router-link>
                             </div>
                             <div v-if="le.status == ''">
                             </div>
@@ -216,7 +230,8 @@
               Clist:[],
               tlist:[],
               state:'',
-              list:[]
+              list:[],
+              slug:''
           }),
     created () {
         this.getChapter()
@@ -225,6 +240,14 @@
         this.getAllList()
     },
     methods:{
+        onSends(index) {
+            // console.log(this.listQuery.departName)
+            // this.$router.push("/couponsSystem/couponsManage/fullCutCoupons/index?channel="+this.listQuery.channel+"&scene="+this.listQuery.scene+"&departName="+this.listQuery.departName+"&couponFirstType="+this.listQuery.couponFirstType);
+            this.slug = index;
+            console.log("# "+ this.slug);
+            
+            this.$router.push("/lessondata/"+this.slug);
+        },
         onChange(event){
             
             this.selectChapter(this.tlist, event.target.value);
