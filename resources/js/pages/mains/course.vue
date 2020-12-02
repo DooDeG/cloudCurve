@@ -42,7 +42,9 @@
             </div> -->
             <div class="flex justify-center 2xl:justify-start text-gray-600 bold text-3xl font-serif">
                 
-                <div class=" 2xl:ml-52 underline">Today Lesson</div>
+                <!-- <div class=" 2xl:ml-52 underline">Today Lesson</div> -->
+                
+                <div class=" 2xl:ml-52 underline">Lesson</div>
             </div>
             <div class="flex justify-center">
                 <div class="flex xl:justify-around w-2/3 mt-3">
@@ -172,8 +174,13 @@
                             <div v-if="le.status.States == 'undo'">
                                 <router-link :to="{ name:'lessondata', params:{id: le.id } }">           
                                 <!-- <button type="button" class="mr-3 text-sm bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline" @click="onSends(le.id)"> -->
-                                    <button type="button" class="mr-3 text-sm bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline">
+                                    <button v-if='le.status.GNo == chap' type="button" class="mr-3 text-sm bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline">
                                         Learn
+                                    </button>
+                                </router-link>
+                                <router-link :to="{ name:'lessondata', params:{id: le.id } }">           
+                                    <button v-if='le.status.GNo != chap' type="button" class="mr-3 text-sm bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline">
+                                        Review
                                     </button>
                                 </router-link>
                                 
