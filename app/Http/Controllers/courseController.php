@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Group_word;
 use App\en_word;
 use Illuminate\Support\Facades\Auth;
-
+Use DB;
 class courseController extends Controller
 {
     public function getChapter(){
@@ -28,26 +28,43 @@ class courseController extends Controller
         $minNo = 0;
         $no = 1;
         $tmpGroup = [];
-        // for ($x = 1; $x <= 5; $x++) {
-        //     for ($y = 1; $y <= 10; $y++) {
-        //         $tmp = en_word::where('id', '>', $minNo)->where('id', '<=', $maxNo)->select('id', 'english', 'chinese', 'level')->get();
-        //         $maxNo +=20;
-        //         $minNo +=20;
-        //         $no +=1;
-        //         array_push($tmpGroup, $tmp);
-        //         array_push($tmpGroup, $no);
-        //     }
-        //     array_push($result, $tmpGroup);
-        //     $tmpGroup=[];
-        // }
-        for($x = 1; $x <= 50; $x++){
-            array_push($tmpGroup, $x);
-        }
-        $result = $tmpGroup;
-        if(!$result){
+        $tmp = [];
+        
+        $no = 0;
+        $gw = Group_word::where('UserId','=', $id)
+                        ->select( 'GNo',)
+                        // ->select(DB::raw('count(*) as GId'))
+                        // ->select('GId', 'GNo')
+                        // ->where('GId', '>', 1)
+                        // ->groupBy('GNo')
+                        
+                        // ->select('GId')
 
-            return response()->json(['status' => 'fail', "result" => ""], 200);
+                        ->groupByRaw('GNo')
+                        ->get();
+        $x ='';
+        foreach ($gw as $item) {
+            $x = Group_word::where('UserId','=', $id)
+                            ->where('GNo', '=', $item->GNo)
+                            ->select('GNo', 'States')
+                            ->first();
+            array_push($tmp, $x);
         }
+        for($x = 1; $x <= 50; $x++){
+            if($no > count($tmp)-1){
+                array_push($tmpGroup, ["id"=>$x, 'status'=>[]]);
+            }else{
+                array_push($tmpGroup, [ "id"=>$x, 'status'=>$tmp[$no]]);
+            }
+            $no ++;
+        }
+        // $result["chapter"] = $tmpGroup;
+        // $result["gw"] = $gw;
+        $result = $tmpGroup;
+        // if(!$result){
+
+        //     return response()->json(['status' => 'fail', "result" => ""], 200);
+        // }
         return response()->json(['status' => 'success', "result" => $result], 200);
     }
 }

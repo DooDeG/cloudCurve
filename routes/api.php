@@ -35,7 +35,9 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('getGroupWorldList', 'examController@getExerciseWords');
     Route::post('updateGroupStates', 'GroupController@saveGroupStates');
     
-
+    //Visualization.vue
+    Route::get('getFinshWord', 'GroupController@getFinshWord');
+    
 });
 
 Route::group(['middleware' => 'guest:api'], function () {

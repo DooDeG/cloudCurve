@@ -107,7 +107,7 @@
                       </button>
                         </router-link>
                         </li>
-                        <li>
+                        <!-- <li>
                           <button type="button" @click="select(3)" :aria-selected="selected === 3" class="py-3 px-4 w-full flex items-center focus:outline-none focus-visible:underline">
                         <svg
                           :class="selected === 3 ? 'text-indigo-400' : 'text-gray-500'"
@@ -133,7 +133,7 @@
                           Subscriptions
                         </span>
                       </button>
-                        </li>
+                        </li> -->
                       </ul>
                     </nav>
                   </div>
@@ -164,6 +164,13 @@ export default {
     }),
   created () {
     // this.updateInfo()
+      
+  },
+  mounted (){
+      console.log(this.$route.name);
+      if(this.$route.name == 'mains/visualization'){
+          this.selected = 2
+      }
   },
   computed: {
     tabs () {

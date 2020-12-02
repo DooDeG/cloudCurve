@@ -126,8 +126,6 @@
                 
                 </div>
                 
-                
-                
             
             </div>
             <!-- table list  -->
@@ -135,7 +133,7 @@
                 
                 <div class=" 2xl:ml-52 underline">Total lesson list</div>
             </div>
-        <div class="flex justify-center text-gray-900 mt-3">
+        <div class="flex justify-center text-gray-900 mb-10 mt-4">
             <table class="md:w-3/4 text-md bg-white rounded-md shadow-xl">
                 <tbody>
                     <tr class="border-b">
@@ -153,13 +151,41 @@
                             </select>
                         </th>
                     </tr>
-                    <tr class="border-b hover:bg-blue-100" v-for="(le, i) in Clist" :key="i">
-                        <td class="p-3 px-5">Chaper {{le}}</td>
+                    <tr class="border-b mb-5 hover:bg-blue-100" v-for="(le, i) in Clist" :key="i">
+                        <td class="p-3 px-5">Chaper {{le.id}}</td>
                         <!-- <td class="p-3 px-5">chapter 2</td> -->
                         <td class="p-3 px-5">
-                            done
+                            <div v-if="le.status.States == 'undo'">
+                                <font-awesome-icon icon="play-circle" size="2x" style="color:red !important;"/>
+                            </div>
+                            <div v-if="le.status.States == 'done'">
+                                <font-awesome-icon icon="check-circle" size="2x" style="color:rgba(52, 211, 153, var(--tw-bg-opacity)) !important;"/>
+                            </div>
+                            <div v-if="le.status == ''">
+                                <font-awesome-icon icon="lock" size="2x" style="color:rgba(75, 85, 99, var(--tw-bg-opacity)) !important;"/>
+                            </div>
                         </td>
-                        <td class="p-3 px-5 flex justify-end"><button type="button" class="mr-3 text-sm bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline">Review</button><button type="button" class="text-sm bg-red-500 hover:bg-red-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline">Exercise</button></td>
+                        <td class="p-3 px-5 flex justify-end">
+                            <div v-if="le.status.States == 'undo'">
+                                <button type="button" class="mr-3 text-sm bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline">
+                                    Learn
+                                </button>
+                                <button v-if='le.status.GNo == chapExer' type="button" class="text-sm bg-red-500 hover:bg-red-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline">
+                                    Exercise
+                                </button>
+                            </div>
+                            <div v-if="le.status.States == 'done'">
+                                <button type="button" class="mr-3 text-sm bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline">
+                                    Review
+                                </button>
+                                <button type="button" class="text-sm bg-red-500 hover:bg-red-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline">
+                                    Exercise
+                                </button>
+                            </div>
+                            <div v-if="le.status == ''">
+                            </div>
+                            
+                        </td>
                     </tr>
                     
                     
@@ -167,9 +193,6 @@
                 </tbody>
             </table>
         </div>
-                       
-            
-
     </div>
     </div>
 </template>
@@ -192,6 +215,8 @@
               selected:1,
               Clist:[],
               tlist:[],
+              state:'',
+              list:[]
           }),
     created () {
         this.getChapter()
@@ -233,7 +258,7 @@
             .then((res) => {
                 if(res){
                     if(res.data.result){
-                        this.chap = res.data.result
+                        this.chapExer = res.data.result
                     }else{
                         this.chapExer = 1;
                     }
@@ -277,9 +302,9 @@
                 //    res.data.result.forEach((item, index) => {
                 //         this.reviewChap.push(item.GNo);
                 //     })
-                
                     this.tlist = res.data.result;
                     this.Clist = res.data.result;
+                    console.log(this.list)
                     this.selectChapter(this.Clist, 1);
                     
                 }else{
