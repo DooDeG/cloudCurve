@@ -78,7 +78,7 @@
                             </div>
                             <div class="flex  mt-2">
                                 <span class="text-xs font-semibold py-1">Progress</span>
-                                <span class="text-xs font-semibold py-1 ml-auto text-blue-600">100%</span>
+                                <span class="text-xs font-semibold py-1 ml-auto text-blue-600">10%</span>
                             </div>
                             <div class="flex mt-2">
                                 <div class="w-full h-2 rounded rounded-r-none bg-blue-400"></div>
@@ -118,20 +118,15 @@
                             </div>
                             <div class="flex  mt-2">
                                 <span class="text-xs font-semibold py-1">Progress</span>
-                                <span class="text-xs font-semibold py-1 ml-auto text-blue-600">100%</span>
+                                <span class="text-xs font-semibold py-1 ml-auto text-blue-600">5%</span>
                             </div>
                             <div class="flex mt-2">
                                 <div class="w-full h-2 rounded rounded-r-none bg-blue-400"></div>
                                 <!-- <div class="w-1/4 h-2 rounded rounded-l-none bg-blue-100"></div> -->
                             </div>
-                            
                         </div>
-                    
                     </div>
-                    
-                
                 </div>
-            
             </div>
             <!-- table list  -->
             <div class="flex justify-center 2xl:justify-start text-gray-600 bold text-3xl font-serif mt-5">
@@ -145,7 +140,7 @@
                         <th class="text-left p-3 px-5">Name</th>
                         <!-- <th class="text-left p-3 px-5">Email</th> -->
                         <th class="text-left p-3 px-5">state</th>
-                        <th class="p-3 px-5 flex justify-end">Chapter:&nbsp;
+                        <th class="p-3 px-5 flex justify-end">Page:&nbsp;
                             <select v-model="selected" class="border-solid border-gray-100 font-bold" @change="onChange( $event)">
                                 <option disabled value=""> </option>
                                 <option> 1</option>
@@ -157,7 +152,7 @@
                         </th>
                     </tr>
                     <tr class="border-b mb-5 hover:bg-blue-100" v-for="(le, i) in Clist" :key="i">
-                        <td class="p-3 px-5">Chaper {{le.id}}</td>
+                        <td class="p-3 px-5">Lesson {{le.id}}</td>
                         <!-- <td class="p-3 px-5">chapter 2</td> -->
                         <td class="p-3 px-5">
                             <div v-if="le.status.States == 'undo'">
@@ -334,7 +329,7 @@
                 //     })
                     this.tlist = res.data.result;
                     this.Clist = res.data.result;
-                    console.log(this.list)
+                    console.log(res.data.result)
                     this.selectChapter(this.Clist, 1);
                     
                 }else{
