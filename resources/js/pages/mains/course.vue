@@ -44,7 +44,7 @@
                 
                 <!-- <div class=" 2xl:ml-52 underline">Today Lesson</div> -->
                 
-                <div class=" 2xl:ml-52 underline">Lesson</div>
+                <div class=" 2xl:ml-52 underline">Today Lesson</div>
             </div>
             <div class="flex justify-center">
                 <div class="flex xl:justify-around w-2/3 mt-3">
@@ -52,80 +52,103 @@
                         <div class="bg-white p-4 shadow rounded-md shadow-xl border-t-4 border-red-600 w-96">
                             <div class="flex">
                                 <div class="w-2/3">
-                                    <h1 class="underline bold text-xl font-serif">
-                                    Course
+                                    <h1 class=" bold text-xl font-serif inline ">
+                                    Lesson
                                     </h1>
-                                    <span class="block text-xs uppercase text-blue-400 mt-1">Learning</span>
+                                    <h1 class="inline bold text-2xl font-serif">
+                                     :&nbsp;{{chap}}
+                                    </h1>
+                                    
+                                    <span class="block text-xs uppercase text-blue-400 mt-1">{{currentDateWithFormat}}</span>
+                                    <!-- <span class="block text-xs uppercase text-blue-400 mt-1">Learning</span> -->
                                 </div>
                                 <div class="w-1/3">
                                     <span class="float-right text-xs px-2 text-white">
-                                        <router-link :to="{ name: user ? 'lesson' : 'login' }">
-                                            <button class="items-center"><font-awesome-icon icon="play-circle" size="3x" style="color:red !important;"/></button>
+                                        <router-link :to="{ name:'lessondata', params:{id: chap } }">           
+                                        <!-- <button type="button" class="mr-3 text-sm bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline" @click="onSends(le.id)"> -->
+                                            <button v-if="re != 'learn'" class="items-center"><font-awesome-icon icon="play-circle" size="3x" style="color:red !important;"/></button>
+                                            <button v-if="re == 'learn'" class="items-center"><font-awesome-icon icon="redo" size="2x" style="color:rgba(239, 68, 68, var(--tw-bg-opacity)); !important;"/></button>
+                                        
                                         </router-link>
                                     </span>
                                 </div>
                             </div>
-                            
+                            <div class="flex justify-center mb-3">
+                                <div class="text-blue font-serif bold text-2xl ">Learn</div>
+                            </div>
                             <div class="flex mt-2">
-                                <div class="w-1/2 flex-col">
-                                    <span class="flex justify-center text-2xl font-semibold">{{chap}}</span>
-                                    <span class="flex justify-center text-gray-500">Lessons</span>
+                                <div class="w-1/2 flex-col  border-r-2">
+                                    <span class="flex justify-center text-2xl font-semibold">20</span>
+                                    <span class="flex justify-center text-gray-500">Words</span>
                                 </div>
                                 <div class="w-1/2 flex-col">
                                     <span class="flex justify-center text-2xl font-semibold">20</span>
                                     <span class="flex justify-center text-gray-500">Minute</span>
                                 </div>
                             </div>
-                            <div class="flex  mt-2">
+                            <!-- <div class="flex  mt-2">
                                 <span class="text-xs font-semibold py-1">Progress</span>
                                 <span class="text-xs font-semibold py-1 ml-auto text-blue-600">10%</span>
                             </div>
                             <div class="flex mt-2">
                                 <div class="w-full h-2 rounded rounded-r-none bg-blue-400"></div>
-                                <!-- <div class="w-1/4 h-2 rounded rounded-l-none bg-blue-100"></div> -->
-                            </div>
+                                <div class="w-1/4 h-2 rounded rounded-l-none bg-blue-100"></div>
+                            </div> -->
                             
                         </div>
                     
                     </div>
-                    <div class="flex justify-center">
+                    <div class="flex justify-center mr-5">
                         <div class="bg-white p-4 shadow rounded-md shadow-xl border-t-4 border-red-600 w-96">
                             <div class="flex">
                                 <div class="w-2/3">
-                                    <h1 class="underline bold text-xl font-serif">
-                                    Course
+                                    <h1 class=" bold text-xl font-serif inline ">
+                                    Lesson
                                     </h1>
-                                    <span class="block text-xs uppercase text-blue-400 mt-1">Exercise</span>
+                                    <h1 class="inline bold text-2xl font-serif">
+                                     :&nbsp;{{chap}}
+                                    </h1>
+                                    
+                                    <span class="block text-xs uppercase text-blue-400 mt-1">{{currentDateWithFormat}}</span>
+                                    <!-- <span class="block text-xs uppercase text-blue-400 mt-1">Learning</span> -->
                                 </div>
                                 <div class="w-1/3">
                                     <span class="float-right text-xs px-2 text-white">
-                                        <router-link :to="{ name: user ? 'review' : 'login' }">
-                                            <button class="items-center"><font-awesome-icon icon="play-circle" size="3x" style="color:red !important;"/></button>
+                                        <router-link :to="{ name:'reviewdata', params:{id: chap } }">           
+                                        <!-- <button type="button" class="mr-3 text-sm bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline" @click="onSends(le.id)"> -->
+                                            <button v-if="chapExer == 'undo'" class="items-center"><font-awesome-icon icon="play-circle" size="3x" style="color:red !important;"/></button>
+                                            <button v-if="chapExer == 'done'" class="items-center"><font-awesome-icon icon="redo" size="2x" style="color:rgba(239, 68, 68, var(--tw-bg-opacity)); !important;"/></button>
+                                        
                                         </router-link>
                                     </span>
                                 </div>
                             </div>
-                            
+                            <div class="flex justify-center mb-3">
+                                <div class="text-blue font-serif bold text-2xl ">Exercise</div>
+                            </div>
                             <div class="flex mt-2">
-                                <div class="w-1/2 flex-col">
-                                    <span class="flex justify-center text-2xl font-semibold">{{chapExer}}</span>
-                                    <span class="flex justify-center text-gray-500">Lessons</span>
+                                <div class="w-1/2 flex-col  border-r-2">
+                                    <span class="flex justify-center text-2xl font-semibold">20</span>
+                                    <span class="flex justify-center text-gray-500">Words</span>
                                 </div>
                                 <div class="w-1/2 flex-col">
-                                    <span class="flex justify-center text-2xl font-semibold">20</span>
+                                    <span class="flex justify-center text-2xl font-semibold">25</span>
                                     <span class="flex justify-center text-gray-500">Minute</span>
                                 </div>
                             </div>
-                            <div class="flex  mt-2">
+                            <!-- <div class="flex  mt-2">
                                 <span class="text-xs font-semibold py-1">Progress</span>
-                                <span class="text-xs font-semibold py-1 ml-auto text-blue-600">5%</span>
+                                <span class="text-xs font-semibold py-1 ml-auto text-blue-600">10%</span>
                             </div>
                             <div class="flex mt-2">
                                 <div class="w-full h-2 rounded rounded-r-none bg-blue-400"></div>
-                                <!-- <div class="w-1/4 h-2 rounded rounded-l-none bg-blue-100"></div> -->
-                            </div>
+                                <div class="w-1/4 h-2 rounded rounded-l-none bg-blue-100"></div>
+                            </div> -->
+                            
                         </div>
+                    
                     </div>
+                    
                 </div>
             </div>
             <!-- table list  -->
@@ -155,37 +178,37 @@
                         <td class="p-3 px-5">Lesson {{le.id}}</td>
                         <!-- <td class="p-3 px-5">chapter 2</td> -->
                         <td class="p-3 px-5">
-                            <div v-if="le.status.States == 'undo'">
+                            <div v-if="le.status.States == 'undo' || (le.id == chap && le.status.States == 'undo')">
                                 <font-awesome-icon icon="play-circle" size="2x" style="color:red !important;"/>
                             </div>
-                            <div v-if="le.status.States == 'done'">
+                            <div v-else-if="le.status.States == 'done'">
                                 <font-awesome-icon icon="check-circle" size="2x" style="color:rgba(52, 211, 153, var(--tw-bg-opacity)) !important;"/>
                             </div>
-                            <div v-if="le.status == ''">
+                            <div v-else-if="le.status == ''">
                                 <font-awesome-icon icon="lock" size="2x" style="color:rgba(75, 85, 99, var(--tw-bg-opacity)) !important;"/>
                             </div>
                         </td>
                         <td class="p-3 px-5 flex justify-end">
-                            <div v-if="le.status.States == 'undo'">
+                            <div v-if="le.status.States == 'undo' || le.id == chap">
                                 <router-link :to="{ name:'lessondata', params:{id: le.id } }">           
                                 <!-- <button type="button" class="mr-3 text-sm bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline" @click="onSends(le.id)"> -->
-                                    <button v-if='le.status.GNo == chap' type="button" class="mr-3 text-sm bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline">
+                                    <button v-if='le.status.GNo == chap  && le.status.States == "undo"' type="button" class="mr-3 text-sm bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline">
                                         Learn
                                     </button>
                                 </router-link>
                                 <router-link :to="{ name:'lessondata', params:{id: le.id } }">           
-                                    <button v-if='le.status.GNo != chap' type="button" class="mr-3 text-sm bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline">
+                                    <button v-if='le.status.GNo != chap || le.status.States == "done"' type="button" class="mr-3 text-sm bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline">
                                         Review
                                     </button>
                                 </router-link>
                                 
                                 <router-link :to="{ name:'reviewdata', params:{id: le.id } }">  
-                                    <button v-if='le.status.GNo == chapExer' type="button" class="text-sm bg-red-500 hover:bg-red-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline">
+                                    <button v-if='le.status.GNo == chap || le.status.GNo == "undo"' type="button" class="text-sm bg-red-500 hover:bg-red-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline">
                                         Test
                                     </button>
                                 </router-link>
                             </div>
-                            <div v-if="le.status.States == 'done'">
+                            <div v-else-if="le.status.States == 'done' || le.id == chap">
                                 
                                 <router-link :to="{ name:'lessondata', params:{id: le.id } }">  
                                     <button type="button" class="mr-3 text-sm bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline">
@@ -198,7 +221,7 @@
                                     </button>
                                 </router-link>
                             </div>
-                            <div v-if="le.status == ''">
+                            <div v-else-if="le.status == ''">
                             </div>
                             
                         </td>
@@ -233,15 +256,29 @@
               tlist:[],
               state:'',
               list:[],
-              slug:''
+              slug:'',
+              currentDateWithFormat:'',
+              re:'',
           }),
     created () {
-        this.getChapter()
-        this.getChapterExer()
         // this.getExercise()
         this.getAllList()
+        
+        this.callFunction()
+    },
+    mounted(){
+        this.getChapter()
     },
     methods:{
+        callFunction() {
+   
+            // var currentDate = new Date();
+            // console.log(currentDate);
+  
+            this.currentDateWithFormat = new Date().toJSON().slice(0,10).replace(/-/g,'/');
+            console.log(this.currentDateWithFormat);
+     
+        },
         onSends(index) {
             // console.log(this.listQuery.departName)
             // this.$router.push("/couponsSystem/couponsManage/fullCutCoupons/index?channel="+this.listQuery.channel+"&scene="+this.listQuery.scene+"&departName="+this.listQuery.departName+"&couponFirstType="+this.listQuery.couponFirstType);
@@ -263,8 +300,8 @@
                 if(res){
                     if(res.data.result){
                         this.chap = res.data.result
-                    }else{
-                        this.chap = 1;
+                        this.re = res.data.re;
+                        this.getChapterExer();
                     }
                     
                 }else{
@@ -276,9 +313,13 @@
             })
         },
         getChapterExer(){
+            console.log(this.chap);
             this.$http({
                 url: `/api/getExerciseChapter`,
-                method: 'GET',
+                method: 'POST',
+                data: {
+                    chap: this.chap,
+                }
             })
             .then((res) => {
                 if(res){

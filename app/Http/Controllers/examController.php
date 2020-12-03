@@ -46,15 +46,23 @@ class examController extends Controller
         return response()->json(['status' => 'success', "result" => $result], 200);
 
     }
-    public function getExerciseChapter(){
+    public function getExerciseChapter(Request $request){
         $id = Auth::id(); 
         $result = '';
-        $gw = Group_word::where('UserId','=', $id)->where('States', '=', 'undo')->first();
+        $currentDay = date("Y-m-d");
+        $gw = Group_word::where('UserId','=', $id)->where('GNo', '=', $request->chap)->first();
         if(!$gw){
-            return response()->json(['status' => 'success', "result" => "Nothing can be do"], 200);
+            return response()->json(['status' => 'success', "result" => "You should learn before exercise"], 200);
         }
-        $result = $gw->GNo;
-        return response()->json(['status' => 'success', "result" => $result], 200);
+        // $result = $gw->GNo;
+        // return response()->json(['status' => 'success', "result" => $result], 200);
+        if($gw->States == 'undo'){
+            return response()->json(['status' => 'success', "result" => $gw->States], 200);
+        }else if($gw->States == 'done'){
+            return response()->json(['status' => 'success', "result" => $gw->States], 200);
+        }
+        
+        return response()->json(['status' => $gw], 200);
     }
 
     public function getExercise(){

@@ -12,13 +12,23 @@ class courseController extends Controller
     public function getChapter(){
         $id = Auth::id(); 
         $result = '';
+        $currentDay = date("Y-m-d");
         $gw = Group_word::where('UserId','=', $id)->latest()->first();
-        if(!$gw){
-
-            return response()->json(['status' => 'fail', "result" => ""], 200);
+        
+        // $gw = Group_word::where('UserId','=', $id)->where('States', '=', 'undo')->first();
+        // if(!$gw){
+        //     return response()->json(['status' => 'fail', "result" => ""], 200);
+        // }
+        if($gw == '' || $gw == null || !$gw){
+            $result = 1;
+            return response()->json(['status' => 'success', 'result' => $result, 're' => 'first time'], 200);
+        }else if($gw->createTime == $currentDay){
+            return response()->json(['status' => 'success', "result" => $gw->GNo, 're' => 'learn'], 200);
+        }else if($gw->States == 'undo'){
+            return response()->json(['status' => 'success', "result" => $gw->GNo, 're' => 'learn'], 200);
+        }else{
+            return response()->json(['status' => 'success', "result" => $gw->GNo+1, 're' => 'next'], 200);
         }
-        $result = $gw->GNo+1;
-        return response()->json(['status' => 'success', "result" => $result], 200);
     }
     public function getAllList(){
         $id = Auth::id(); 

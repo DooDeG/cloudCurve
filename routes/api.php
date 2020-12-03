@@ -27,7 +27,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     //course.vue
     Route::get('getChapter', 'courseController@getChapter');
     Route::post('updateGroupInfo', 'GroupController@saveGroupWorld');
-    Route::get('getExerciseChapter', 'examController@getExerciseChapter');
+    Route::post('getExerciseChapter', 'examController@getExerciseChapter');
     Route::get('getExercise', 'examController@getExercise');
     
     Route::get('getAllList', 'courseController@getAllList');

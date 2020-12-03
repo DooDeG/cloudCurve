@@ -84,7 +84,7 @@
             currentAns: '',
             currentEn: '',
             currentAnsList: [],
-            no: 0,
+            no: 19,
             state: '1',
             wId: [],
             temp: [],
