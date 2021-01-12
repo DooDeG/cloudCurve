@@ -26,7 +26,7 @@
             
         </div>
         <div class="flex justify-center mt-24">
-            <div class="text-2xl md:text-4xl bold font-serif mb-10 border-b-2 border-black w-1/4 pl-2">{{currentEn}}</div>
+            <div class="text-2xl md:text-4xl bold font-serif mb-10 border-b-2 border-black w-1/4 pl-2 text-center">{{currentEn}}<div class="text-lg text-gray-500 mt-2 ml-2">{{sent}}</div></div>
             <!-- <div class="text-2xl bold mb-4 font-serif underline">Do</div> -->
         </div>
         <div class="flex justify-center mt-10">
@@ -62,6 +62,7 @@ export default {
         no: '0',
         wId: [],
         slug:'',
+        sent:'',
     }),
     created () {
         // this.updateInfo()
@@ -87,6 +88,8 @@ export default {
                     this.wordList = res.data.result
                     this.currentEn = this.currentWord[this.no].english
                     this.currentCh = this.currentWord[this.no].chinese
+                    
+                    this.sent = this.currentWord[this.no].sent
                     console.log(this.currentEn)
                     res.data.result.forEach((item, index) => {
                         this.wId.push(item.id);
@@ -105,11 +108,13 @@ export default {
             this.no ++;
             this.currentEn = this.currentWord[this.no].english
             this.currentCh = this.currentWord[this.no].chinese
+            this.sent = this.currentWord[this.no].sent
         },
         preWord() {
             this.no --;
             this.currentEn = this.currentWord[this.no].english
             this.currentCh = this.currentWord[this.no].chinese
+            this.sent = this.currentWord[this.no].sent
         },
         updateGroupInfo () {
             console.log(this.wordList)
