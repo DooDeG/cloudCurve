@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 
 use App\en_word;
 use App\group_word;
+use App\curve;
+use App\curveDetail;
 
 use Illuminate\Support\Facades\Auth;
 
@@ -25,7 +27,7 @@ class GroupController extends Controller
             if($GNoCheck){
                 return response()->json(['status' => 'success save in before'], 200);
             }
-            
+            // $gid = $id.'G'.$request->slug;
             foreach($request->wId as $item){
                 
                 $ENoCheck = group_word::where('ENo', '=', $item)->where('UserId','=', $id)->first();
@@ -40,8 +42,35 @@ class GroupController extends Controller
                     $group->isActive = "1";
                     $group->createTime = date("Y-m-d H:i:s");
                     $group->save();
-                }
+
+                    // $CheckD = curveDetail::where('GId','=', $gid)->where('ENo', '=', $item)->first();
+                    // if(!$CheckD && $CheckD == null){
+                    //     $dr = new curveDetail();
+                    //     $dr->GId = $gid;
+                    //     $dr->ENo = $item;
+                    //     $dr->time = 0;
+                    //     // $dr->totalTime = "";
+                    //     // $dr->accuracy = "";
+                    //     $dr->isActive = "1";
+                    //     $dr->date = date("Y-m-d H:i:s");
+                    //     $dr->save();
+                    // }
+                } 
             }
+        
+            
+            // $Check = curve::where('GId','=', $gid)->first();
+                
+            // if(!$Check && $Check == null){
+            //     $cu = new curve();
+            //     $cu->GId = $gid;
+            //     $cu->time = 0;
+            //     $cu->isActive = "1";
+            //     // $cu->totalTime = "";
+            //     // $cu->accuracy = "";
+            //     $cu->date = date("Y-m-d H:i:s");
+            //     $cu->save();
+            // }
             return response()->json(['status' => 'success'], 200);
         }
         return response()->json(['status' => 'fail to get id'], 200);
@@ -51,11 +80,39 @@ class GroupController extends Controller
 
         $id = Auth::id(); 
         
+        $gid = $id.'G'.$request->slug;
         if(isset($request) && $request != null && isset($request->wId) && $request->wId != null){
             foreach($request->wId as $item){
                 group_word::where('UserId','=', $id)->where('ENo', '=', $item)->update([
                     'States' => $request->states,
                 ]);
+
+                $CheckD = curveDetail::where('GId','=', $gid)->where('ENo', '=', $item)->first();
+                if(!$CheckD && $CheckD == null){
+                    $dr = new curveDetail();
+                    $dr->GId = $gid;
+                    $dr->ENo = $item;
+                    $dr->UserId = $id;
+                    $dr->time = 0;
+                    // $dr->totalTime = "";
+                    // $dr->accuracy = "";
+                    $dr->isActive = "1";
+                    $dr->date = date("Y-m-d H:i:s");
+                    $dr->save();
+                }
+            }
+            $Check = curve::where('GId','=', $gid)->first();
+                
+            if(!$Check && $Check == null){
+                $cu = new curve();
+                $cu->GId = $gid;
+                $cu->time = 0;
+                $cu->UserId = $id;
+                $cu->isActive = "1";
+                // $cu->totalTime = "";
+                // $cu->accuracy = "";
+                $cu->date = date("Y-m-d H:i:s");
+                $cu->save();
             }
             return response()->json(['status' => 'success'], 200);
         }else{
@@ -63,6 +120,7 @@ class GroupController extends Controller
             return response()->json(['status' => 'fail'], 200);
         }
     }
+
     public function getFinshWord(){
         $id = Auth::id();
         $FNo = group_word::where('UserId','=', $id)

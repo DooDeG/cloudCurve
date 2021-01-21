@@ -78,39 +78,10 @@
                         </router-link>
                         </li>
                         <li>
-                          
-                        <router-link :to="{ name:  'mains/visualization'  }">
-                          <button type="button" @click="select(2)" :aria-selected="selected === 2" class="py-3 px-4 w-full flex items-center focus:outline-none focus-visible:underline" >
+                          <router-link :to="{ name:  'mains/traning'  }">
+                          <button type="button" @click="select(2)" :aria-selected="selected === 2" class="py-3 px-4 w-full flex items-center focus:outline-none focus-visible:underline">
                         <svg
                           :class="selected === 2 ? 'text-indigo-400' : 'text-gray-500'"
-                          class="h-6 w-6 transition-all ease-out transition-medium"
-                          viewBox="0 0 24 24"
-                          fill="currentColor"
-                        >
-                          <path
-                            fill-rule="evenodd"
-                            clip-rule="evenodd"
-                            d="M12 7a1 1 0 011-1h8a1 1 0 011 1v8a1 1 0 11-2 0V8h-7a1 1 0 01-1-1z"
-                          />
-                          <path
-                            fill-rule="evenodd"
-                            clip-rule="evenodd"
-                            d="M20.707 7.293a1 1 0 010 1.414l-7 7a1 1 0 01-1.414 0L9 12.414l-5.293 5.293a1 1 0 01-1.414-1.414l6-6a1 1 0 011.414 0L13 13.586l6.293-6.293a1 1 0 011.414 0z"
-                          />
-                        </svg>
-                        <span
-                          :class="selected === 2 ? 'text-indigo-600' : 'text-gray-700'"
-                          class="ml-2 text-lg font-medium transition-all ease-out transition-medium"
-                        >
-                          Visualization
-                        </span>
-                      </button>
-                        </router-link>
-                        </li>
-                        <!-- <li>
-                          <button type="button" @click="select(3)" :aria-selected="selected === 3" class="py-3 px-4 w-full flex items-center focus:outline-none focus-visible:underline">
-                        <svg
-                          :class="selected === 3 ? 'text-indigo-400' : 'text-gray-500'"
                           class="h-6 w-6 transition-all ease-out transition-medium"
                           viewBox="0 0 24 24"
                           fill="currentColor"
@@ -127,13 +98,48 @@
                           />
                         </svg>
                         <span
+                          :class="selected === 2 ? 'text-indigo-600' : 'text-gray-700'"
+                          class="ml-2 text-lg font-medium transition-all ease-out transition-medium"
+                        >
+                          Review
+                        </span>
+                      </button>
+                      
+                        </router-link>
+                        </li>
+                        <li>
+                          
+                        <router-link :to="{ name:  'mains/visualization'  }">
+                          <button type="button" @click="select(3)" :aria-selected="selected === 3" class="py-3 px-4 w-full flex items-center focus:outline-none focus-visible:underline" >
+                        <svg
+                          :class="selected === 3 ? 'text-indigo-400' : 'text-gray-500'"
+                          class="h-6 w-6 transition-all ease-out transition-medium"
+                          viewBox="0 0 24 24"
+                          fill="currentColor"
+                        >
+                          <path
+                            fill-rule="evenodd"
+                            clip-rule="evenodd"
+                            d="M12 7a1 1 0 011-1h8a1 1 0 011 1v8a1 1 0 11-2 0V8h-7a1 1 0 01-1-1z"
+                          />
+                          <path
+                            fill-rule="evenodd"
+                            clip-rule="evenodd"
+                            d="M20.707 7.293a1 1 0 010 1.414l-7 7a1 1 0 01-1.414 0L9 12.414l-5.293 5.293a1 1 0 01-1.414-1.414l6-6a1 1 0 011.414 0L13 13.586l6.293-6.293a1 1 0 011.414 0z"
+                          />
+                        </svg>
+                        <span
                           :class="selected === 3 ? 'text-indigo-600' : 'text-gray-700'"
                           class="ml-2 text-lg font-medium transition-all ease-out transition-medium"
                         >
-                          Subscriptions
+                          Visualization
                         </span>
+
                       </button>
-                        </li> -->
+                        </router-link>
+                        <!-- <font-awesome-icon icon="adjust" size="xs" /> -->
+                        </li>
+                        
                       </ul>
                     </nav>
                   </div>
@@ -142,7 +148,7 @@
                 </transition>
   
 
-</div>
+          </div>
       </div>
       <div class="col-md-8">
           <transition name="fade" mode="out-in">
@@ -161,16 +167,24 @@ export default {
   data: () => ({
         
       selected: 1,
+      userId: ''
     }),
   created () {
     // this.updateInfo()
+      // this.getuser();
+      if(this.$route.name == 'mains/visualization'){
+          this.selected = 3
+      }
+      if(this.$route.name == 'mains/traning'){
+          this.selected = 2
+      }
       
   },
   mounted (){
       console.log(this.$route.name);
-      if(this.$route.name == 'mains/visualization'){
-          this.selected = 2
-      }
+      // if(this.$route.name == 'mains/visualization'){
+      //     this.selected = 2
+      // }
   },
   computed: {
     tabs () {
@@ -213,6 +227,22 @@ export default {
           }
         }, (res) => {
           alert('Unable to get plan form')
+        })
+    },
+    async getuser () {
+      this.$http({
+        // $.ajax({
+        url: `/api/getCurrentUser`,
+        method: 'GET'
+      })
+        .then((res) => {
+          if (res.data.result) {
+            this.userId = res.data.result
+          } else {
+            alert('Unable to get userId')
+          }
+        }, (res) => {
+          alert('Response error')
         })
     },
     //   getCartList(){

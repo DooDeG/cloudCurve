@@ -61,9 +61,9 @@
         <div class="text-center font-serif text-xl ml-5" v-show="no == 20">
             <button @click="saveGroupStates" class="text-white px-4 py-2 rounded-xl shadow-md bg-green-500">Done</button>
         </div>
-        <transition name="ModalAppear">
+        <!-- <transition name="ModalAppear">
             <lesson v-if="wrongAns  == true" v-on:closedModal="closeModal" :Ch="currentAns" :En="currentQuestion"/>
-        </transition>
+        </transition> -->
         
     </div>
     
@@ -84,7 +84,7 @@
             currentAns: '',
             currentEn: '',
             currentAnsList: [],
-            no: 19,
+            no: 0,
             state: '1',
             wId: [],
             temp: [],
@@ -92,23 +92,25 @@
             wrongAns: '',
             wrongAnsIndex: -1,
             CnQ: 0,
-            slug:'',
+            slug:[],
         }),
         created () {
             // this.updateInfo().
             this.getParams();
-            this.getEnWorldList(this.slug);
+            this.getEnWorldList();
         },
         watch:{
         },
         methods:{
             getParams() {
-                console.log(this.$route.params.id);
-                this.slug = this.$route.params.id
+                console.log(this.$route.params.relesson);
+                this.slug = [this.$route.params.relesson];
+                console.log( Array.isArray(this.slug));
+                console.log('isArray(this.slug)');
             },
-            getEnWorldList(slug){
+            getEnWorldList(){
                 this.$http({
-                    url: `/api/getReviewListWithId`,
+                    url: `/api/getCurveData`,
                     method: 'POST',
                     data: {
                         slug: this.slug

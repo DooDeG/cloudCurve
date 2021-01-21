@@ -43,6 +43,16 @@ Route::group(['middleware' => 'auth:api'], function () {
     //review.vue pass data
     Route::post('getReviewListWithId', 'examController@getReviewListWithId');
     
+    //index page
+    Route::get('getCurrentUser', 'indexController@getUser');
+
+    //traning page
+    Route::get('getForgettingCurve', 'curveController@getForgettingCurve');
+
+    //curve page
+    Route::post('getCurveData', 'curveController@getCurveData');
+
+
 });
 
 Route::group(['middleware' => 'guest:api'], function () {

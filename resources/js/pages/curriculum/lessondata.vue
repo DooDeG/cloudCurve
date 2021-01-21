@@ -119,12 +119,14 @@ export default {
         updateGroupInfo () {
             console.log(this.wordList)
             console.log(this.wId)
+            console.log("wId")
             this.$http({
                 url: `/api/updateGroupInfo`,
                 method: 'POST',
                 data: {
                     select: this.wordList,
-                    wId: this.wId
+                    wId: this.wId,
+                    slug: this.slug
                 }
             })
             .then((res) => {
