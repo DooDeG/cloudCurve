@@ -128,12 +128,12 @@
 						</svg> -->
                         <span class="float-right text-xs px-2 text-white">
                             <!-- <router-link :to="{ name:'curve', query: { relesson: course }}">-->
-								<router-link :to="'/curve/' + JSON.stringify(course)">
+							<div @click="nextPage()">
                             <!-- <button type="button" class="mr-3 text-sm bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline" @click="onSends(le.id)"> -->
                                 <button v-if="re != 'learn'" class="items-center"><font-awesome-icon icon="play-circle" size="3x" style="color: rgba(245, 158, 11, var(--tw-bg-opacity)); !important;"/></button>
                                 <button v-if="re == 'learn'" class="items-center"><font-awesome-icon icon="redo" size="2x" style="color: rgba(245, 158, 11, var(--tw-bg-opacity)); !important;"/></button>
                             
-                            </router-link>
+                            </div>
                         </span>
 					</div>
 				</div>
@@ -145,17 +145,21 @@
 </template>
 
 <script>
-    import { mapGetters } from 'vuex'
+    import { mapGetters, mapState } from 'vuex'
     export default {
         middleware: 'auth',
-
         // metaInfo () {
         //   return { title: this.$t('home') }
         // },
-        computed: mapGetters({
-            authenticated: 'auth/check',
-            user: 'auth/user'
-        }),
+		computed:{ 
+			...mapGetters({
+				authenticated: 'auth/check',
+				user: 'auth/user'
+			}),
+			...mapState({
+
+			})
+		},
         data: () => ({
             Fword: 1,
             day:'',
@@ -173,8 +177,21 @@
             this.getFinshWord(),
 			this.getCurrentDay(),
 			this.getForgettingCurve()
+			
         },
         methods:{
+			// <router-link :to="'/curve/' + JSON.stringify(course)">
+			nextPage(){
+				 this.$router.push({
+					path: "/curve",
+					query: { course: this.course }
+				});
+			},
+			// click(){
+			// 	// 点击按钮进行一些操作，然后保存数据
+			// 	this.$store.commit('curve/SET_CURVE',this.items)
+			// },
+
 			getForgettingCurve(){
                 this.$http({
                     url: `/api/getForgettingCurve`,
@@ -183,7 +200,10 @@
                 .then((res) => {
                     if(res){
                         if(res.data.result){
-                            this.course = res.data.result
+							this.course = res.data.result
+							
+							console.log(this.course)
+							// this.$store.commit('curve/SET_CURVE','this.course')
                         }else{
                             this.course = [];
                         }
@@ -222,7 +242,6 @@
                 var day = today.getDate();
                 var month = today.getMonth() + 1;
                 var year = today.getFullYear();
-
                 if (day < 10) {
                 day = '0' + day
                 }
@@ -236,5 +255,4 @@
     }
 </script>
 <style scoped>
-
 </style>

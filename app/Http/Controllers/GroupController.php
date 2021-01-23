@@ -94,8 +94,8 @@ class GroupController extends Controller
                     $dr->ENo = $item;
                     $dr->UserId = $id;
                     $dr->time = 0;
-                    // $dr->totalTime = "";
-                    // $dr->accuracy = "";
+                    $dr->totalTime = 0;
+                    $dr->accuracy = 0;
                     $dr->isActive = "1";
                     $dr->date = date("Y-m-d H:i:s");
                     $dr->save();
@@ -109,8 +109,8 @@ class GroupController extends Controller
                 $cu->time = 0;
                 $cu->UserId = $id;
                 $cu->isActive = "1";
-                // $cu->totalTime = "";
-                // $cu->accuracy = "";
+                $cu->totalTime = 0;
+                $cu->accuracy = 0;
                 $cu->date = date("Y-m-d H:i:s");
                 $cu->save();
             }

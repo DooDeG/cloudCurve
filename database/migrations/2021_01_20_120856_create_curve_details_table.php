@@ -20,8 +20,8 @@ class CreateCurveDetailsTable extends Migration
             $table->string('UserId');
             $table->integer('time');
             $table->string('isActive');
-            $table->double('totalTime')->nullable();
-            $table->double('accuracy')->nullable();
+            $table->double('totalTime');
+            $table->double('accuracy');
             $table->date('date');
             $table->timestamps();
         });

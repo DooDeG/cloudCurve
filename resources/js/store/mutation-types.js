@@ -8,3 +8,8 @@ export const UPDATE_USER = 'UPDATE_USER'
 
 // lang.js
 export const SET_LOCALE = 'SET_LOCALE'
+
+//curve.js
+export const SET_CURVE = 'SET_CURVE'
+export const SET_CURVES = 'SET_CURVES'
+

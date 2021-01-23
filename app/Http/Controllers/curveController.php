@@ -24,6 +24,8 @@ class curveController extends Controller
         $les = [];
         $les['day'] = [];
         $les['id'] = [];
+        $les['Word'] = [];
+        $ENo = [];
         $result = [];
         foreach($group as $item){
             $end = $item->date;
@@ -38,9 +40,56 @@ class curveController extends Controller
                 
                 $les['day'] = [$days];
                 $les['id'] = [$item->GId];
-                array_push($result, $les);
+
+                $tmp = curveDetail::where('GId','=', $item->GId)->get()->toArray();
+                $num = $this->reviewWord($tmp, $days);
+                //condition
+
+                //select word from en_word
+                // foreach($tmp as $item){
+                //     if($num == 20){
+                //         $d = en_word::where('id','=', $item->ENo)->first();
+                //     }else{
+                //         break;
+                //     }
+                //     unset($d->id);
+                //     unset($d->level);
+                //     unset($d->created_at);
+                //     unset($d->updated_at);
+                //     array_push($ENo, $d);
+                // }
                 
+                // sort($tmp->accuracy);
+                // array_multisort(array_column($tmp,'accuracy'),SORT_ASC,$tmp);
+                // $tmp = $this->array_sort($tmp,'ENo','desc');
+                // $d = array_column($tmp, 'sort');
+                // array_multisort($d, SORT_ASC, $tmp);
+                
+                array_multisort(array_column($tmp,'accuracy'),SORT_ASC,$tmp);
+                // return response()->json(['status' => 'success', 'result' => $tmp], 200);
+                
+                $n = 0;
+                // return response()->json(['status' => 'success', 'result' => $item['ENo']], 200);
+                foreach($tmp as $item){
+                        if($n == $num){
+                            break;
+                        }else{
+                            $d = en_word::where('id','=', $item['ENo'])->first();
+                            unset($d->id);
+                            unset($d->level);
+                            unset($d->created_at);
+                            unset($d->updated_at);
+                            array_push($ENo, $d);
+                            $n ++;
+                        }
+                        
+                        
+                    }
+                $les['Word'] = [$ENo];
+                
+                array_push($result, $les);
             }
+            
         }
         
         return response()->json(['status' => 'success', 'result' => $result], 200);
@@ -66,5 +115,49 @@ class curveController extends Controller
         }
         
     }
+
+    public function reviewWord($data, $day){
+        // base on curve day to return review data! 
+        switch ($day) {
+            case 1:
+                return 20;
+                break;
+            case 2:
+                return 10;
+                break;
+            case 4:
+                return 5;
+                break;
+            case 7:
+                return 5;
+                break;
+            case 15:
+                return 5;
+                break;
+            case 30:
+                return 5;
+                break;
+            default:
+                return ;
+            }
+        }
+        
+        function array_sort($array,$keys,$type='asc'){
+            //$array为要排序的数组,$keys为要用来排序的键名,$type默认为升序排序
+            $keysvalue = $new_array = array();
+            foreach ($array as $k=>$v){
+            $keysvalue[$k] = $v[$keys];
+            }
+            if($type == 'asc'){
+            asort($keysvalue);
+            }else{
+            arsort($keysvalue);
+            }
+            reset($keysvalue);
+            foreach ($keysvalue as $k=>$v){
+            $new_array[$k] = $array[$k];
+            }
+            return $new_array;
+        }
     
 }
