@@ -143,16 +143,16 @@
             },
             saveGroupStates() {
             // console.log(this.wordList)
-            console.log(this.wId)
-            this.$http({
-                url: `/api/updateGroupStates`,
-                method: 'POST',
-                data: {
-                    states: "done",
-                    wId: this.wId,
-                    slug: this.slug
-                }
-            })
+                console.log(this.wId)
+                this.$http({
+                    url: `/api/updateGroupStates`,
+                    method: 'POST',
+                    data: {
+                        states: "done",
+                        wId: this.wId,
+                        slug: this.slug
+                    }
+                })
                 .then((res) => {
                     this.$router.push({ name: 'mains/course' })
                 }, (res) => {
@@ -170,6 +170,7 @@
                 //set total list
                 var l = rand;
                 arr.push(ansNo - min);
+                l.splice(ansNo - min, 1)
                 for (var i = 0; i < 3; i++) {
                     var a = Math.floor(Math.random() * l.length -1);
                     arr.push(l.splice(a, 1)[0]); //舊陣列去除數字轉移到新陣列

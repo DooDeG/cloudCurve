@@ -25,11 +25,16 @@
             </div>
             
         </div>
-        <div v-if="wrongAns  == false" >
+        <div>
             <div class="flex justify-center mt-24" v-show="no < 20">
+                <p>Countdown :{{minute}}:{{second}}</p>
                 <div class="text-2xl bold font-serif mb-10 border-b-2 border-black w-1/4 pl-2 mr-5 capitalize ">
                     {{currentQuestion}}
+                    <div v-if="wrong" class="text-red-600">
+                        Ans: {{currentAns}}
+                    </div>
                 </div>
+                
                 <!-- <div class="text-2xl bold mb-4 font-serif underline">Do</div> -->
                 <!-- <div class="text-center font-serif text-md flex flex-col">
                     <div class="text-center font-serif text-xl " v-show="no > 0">
@@ -55,15 +60,11 @@
         </div>
         
         
-        <div v-if="wrongAns" >
-            
-        </div>
+        
         <div class="text-center font-serif text-xl ml-5" v-show="no == 20">
             <button @click="saveGroupStates" class="text-white px-4 py-2 rounded-xl shadow-md bg-green-500">Done</button>
         </div>
-        <!-- <transition name="ModalAppear">
-            <lesson v-if="wrongAns  == true" v-on:closedModal="closeModal" :Ch="currentAns" :En="currentQuestion"/>
-        </transition> -->
+       
         
     </div>
     
@@ -89,107 +90,134 @@
             ...mapState(['curves']),
         },
         data: () => ({
-            wordList: [],
-            currentQuestion: '',
-            currentChoose: [],
-            listLength:'',
-            currentAns: '',
-            currentEn: '',
+            dt:[],
+            AnsList:[],
+            currentQuestion:'',
+            currentAns:'',
+            currentWord:[],
             currentAnsList: [],
-            no: 0,
-            state: '1',
-            wId: [],
-            temp: [],
+            no:0,
+            CnQ:0,
             minId: 0,
-            wrongAns: '',
+            list:[],
+            tmp:[],
             wrongAnsIndex: -1,
-            CnQ: 0,
-            slug:[],
-            course:[],
-            dt:[]
+            wrong:false,
+            minutes: 2,
+            seconds: 0,
+            timeOut: false,
+            // reData:{
+            //     curve:[]
+            // }
         }),
-        
+        mounted() {
+            this.add();
+        },
+        created () {
+            this.init();
+            // this.initQuestion(this.dt);
+            // if(this.dt == '[object Object]' ){
+                
+            //     this.$router.push({ name: 'mains/traning' })
+            // }
+
+        },
+//         watch:{
+//             '$route':function(newUrl,oldUrl){
+//                 if(newUrl!=oldUrl){
+//                     this.dt=this.$route.query.course;
+//                 }
+// }
+//         },
         watch: {
+            // 监听数值变化
+            second: {
+                handler(newVal) {
+                    this.num(newVal)
+                }
+            },
+            minute: {
+                handler(newVal) {
+                    this.num(newVal)
+                }
+            },
+            timeOut: {
+            	deep: true,
+            	handler: function (newVal,oldVal){
+					if(this.timeOut == true){
+                        this.mark('','');
+                        this.add();
+					}
+					
+            	}
+        	}
+
+            
             // curves(currVal) {
             //     // 监听mapState中的变量，当数据变化（有值、值改变等），
             //     // 保证能拿到完整的数据，不至于存在初始化没有数据的问题，然后可以赋给本组件data中的变量
             //     this.ddd = currVal;
             // }
         },
-
-        created () {
-            // this.updateInfo().
-            this.getParams();
-            // this.getEnWorldList();
-            // this.course = this.$store.state.curves;
-            // console.log(this.course);
-            // console.log(course);
-            this.dt = this.$route.query.course;
-            console.log(this.dt);
-            console.log("this.dt");
-        },
-        watch:{
+        computed: {
+            // 初始化数据
+            second() {
+                return this.num(this.seconds)
+            },
+            minute() {
+                return this.num(this.minutes)
+            },
         },
         methods:{
-            getParams() {
-                // console.log(this.$route.params.relesson);
-                this.slug = [this.$route.params.relesson];
-                // console.log( Array.isArray(this.slug));
-                // console.log('isArray(this.slug)');
+             // 防止数值小于10时，出现一位数
+            num(n) {
+                return n < 10 ? '0' + n : '' + n
             },
-            // getEnWorldList(){
-            //     this.$http({
-            //         url: `/api/getCurveData`,
-            //         method: 'POST',
-            //         data: {
-            //             slug: this.slug
-            //         }
-            //     })
-            //     .then((res) => {
-            //         if(res.data.result == "undo"){
-            //             alert('You need to learn one chapter')
-            //             this.$router.push({ name: 'mains/course' })
-                    
-            //         }else if(res){
-            //             this.currentWord = res.data.result
-            //             this.wordList = res.data.result
-            //             this.currentQuestion = this.currentWord[this.no].english
-            //             this.currentAns = this.currentWord[this.no].chinese
-            //             this.minId = this.currentWord[0].id
-            //             this.randomAnsList(this.currentWord[this.no].id, res.data.result.length, this.minId);
-            //             this.createAnsList(this.temp);
-            //             res.data.result.forEach((item, index) => {
-            //                 this.wId.push(item.id);
-            //             })
-                        
-                        
-            //         }else{
-            //             alert('You need to learn one chapter')
-            //         }
 
-            //     }, (res) => {
-            //         // alert(res.response);
-            //         alert("無法取得數據");
-            //     })
-            // },
-            saveGroupStates() {
-            // console.log(this.wordList)
-                console.log(this.wId)
-                this.$http({
-                    url: `/api/updateGroupStates`,
-                    method: 'POST',
-                    data: {
-                        states: "done",
-                        wId: this.wId,
-                        slug: this.slug
+            // 倒计时函数
+            add() {
+                let time = window.setInterval( ()=> {
+                    if (this.minutes !== 0 && this.seconds === 0) {
+                        this.minutes -= 1;
+                        this.seconds = 59;
+                    
+                    } else if (this.minutes === 0 && this.seconds === 0) {
+                        this.seconds = 0
+                        this.timeOut = true
+                        console.log(this.timeOut)
+                        // this.mark('','');
+                        window.clearInterval(time)
+                    } else {
+                    this.seconds -= 1;
                     }
-                })
-                .then((res) => {
-                    this.$router.push({ name: 'mains/course' })
-                }, (res) => {
-                    alert('Unable to get plan form')
-                })
+                }, 1000)
             },
+            init(){
+                this.dt = this.$route.query.coursess;
+                // console.log(Object.values(this.dt));
+                
+                console.log(this.dt);
+                console.log(this.dt[0].Word);
+                console.log("this.dt")
+                this.dt.forEach(element => {
+                    
+                    console.log('element[Word')
+                    console.log(element['Word'])
+                    this.list.push({item: element['Word']});
+                });
+                this.list = this.list[0].item.concat(this.list[1].item);
+                
+                // this.AnsList = this.list[0].chinese
+                
+                this.currentQuestion = this.list[0].english
+                
+                this.currentAns = this.list[0].chinese
+                this.currentWord = this.list[0]
+                this.minId = this.list[0].id
+                this.randomAnsList(this.currentWord.id, this.list.length, this.minId)
+                this.createAnsList(this.temp);
+            },
+
             randomAnsList(ansNo, listLength, min){
                 var i;
                 var rand = [];
@@ -201,6 +229,7 @@
                 //set total list
                 var l = rand;
                 arr.push(ansNo - min);
+                l.splice(ansNo - min, 1)
                 for (var i = 0; i < 3; i++) {
                     var a = Math.floor(Math.random() * l.length -1);
                     arr.push(l.splice(a, 1)[0]); //舊陣列去除數字轉移到新陣列
@@ -213,106 +242,99 @@
                     var ran = Math.floor(Math.random() * arr.length-1);
                     result.push(arr.splice(ran, 1)[0]); //舊陣列去除數字轉移到新陣列
                 };
-                // console.log(result);
+                console.log(result);
                 this.temp = result;
                 arr = [];
                 result = [];
                 rand = [];
                 l = [];
             },
-            // createAnsList(li){
-            //     li.forEach((item) => {
-            //         if(this.CnQ == 0){
-            //             this.currentAnsList.push(this.currentWord[item].chinese);
-            //             this.currentQuestion = this.currentWord[this.no].english;
-            //         }else if(this.CnQ == 1){
-            //             this.currentAnsList.push(this.currentWord[item].english);
-            //             this.currentQuestion = this.currentWord[this.no].chinese;
-            //         }
-            //     })
-            //     if(this.CnQ == 0){
-            //         this.currentAns = this.currentWord[this.no].chinese;
-            //     }else if(this.CnQ == 1){
-            //         this.currentAns = this.currentWord[this.no].english;
-            //     }
-            // },
+            createAnsList(li){
+                li.forEach((item) => {
+                    if(this.CnQ == 0){
+                        this.currentAnsList.push(this.list[item].chinese);
+                    }else if(this.CnQ == 1){
+                        this.currentAnsList.push(this.list[item].english);
+                    }
+                })
+                if(this.CnQ == 0){
+                    this.currentAns = this.list[this.no].chinese;
+                    this.currentQuestion = this.list[this.no].english;
+                }else if(this.CnQ == 1){
+                    this.currentAns = this.list[this.no].english;
+                    this.currentQuestion = this.list[this.no].chinese;
+                }
+            },
             mark(ans, index){
-                // console.log(this.currentAns)
+                console.log(this.currentAns)
                 if(ans == this.currentAns){
-                    if(this.no < this.wordList.length){
+                    //選正確
+                    if(this.no < this.list.length){
                         this.CnQ++;
                         this.nextWord();
                     }else{
                         // this.no = this.wordList.length;
-                        // console.log(this.no)
-                        // console.log(this.wordList.length)
+                        console.log(this.no)
+                        console.log(this.list.length)
                     }
                 }else{
-                    // console.log(ans);
-                    // this.currentQuestion = this.currentWord[this.no].english;
-                    // this.currentAns = this.currentWord[this.no].chinese;
-                    // this.wrongAns = true;
-                    // this.wrongAnsIndex = index;
-                    this.CnQ++;
-                    this.nextWord();
-                    
+                    if(this.no < this.list.length){
+                        //選錯 
+                        if(ans != this.currentAns){
+                            this.CnQ++;
+                            this.wrongAnsIndex = index;
+                            this.wrong = true;
+                            this.nextWord();
+                        //時間到
+                        }else if(this.timeOut = true){
+                            this.CnQ++;
+                            // this.wrongAnsIndex = index;
+                            this.wrong = true;
+                            this.nextWord();
+                        }
+                        
+                    }else{
+                        // this.no = this.wordList.length;
+                        console.log(this.no)
+                        console.log(this.list.length)
+                    }
                 }
             },
-            updateExerciseInfo () {
-                this.wrongAns = false;
-                this.wrongAnsIndex = -1;
-                this.$router.push({ name: 'mains/course' })
-            },
             nextWord() {
-                console.log(this.no)
-                console.log("no")
-                console.log(this.CnQ)
-                console.log("CnQ")
                 if(this.CnQ == 2){
                     this.no++;
                     this.CnQ = 0;
                 }
                 
-                console.log(this.no)
-                console.log("no")
-                console.log(this.CnQ)
-                console.log("CnQ")
-                this.currentAnsList = [];
-                this.randomAnsList(this.currentWord[this.no].id, this.wordList.length, this.minId);
-                // this.createAnsList(this.temp);
-                // this.currentAns = this.currentWord[this.no].chinese;
-                // this.currentQuestion = this.currentWord[this.no].english;
-                this.wrongAns = false;
-                this.wrongAnsIndex = -1;
+                setTimeout(() => {
+                    this.currentAnsList = [];
+                    this.randomAnsList(this.list[this.no].id, this.list.length, this.minId);
+                    this.createAnsList(this.temp);
+                    this.wrongAnsIndex = -1;
+                    this.wrong = false;
+                    this.minutes= 2,
+                    this.seconds= 0
+                }, 1000)
+                
+                
             },
-            preWord() {
-                if(this.CnQ == 2){
-                    this.no--;
-                    this.CnQ = 0;
-                }
-                this.currentAnsList = [];
-                this.randomAnsList(this.currentWord[this.no].id, this.wordList.length, this.minId);
-                // this.createAnsList(this.temp);
-                // this.currentAns = this.currentWord[this.no].chinese;
-                // this.currentQuestion = this.currentWord[this.no].english;
-                this.wrongAns = false;
-                this.wrongAnsIndex = -1;
-            },
-            reloadWord() {
-                this.no;
-                this.currentAnsList = [];
-                this.randomAnsList(this.currentWord[this.no].id, this.wordList.length, this.minId);
-                // this.createAnsList(this.temp);
-                // this.currentAns = this.currentWord[this.no].chinese;
-                // this.currentQuestion = this.currentWord[this.no].english;
-                this.wrongAns = false;
-                this.wrongAnsIndex = -1;
-            },
-            closeModal(data) {
-                // this.no--;
-                this.wrongAns = data.num;
-                this.wrongAnsIndex = -1;
-                this.reloadWord();
+            saveGroupStates() {
+            // console.log(this.wordList)
+                console.log(this.wId)
+                // this.$http({
+                //     url: `/api/updateGroupStates`,
+                //     method: 'POST',
+                //     data: {
+                //         states: "done",
+                //         wId: this.wId,
+                //         slug: this.slug
+                //     }
+                // })
+                // .then((res) => {
+                //     this.$router.push({ name: 'mains/course' })
+                // }, (res) => {
+                //     alert('Unable to get plan form')
+                // })
             },
         }
     }

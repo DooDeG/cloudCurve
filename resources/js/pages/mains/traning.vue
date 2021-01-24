@@ -184,7 +184,7 @@
 			nextPage(){
 				 this.$router.push({
 					path: "/curve",
-					query: { course: this.course }
+					query: { coursess: this.course }
 				});
 			},
 			// click(){

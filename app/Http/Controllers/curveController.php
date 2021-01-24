@@ -37,9 +37,8 @@ class curveController extends Controller
             // return response()->json(['status' => $days], 200);
             
             if(in_array($days, $time)){
-                
-                $les['day'] = [$days];
-                $les['id'] = [$item->GId];
+                $les['day'] = $days;
+                $les['id'] = $item->GId;
 
                 $tmp = curveDetail::where('GId','=', $item->GId)->get()->toArray();
                 $num = $this->reviewWord($tmp, $days);
@@ -71,27 +70,29 @@ class curveController extends Controller
                 $n = 0;
                 // return response()->json(['status' => 'success', 'result' => $item['ENo']], 200);
                 foreach($tmp as $item){
-                        if($n == $num){
-                            break;
-                        }else{
-                            $d = en_word::where('id','=', $item['ENo'])->first();
-                            unset($d->id);
-                            unset($d->level);
-                            unset($d->created_at);
-                            unset($d->updated_at);
-                            array_push($ENo, $d);
-                            $n ++;
-                        }
-                        
-                        
+                    if($n == $num){
+                        break;
+                    }else{
+                        $d = en_word::where('id','=', $item['ENo'])->first();
+                        // unset($d->id);
+                        unset($d->level);
+                        unset($d->created_at);
+                        unset($d->updated_at);
+                        array_push($ENo, $d);
+                        $n ++;
                     }
-                $les['Word'] = [$ENo];
+                }
+                $les['Word'] = $ENo;
                 
                 array_push($result, $les);
+                $les['day'] = [];
+                $les['id'] = [];
+                $les['Word'] = [];
+                $les = [];
+                $ENo = [];
             }
-            
         }
-        
+        $result = array_reverse($result);
         return response()->json(['status' => 'success', 'result' => $result], 200);
         
         
