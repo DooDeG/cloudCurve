@@ -106,9 +106,20 @@
             minutes: 2,
             seconds: 0,
             timeOut: false,
-            // reData:{
-            //     curve:[]
-            // }
+            reData:{
+                curveGroup:[//each group using time and correct rate
+                    {
+                        correctRate:[],
+                        Gtime:[]
+                    }
+                ],
+                curveDetail:[
+                    {
+                        correctRate:[],
+                        Gtime:[]
+                    }
+                ]
+            }
         }),
         mounted() {
             this.add();
