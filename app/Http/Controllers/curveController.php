@@ -148,18 +148,63 @@ class curveController extends Controller
             //$array为要排序的数组,$keys为要用来排序的键名,$type默认为升序排序
             $keysvalue = $new_array = array();
             foreach ($array as $k=>$v){
-            $keysvalue[$k] = $v[$keys];
+                $keysvalue[$k] = $v[$keys];
             }
             if($type == 'asc'){
-            asort($keysvalue);
+                asort($keysvalue);
             }else{
-            arsort($keysvalue);
+                arsort($keysvalue);
             }
-            reset($keysvalue);
+                reset($keysvalue);
             foreach ($keysvalue as $k=>$v){
-            $new_array[$k] = $array[$k];
+                $new_array[$k] = $array[$k];
             }
             return $new_array;
+        }
+
+        function updateCurveGroupInfo(Request $request){
+
+            if(isset($request) && $request != null){
+                return response()->json(['status' => 'success', 'result' => $request], 200); 
+                foreach($request->EnoDetail as $item){
+                    
+                    return response()->json(['status' => 'success', 'result' => $item], 200); 
+                    curve::where('GId','=', $id)->update([
+                        'States' => $request->states,
+                    ]);
+    
+                    $CheckD = curveDetail::where('GId','=', $gid)->where('ENo', '=', $item)->first();
+                    if(!$CheckD && $CheckD == null){
+                        $dr = new curveDetail();
+                        $dr->GId = $gid;
+                        $dr->ENo = $item;
+                        $dr->UserId = $id;
+                        $dr->time = 0;
+                        $dr->totalTime = 0;
+                        $dr->accuracy = 0;
+                        $dr->isActive = "1";
+                        $dr->date = date("Y-m-d H:i:s");
+                        $dr->save();
+                    }
+                }
+                $Check = curve::where('GId','=', $gid)->first();
+                    
+                if(!$Check && $Check == null){
+                    $cu = new curve();
+                    $cu->GId = $gid;
+                    $cu->time = 0;
+                    $cu->UserId = $id;
+                    $cu->isActive = "1";
+                    $cu->totalTime = 0;
+                    $cu->accuracy = 0;
+                    $cu->date = date("Y-m-d H:i:s");
+                    $cu->save();
+                }
+                return response()->json(['status' => 'success'], 200);
+            }else{
+                
+                return response()->json(['status' => 'fail'], 200);
+            }
         }
     
 }

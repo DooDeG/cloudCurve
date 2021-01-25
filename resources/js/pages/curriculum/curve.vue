@@ -26,7 +26,7 @@
             
         </div>
         <div>
-            <div class="flex justify-center mt-24" v-show="no < 20">
+            <div class="flex justify-center mt-24" v-show="no < length">
                 <p>Countdown :{{minute}}:{{second}}</p>
                 <div class="text-2xl bold font-serif mb-10 border-b-2 border-black w-1/4 pl-2 mr-5 capitalize ">
                     {{currentQuestion}}
@@ -49,7 +49,7 @@
                 </div> -->
             </div>
             
-            <div class="flex justify-center"  v-for="(ans, index) in currentAnsList" :key="index"  v-show="no < 20">
+            <div class="flex justify-center"  v-for="(ans, index) in currentAnsList" :key="index"  v-show="no < length">
                 <button class="text-2xl text-left px-4 py-2 m-2 w-1/3 rounded-md shadow-sm bg-gray-200 hover:bg-green-400 hover:text-white cursor-pointer"
                         :class="wrongAnsIndex == index?'bg-red-400':''"
                         v-on:click="mark(ans, index)">
@@ -61,8 +61,8 @@
         
         
         
-        <div class="text-center font-serif text-xl ml-5" v-show="no == 20">
-            <button @click="saveGroupStates" class="text-white px-4 py-2 rounded-xl shadow-md bg-green-500">Done</button>
+        <div class="text-center font-serif text-xl ml-5" v-show="no == length">
+            <button @click="updateInfo" class="text-white px-4 py-2 rounded-xl shadow-md bg-green-500">Done</button>
         </div>
        
         
@@ -122,11 +122,14 @@
                     // }
                 ]
             },
-            tmpData:{
-                rate: 0,
-                time:0,
-                id:''
-            },
+            tmpEnoData:[],
+            tmpLessonData:[],
+            gtime:0,
+            GId:[],   //save gid
+            lessonPoint:[0], //when meet lessonPoint assgin gid
+            gno:0, //assgin gid
+            correctNum:0,
+            length:0        //total correct num
         }),
         mounted() {
             this.add();
@@ -214,30 +217,58 @@
                 this.dt = this.$route.query.coursess;
                 // console.log(Object.values(this.dt));
                 
-                console.log(this.dt);
-                console.log(this.dt[0].Word);
-                console.log("this.dt")
+                // console.log(this.dt);
+                // console.log(this.dt[0].Word);
+                // console.log("this.dt")
+                var no = 0
                 this.dt.forEach(element => {
                     
-                    console.log('element[Word')
+                    // console.log('element[Word')
                     console.log(element['Word'])
                     this.list.push({item: element['Word']});
+                    this.GId.push({item: element['id']});
+                    
+                    console.log(this.GId)
+                    console.log('this.GId')
+                    if(element['day'] ==1){
+                        no += 20
+                        this.lessonPoint.push(String(no));
+                    }else if(element['day'] ==2){
+                        no += 10
+                        this.lessonPoint.push(String(no));
+                    }else if(element['day'] ==4){
+                        no += 5
+                        this.lessonPoint.push(String(no));
+                    }else if(element['day'] ==7){
+                        no += 5
+                        this.lessonPoint.push(String(no));
+                    }else if(element['day'] ==15){
+                        no += 5
+                        this.lessonPoint.push(String(no));
+                    }else if(element['day'] ==30){
+                        no += 5
+                        this.lessonPoint.push(String(no));
+                    }
+                    console.log(this.lessonPoint)
+                    // this.list.push({[tm]: element['Word']});
                 });
-                console.log(this.list) 
-                // var l = [{item:[1,2,3]},{item:[4,5,6]}]
-                // console.log(l) 
-                // this.list = this.list[0].item.concat(this.list[1].item);
-                this.list = this.flatten(this.list, this.list.length)
-                console.log(this.list)
-                console.log('this.list')
-                // this.AnsList = this.list[0].chinese
                 
+                console.log(this.list) 
+                console.log(this.GId) 
+                console.log('this.GId23') 
+                this.list = this.flatten(this.list, this.list.length)
+                // console.log(this.list)
+                // console.log('this.list')
+
                 this.currentQuestion = this.list[0].english
-                console.log(this.list)
+                // console.log(this.list)
                 this.currentAns = this.list[0].chinese
                 this.currentWord = this.list[0]
                 this.minId = this.list[0].id
-                this.randomAnsList(this.currentWord.id, this.list.length, this.minId)
+                this.length = this.list.length
+                this.randomAnsList(this.currentWord.id, this.list, this.minId)
+                // console.log(this.temp)
+                // console.log('this.temp')
                 this.createAnsList(this.temp);
             },
             mark(ans, index){
@@ -276,40 +307,83 @@
                 }
             },
             nextWord() {
-                if(this.CnQ == 2){
-                    this.no++;
-                    this.CnQ = 0;
-                }
-                
                 setTimeout(() => {
-                    this.currentAnsList = [];
-                    this.randomAnsList(this.list[this.no].id, this.list.length, this.minId);
-                    this.createAnsList(this.temp);
                     // console.log(this.minutes * 60 + this.seconds);
+                    console.log(this.no)
+                    
+                    
+                    //find each gid
                     var tmpda = []
                     tmpda['time'] = 0
                     tmpda['id'] = ''
                     tmpda['rate'] = 0
                     tmpda['time']= 60*2 -(this.minutes * 60 + this.seconds);
+
+                    tmpda['GId'] = ''
+                    tmpda['GId'] = this.GId[this.gno]
+                        
+                    console.log('this.GId');
                     if(this.wrong == true){
                         tmpda['rate']= 0;
                     }else if(this.wrong == false){
                         tmpda['rate']= 1;
                     }
-                    tmpda['id']= this.currentWord.id;
-                    // console.log(this.tmpData.time)
-                    this.reData.curveDetail.push(tmpda);
-                    console.log(this.reData.curveDetail)
+                    tmpda['id']= this.list[this.no].id;
+                    this.tmpEnoData.push(tmpda);
+                    //each question use time and correct rate
+
+                    this.gtime += 60*2 -(this.minutes * 60 + this.seconds);
+                    
+                    //save lesson data
+
+                    this.currentAnsList = [];
+                    this.randomAnsList(this.list[this.no].id, this.list, this.minId);
+                    this.createAnsList(this.temp);
                     this.wrongAnsIndex = -1;
                     this.wrong = false;
                     this.timeOut = false;
                     this.minutes= 2;
                     this.seconds= 0;
-                }, 1000)
-                
-                
+                }, 100)
+
+                if(this.CnQ == 2){
+                    this.CnQ = 0;
+                    this.reData.curveDetail.push(this.tmpEnoData);
+                    console.log(this.reData.curveDetail)
+                    console.log('this.reData.curveDetail')
+                    this.tmpEnoData = [];
+
+                    if(this.lessonPoint.some(item => item === String(this.no+1))){
+                        
+                        var tm = []
+                        tm['time'] = 0
+                        tm['id'] = ''
+                        tm['rate'] = 0
+                        tm['time']= this.gtime;
+
+                        tm['GId'] = ''
+                        tm['GId'] = this.GId[this.gno]
+                            
+                        console.log('lesson point');
+                        tm['rate']= this.correctNum/(this.no+1);
+                        tm['id']= this.list[this.no].id;
+                        console.log('lesson point');
+                        this.tmpLessonData.push(tm);
+                        
+                        this.reData.curveGroup.push(this.tmpLessonData);
+                        
+                        console.log(this.reData.curveGroup)
+                        this.tmpLessonData = []; 
+                        console.log('lesson point');
+                        
+                        this.gno ++
+
+                        
+                    }
+                    
+                    this.no++;
+                }
             },
-            
             flatten(arr, length) {
                 if(length == 1){
                     return this.list[0].item;
@@ -367,18 +441,21 @@
                 //     alert('Unable to get plan form')
                 // })
             },
-            randomAnsList(ansNo, listLength, min){
+            randomAnsList(ansNo, list, min){
                 var i;
                 var rand = [];
                 var arr = [];
                 this.temp = [];
-                for(var i = 0; i < listLength; i++ ){
-                    rand.push(i);
-                }
+                
+                list.forEach(item => {
+                    rand.push(item);
+                });
                 //set total list
                 var l = rand;
-                arr.push(ansNo - min);
-                l.splice(ansNo - min, 1)
+                arr.push(this.list[this.no]);
+                // console.log(l)
+                // console.log('l')
+                l.splice(ansNo, 1)
                 for (var i = 0; i < 3; i++) {
                     var a = Math.floor(Math.random() * l.length -1);
                     arr.push(l.splice(a, 1)[0]); //舊陣列去除數字轉移到新陣列
@@ -391,7 +468,9 @@
                     var ran = Math.floor(Math.random() * arr.length-1);
                     result.push(arr.splice(ran, 1)[0]); //舊陣列去除數字轉移到新陣列
                 };
-                console.log(result);
+                // console.log(result);
+                
+                // console.log('result');
                 this.temp = result;
                 arr = [];
                 result = [];
@@ -401,9 +480,11 @@
             createAnsList(li){
                 li.forEach((item) => {
                     if(this.CnQ == 0){
-                        this.currentAnsList.push(this.list[item].chinese);
+                        // console.log(item)
+                        // console.log('this.list[item]')
+                        this.currentAnsList.push(item.chinese);
                     }else if(this.CnQ == 1){
-                        this.currentAnsList.push(this.list[item].english);
+                        this.currentAnsList.push(item.english);
                     }
                 })
                 if(this.CnQ == 0){
@@ -413,6 +494,27 @@
                     this.currentAns = this.list[this.no].english;
                     this.currentQuestion = this.list[this.no].chinese;
                 }
+            },
+            updateInfo () {
+                console.log(this.reData)
+                
+                        console.log(this.reData.curveGroup)
+                        
+                        console.log('this.reData.curveGroup')
+               
+                this.$http({
+                    url: `/api/updateCurveGroupInfo`,
+                    method: 'POST',
+                    data: {
+                        LessonDetail: json_encode(this.reData.curveGroup),
+                        LessonData: this.reData.curvcurveDetaileGroup,
+                    }
+                })
+                .then((res) => {
+                    // this.$router.push({ name: 'mains/course' })
+                }, (res) => {
+                    alert('Unable to get plan form')
+                })
             },
         }
     }

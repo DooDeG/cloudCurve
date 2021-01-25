@@ -51,6 +51,7 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     //curve page
     Route::post('getCurveData', 'curveController@getCurveData');
+    Route::post('updateCurveGroupInfo', 'curveController@updateCurveGroupInfo');
 
 
 });
