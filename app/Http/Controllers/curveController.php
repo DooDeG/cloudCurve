@@ -21,6 +21,7 @@ class curveController extends Controller
         $time = [1, 2, 4, 7, 15, 30];
 
         $group = curve::where('UserId','=', $id)->get();
+        
         $les = [];
         $les['day'] = [];
         $les['id'] = [];

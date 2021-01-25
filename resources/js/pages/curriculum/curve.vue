@@ -216,19 +216,62 @@
                     console.log(element['Word'])
                     this.list.push({item: element['Word']});
                 });
-                this.list = this.list[0].item.concat(this.list[1].item);
-                
+                console.log(this.list) 
+                // var l = [{item:[1,2,3]},{item:[4,5,6]}]
+                // console.log(l) 
+                // this.list = this.list[0].item.concat(this.list[1].item);
+                this.list = this.flatten(this.list, this.list.length)
+                console.log(this.list)
+                console.log('this.list')
                 // this.AnsList = this.list[0].chinese
                 
                 this.currentQuestion = this.list[0].english
-                
+                console.log(this.list)
                 this.currentAns = this.list[0].chinese
                 this.currentWord = this.list[0]
                 this.minId = this.list[0].id
                 this.randomAnsList(this.currentWord.id, this.list.length, this.minId)
                 this.createAnsList(this.temp);
             },
-
+            flatten(arr, length) {
+                if(length == 1){
+                    return this.list[0].item;
+                }else if(length == 2){
+                    var tmp = [];
+                    tmp = arr[0].item.concat(arr[1].item);
+                    return tmp;
+                }else if(length == 3){
+                    var tmp = [];
+                    tmp = arr[0].item.concat(arr[1].item);
+                    tmp = tmp.concat(arr[2].item);
+                    return tmp;
+                }else if(length == 4){
+                    var tmp = [];
+                    var tmp2 = [];
+                    tmp = arr[0].item.concat(arr[1].item);
+                    tmp2 = arr[2].item.concat(arr[3].item);
+                    tmp = tmp.concat(tmp2);
+                    return tmp;
+                }else if(length == 5){
+                    var tmp = [];
+                    var tmp2 = [];
+                    tmp = arr[0].item.concat(arr[1].item);
+                    tmp2 = arr[2].item.concat(arr[3].item);
+                    tmp = tmp.concat(tmp2);
+                    tmp = tmp.concat(arr[4].item); 
+                    return tmp;
+                }else if(length == 6){
+                    var tmp = [];
+                    var tmp2 = [];
+                    var tmp3 = [];
+                    tmp = arr[0].item.concat(arr[1].item);
+                    tmp2 = arr[2].item.concat(arr[3].item);
+                    tmp3 = arr[4].item.concat(arr[5].item);
+                    tmp = tmp.concat(tmp2);
+                    tmp = tmp.concat(tmp3); 
+                    return tmp;
+                }
+            },
             randomAnsList(ansNo, listLength, min){
                 var i;
                 var rand = [];
