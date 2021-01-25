@@ -108,18 +108,25 @@
             timeOut: false,
             reData:{
                 curveGroup:[//each group using time and correct rate
-                    {
-                        correctRate:[],
-                        Gtime:[]
-                    }
+                    // {
+                    //     rate:[],
+                    //     time:[],
+                    //     id:[]
+                    // }
                 ],
                 curveDetail:[
-                    {
-                        correctRate:[],
-                        Gtime:[]
-                    }
+                    // {
+                    //     rate:[],
+                    //     time:[],
+                    //     id:[]
+                    // }
                 ]
-            }
+            },
+            tmpData:{
+                rate: 0,
+                time:0,
+                id:''
+            },
         }),
         mounted() {
             this.add();
@@ -199,7 +206,7 @@
                         // this.mark('','');
                         window.clearInterval(time)
                     } else {
-                    this.seconds -= 1;
+                        this.seconds -= 1;
                     }
                 }, 1000)
             },
@@ -233,6 +240,76 @@
                 this.randomAnsList(this.currentWord.id, this.list.length, this.minId)
                 this.createAnsList(this.temp);
             },
+            mark(ans, index){
+                console.log(this.currentAns)
+                if(ans == this.currentAns){
+                    //選正確
+                    if(this.no < this.list.length){
+                        this.CnQ++;
+                        this.nextWord();
+                    }else{
+                        // this.no = this.wordList.length;
+                        console.log(this.no)
+                        console.log(this.list.length)
+                    }
+                }else{
+                    if(this.no < this.list.length){
+                        //選錯 
+                        if(ans != this.currentAns){
+                            this.CnQ++;
+                            this.wrongAnsIndex = index;
+                            this.wrong = true;
+                            this.nextWord();
+                        //時間到
+                        }else if(this.timeOut == true){
+                            this.CnQ++;
+                            // this.wrongAnsIndex = index;
+                            this.wrong = true;
+                            this.nextWord();
+                        }
+                        
+                    }else{
+                        // this.no = this.wordList.length;
+                        console.log(this.no)
+                        console.log(this.list.length)
+                    }
+                }
+            },
+            nextWord() {
+                if(this.CnQ == 2){
+                    this.no++;
+                    this.CnQ = 0;
+                }
+                
+                setTimeout(() => {
+                    this.currentAnsList = [];
+                    this.randomAnsList(this.list[this.no].id, this.list.length, this.minId);
+                    this.createAnsList(this.temp);
+                    // console.log(this.minutes * 60 + this.seconds);
+                    var tmpda = []
+                    tmpda['time'] = 0
+                    tmpda['id'] = ''
+                    tmpda['rate'] = 0
+                    tmpda['time']= 60*2 -(this.minutes * 60 + this.seconds);
+                    if(this.wrong == true){
+                        tmpda['rate']= 0;
+                    }else if(this.wrong == false){
+                        tmpda['rate']= 1;
+                    }
+                    tmpda['id']= this.currentWord.id;
+                    // console.log(this.tmpData.time)
+                    this.reData.curveDetail.push(tmpda);
+                    console.log(this.reData.curveDetail)
+                    this.wrongAnsIndex = -1;
+                    this.wrong = false;
+                    this.timeOut = false;
+                    this.minutes= 2;
+                    this.seconds= 0;
+                }, 1000)
+                
+                
+            },
+            
             flatten(arr, length) {
                 if(length == 1){
                     return this.list[0].item;
@@ -271,6 +348,24 @@
                     tmp = tmp.concat(tmp3); 
                     return tmp;
                 }
+            },
+            saveGroupStates() {
+            // console.log(this.wordList)
+                console.log(this.wId)
+                // this.$http({
+                //     url: `/api/updateGroupStates`,
+                //     method: 'POST',
+                //     data: {
+                //         states: "done",
+                //         wId: this.wId,
+                //         slug: this.slug
+                //     }
+                // })
+                // .then((res) => {
+                //     this.$router.push({ name: 'mains/course' })
+                // }, (res) => {
+                //     alert('Unable to get plan form')
+                // })
             },
             randomAnsList(ansNo, listLength, min){
                 var i;
@@ -318,77 +413,6 @@
                     this.currentAns = this.list[this.no].english;
                     this.currentQuestion = this.list[this.no].chinese;
                 }
-            },
-            mark(ans, index){
-                console.log(this.currentAns)
-                if(ans == this.currentAns){
-                    //選正確
-                    if(this.no < this.list.length){
-                        this.CnQ++;
-                        this.nextWord();
-                    }else{
-                        // this.no = this.wordList.length;
-                        console.log(this.no)
-                        console.log(this.list.length)
-                    }
-                }else{
-                    if(this.no < this.list.length){
-                        //選錯 
-                        if(ans != this.currentAns){
-                            this.CnQ++;
-                            this.wrongAnsIndex = index;
-                            this.wrong = true;
-                            this.nextWord();
-                        //時間到
-                        }else if(this.timeOut = true){
-                            this.CnQ++;
-                            // this.wrongAnsIndex = index;
-                            this.wrong = true;
-                            this.nextWord();
-                        }
-                        
-                    }else{
-                        // this.no = this.wordList.length;
-                        console.log(this.no)
-                        console.log(this.list.length)
-                    }
-                }
-            },
-            nextWord() {
-                if(this.CnQ == 2){
-                    this.no++;
-                    this.CnQ = 0;
-                }
-                
-                setTimeout(() => {
-                    this.currentAnsList = [];
-                    this.randomAnsList(this.list[this.no].id, this.list.length, this.minId);
-                    this.createAnsList(this.temp);
-                    this.wrongAnsIndex = -1;
-                    this.wrong = false;
-                    this.minutes= 2,
-                    this.seconds= 0
-                }, 1000)
-                
-                
-            },
-            saveGroupStates() {
-            // console.log(this.wordList)
-                console.log(this.wId)
-                // this.$http({
-                //     url: `/api/updateGroupStates`,
-                //     method: 'POST',
-                //     data: {
-                //         states: "done",
-                //         wId: this.wId,
-                //         slug: this.slug
-                //     }
-                // })
-                // .then((res) => {
-                //     this.$router.push({ name: 'mains/course' })
-                // }, (res) => {
-                //     alert('Unable to get plan form')
-                // })
             },
         }
     }
