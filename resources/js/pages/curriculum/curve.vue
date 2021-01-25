@@ -73,8 +73,11 @@
 <script>
 
     import lesson from "../../components/learnComponent.vue";
-    
+    import Qs from 'vue-axios';
+    import axios from 'axios';
+
     import { mapState } from 'vuex';
+    
     import { mapGetters } from 'vuex'
     export default {
         middleware: 'auth',
@@ -498,16 +501,18 @@
             updateInfo () {
                 console.log(this.reData)
                 
-                        console.log(this.reData.curveGroup)
-                        
-                        console.log('this.reData.curveGroup')
-               
+                console.log(typeof(this.reData.curveGroup))
+                
+                console.log('this.reData.curveGroup')
+               let param = new URLSearchParams()
+                param.append(this.reData.curveGroup, this.reData.curvcurveDetaileGroup)
+                // param.append("password", "woaini123")
                 this.$http({
                     url: `/api/updateCurveGroupInfo`,
                     method: 'POST',
                     data: {
-                        LessonDetail: json_encode(this.reData.curveGroup),
-                        LessonData: this.reData.curvcurveDetaileGroup,
+                        LessonDetail:param,
+                        // LessonData: JSON.stringify( this.reData.curvcurveDetaileGroup),
                     }
                 })
                 .then((res) => {

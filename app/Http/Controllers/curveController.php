@@ -165,7 +165,7 @@ class curveController extends Controller
         function updateCurveGroupInfo(Request $request){
 
             if(isset($request) && $request != null){
-                return response()->json(['status' => 'success', 'result' => $request], 200); 
+                return response()->json(['status' => 'success', 'result' => $request->LessonDetail], 200); 
                 foreach($request->EnoDetail as $item){
                     
                     return response()->json(['status' => 'success', 'result' => $item], 200); 
