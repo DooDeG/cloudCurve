@@ -242,7 +242,7 @@ class curveController extends Controller
                 $tmpTime = 0;
                 foreach($request->LessonDetail as $item){
                     foreach($item as $it){
-                        $totaltimeTmp += $it['totalTime'];
+                        $totaltimeTmp += $it[' '];
                         $totalRate += $it['rate'];
                         
                         $tmpGId = $it['GId'];
