@@ -165,6 +165,7 @@
             day:'',
 			re:'',
 			course:[],
+			check:false,
             items: [
                 { message: 'Foo' },
                 { message: 'Bar' },
@@ -174,23 +175,56 @@
             // appName: window.config.appName
         }),
         created () {
-            this.getFinshWord(),
-			this.getCurrentDay(),
-			this.getForgettingCurve()
+            this.getFinshWord()
+			this.getCurrentDay()
+			this.checkTodayLearn()
+			// this.getForgettingCurve()
 			
         },
         methods:{
 			// <router-link :to="'/curve/' + JSON.stringify(course)">
-			nextPage(){
-				 this.$router.push({
-					path: "/curve",
-					query: { coursess: this.course }
-				});
+			async nextPage(){
+				
+				setTimeout(() => {
+					if(this.check === true){
+						this.$router.push({
+							path: "/curve",
+							// query: { coursess: this.course }
+						})
+					}else{
+						alert('You should learn today lesson')
+					}
+				}, 1000)
+						
+				
+				
 			},
 			// click(){
 			// 	// 点击按钮进行一些操作，然后保存数据
 			// 	this.$store.commit('curve/SET_CURVE',this.items)
 			// },
+			checkTodayLearn(){
+				this.$http({
+                    url: `/api/checkTodayLearn`,
+                    method: 'GET',
+                })
+                .then((res) => {
+                    if(res){
+                        if(res.data.result){
+								this.check = res.data.result
+							console.log(this.check)
+							// this.$store.commit('curve/SET_CURVE','this.course')
+                        }else{
+                        }
+                        
+                    }else{
+                        alert('無法取得後台數據')
+                    }
+                }, (res) => {
+                    // alert(res.response);
+                    alert("無法取得數據");
+                })
+			},
 
 			getForgettingCurve(){
                 this.$http({

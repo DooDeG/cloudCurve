@@ -61,7 +61,28 @@
         
         
         
-        <div class="text-center font-serif text-xl ml-5" v-show="no == length">
+        <div class="text-center font-serif text-xl mt-5 md:mt-0 md:ml-5" v-show="no == length">
+            <div class="flex justify-center mb-5 md:p-24">
+                <div class="bg-white rounded-lg w-4/5 lg:w-1/2 xl:w-1/3 p-4 shadow -pb-1">
+                    <div v-for="(ans, index) in curveGroup" :key="index" class="pt-3">
+                        <span class="flex justify-start text-gray-900 relative inline-block date uppercase font-medium">Lesson {{ans.id}}</span>
+                        
+			            <div class="border dark:border-gray-700 transition duration-500 mt-2.5 mb-3"></div>
+                        <div class="flex mb-2">
+                            <div class="w-6/12">
+                                <span class="text-sm text-gray-600 block">Total time used:</span>
+                                <span class="text-sm text-gray-600 block">Correct rate:</span>
+                            </div>
+                            <div class="w-6/12">
+                                <span class="text-sm font-semibold block">{{ans.totalTime}}</span>
+                                <span class="text-sm font-semibold block">{{ans.rate}}</span>
+                            </div>
+                        </div>
+                    
+                    </div>
+                </div>
+            </div>
+            <!-- button -->
             <button @click="updateInfo" class="text-white px-4 py-2 rounded-xl shadow-md bg-green-500">Done</button>
         </div>
        
@@ -72,87 +93,40 @@
 
 <script>
 
-    import lesson from "../../components/learnComponent.vue";
-    import Qs from 'vue-axios';
-    import axios from 'axios';
-
-    import { mapState } from 'vuex';
-    
-    import { mapGetters } from 'vuex'
     export default {
         middleware: 'auth',
         
-        components: { lesson },
 
-    
-        computed:{
-            
-        },
-        
-        computed: {
-            ...mapState(['curves']),
-        },
         data: () => ({
-            dt:[],
-            AnsList:[],
-            currentQuestion:'',
-            currentAns:'',
-            currentWord:[],
-            currentAnsList: [],
-            no:0,
-            CnQ:0,
-            minId: 0,
-            list:[],
-            tmp:[],
-            wrongAnsIndex: -1,
-            wrong:false,
+            length:0,
             minutes: 2,
             seconds: 0,
-            timeOut: false,
-            reData:{
-                curveGroup:[//each group using time and correct rate
-                    // {
-                    //     rate:[],
-                    //     time:[],
-                    //     id:[]
-                    // }
-                ],
-                curveDetail:[
-                    // {
-                    //     rate:[],
-                    //     time:[],
-                    //     id:[]
-                    // }
-                ]
-            },
-            tmpEnoData:[],
-            tmpLessonData:[],
+            no:0,
+            CnQ:0,
+            wrongAnsIndex: -1,
+            wrong:false,
+            currentQuestion:'',
+            currentAnsList: [],
+            currentWord:[],
+            list:[],
+            temp:[],
             gtime:0,
-            GId:[],   //save gid
-            lessonPoint:[0], //when meet lessonPoint assgin gid
-            gno:0, //assgin gid
             correctNum:0,
-            length:0        //total correct num
+            countNum:0,
+            tmpEnoData:[],
+            timeOut: false,
+            curveGroup:[],
+            curveDetail:[],
+            lessonPoint:['0'],//when meet lessonPoint assgin gid
+            
         }),
         mounted() {
             this.add();
         },
         created () {
-            this.init();
-            // this.initQuestion(this.dt);
-            // if(this.dt == '[object Object]' ){
-                
-            //     this.$router.push({ name: 'mains/traning' })
-            // }
-
+         
+            this.getForgettingCurve()
         },
-//         watch:{
-//             '$route':function(newUrl,oldUrl){
-//                 if(newUrl!=oldUrl){
-//                     this.dt=this.$route.query.course;
-//                 }
-// }
-//         },
         watch: {
             // 监听数值变化
             second: {
@@ -176,12 +150,6 @@
             	}
         	}
 
-            
-            // curves(currVal) {
-            //     // 监听mapState中的变量，当数据变化（有值、值改变等），
-            //     // 保证能拿到完整的数据，不至于存在初始化没有数据的问题，然后可以赋给本组件data中的变量
-            //     this.ddd = currVal;
-            // }
         },
         computed: {
             // 初始化数据
@@ -193,86 +161,60 @@
             },
         },
         methods:{
-             // 防止数值小于10时，出现一位数
-            num(n) {
-                return n < 10 ? '0' + n : '' + n
-            },
+            getForgettingCurve(){
+                this.$http({
+                    url: `/api/getTodayReviewData`,
+                    method: 'GET',
+                })
+                .then((res) => {
+                    if(res){
+                        if(res.data.result){
+							this.list = res.data.result
+                            console.log(this.list)
+                            
+                            // this.$store.commit('curve/SET_CURVE','this.course')
+                            this.currentQuestion = this.list[0].Word.english
+                            // console.log(this.list)
+                            this.currentAns = this.list[0].Word.chinese
+                            this.currentWord = this.list[0].Word
+                            this.minId = this.list[0].Word.id
+                            this.length = this.list.length
+                            this.temp = this.randomAnsList(this.currentWord.id, this.list, this.minId)
+                            console.log('this.temp', this.temp)
+                            this.createAnsList(this.temp);
+                            var no = 0
+                            var g = ''
+                            this.list.forEach(element => {
+                                if(g != element.id){
+                                    if(element.day == 1){
+                                        no += 20
+                                        this.lessonPoint.push(String(no));
+                                    }else if(element.day ==2){
+                                        no += 10
+                                        this.lessonPoint.push(String(no));
+                                    }else if(element.day ==4){
+                                        no += 5
+                                        this.lessonPoint.push(String(no));
+                                    }else if(element.day ==7){
+                                        no += 5
+                                        this.lessonPoint.push(String(no));
+                                    }
+                                }
+                                g = element.id
+                                // console.log('lessonPoint',this.lessonPoint)
+                                // this.list.push({[tm]: element['Word']});
+                            });
 
-            // 倒计时函数
-            add() {
-                let time = window.setInterval( ()=> {
-                    if (this.minutes !== 0 && this.seconds === 0) {
-                        this.minutes -= 1;
-                        this.seconds = 59;
-                    
-                    } else if (this.minutes === 0 && this.seconds === 0) {
-                        this.seconds = 0
-                        this.timeOut = true
-                        console.log(this.timeOut)
-                        // this.mark('','');
-                        window.clearInterval(time)
-                    } else {
-                        this.seconds -= 1;
+                        }else{
+                            this.course = [];
+                        }
+                    }else{
+                        alert('無法取得後台數據123')
                     }
-                }, 1000)
-            },
-            init(){
-                this.dt = this.$route.query.coursess;
-                // console.log(Object.values(this.dt));
-                
-                // console.log(this.dt);
-                // console.log(this.dt[0].Word);
-                // console.log("this.dt")
-                var no = 0
-                this.dt.forEach(element => {
-                    
-                    // console.log('element[Word')
-                    console.log(element['Word'])
-                    this.list.push({item: element['Word']});
-                    this.GId.push({item: element['id']});
-                    
-                    console.log(this.GId)
-                    console.log('this.GId')
-                    if(element['day'] ==1){
-                        no += 20
-                        this.lessonPoint.push(String(no));
-                    }else if(element['day'] ==2){
-                        no += 10
-                        this.lessonPoint.push(String(no));
-                    }else if(element['day'] ==4){
-                        no += 5
-                        this.lessonPoint.push(String(no));
-                    }else if(element['day'] ==7){
-                        no += 5
-                        this.lessonPoint.push(String(no));
-                    }else if(element['day'] ==15){
-                        no += 5
-                        this.lessonPoint.push(String(no));
-                    }else if(element['day'] ==30){
-                        no += 5
-                        this.lessonPoint.push(String(no));
-                    }
-                    console.log(this.lessonPoint)
-                    // this.list.push({[tm]: element['Word']});
-                });
-                
-                console.log(this.list) 
-                console.log(this.GId) 
-                console.log('this.GId23') 
-                this.list = this.flatten(this.list, this.list.length)
-                // console.log(this.list)
-                // console.log('this.list')
-
-                this.currentQuestion = this.list[0].english
-                // console.log(this.list)
-                this.currentAns = this.list[0].chinese
-                this.currentWord = this.list[0]
-                this.minId = this.list[0].id
-                this.length = this.list.length
-                this.randomAnsList(this.currentWord.id, this.list, this.minId)
-                // console.log(this.temp)
-                // console.log('this.temp')
-                this.createAnsList(this.temp);
+                }, (res) => {
+                    // alert(res.response);
+                    alert("無法取得數據");
+                })
             },
             mark(ans, index){
                 console.log(this.currentAns)
@@ -280,6 +222,7 @@
                     //選正確
                     if(this.no < this.list.length){
                         this.CnQ++;
+                        this.correctNum++;
                         this.nextWord();
                     }else{
                         // this.no = this.wordList.length;
@@ -309,142 +252,7 @@
                     }
                 }
             },
-            nextWord() {
-                setTimeout(() => {
-                    // console.log(this.minutes * 60 + this.seconds);
-                    console.log(this.no)
-                    
-                    
-                    //find each gid
-                    var tmpda = []
-                    tmpda['time'] = 0
-                    tmpda['id'] = ''
-                    tmpda['rate'] = 0
-                    tmpda['time']= 60*2 -(this.minutes * 60 + this.seconds);
-
-                    tmpda['GId'] = ''
-                    tmpda['GId'] = this.GId[this.gno]
-                        
-                    console.log('this.GId');
-                    if(this.wrong == true){
-                        tmpda['rate']= 0;
-                    }else if(this.wrong == false){
-                        tmpda['rate']= 1;
-                    }
-                    tmpda['id']= this.list[this.no].id;
-                    this.tmpEnoData.push(tmpda);
-                    //each question use time and correct rate
-
-                    this.gtime += 60*2 -(this.minutes * 60 + this.seconds);
-                    
-                    //save lesson data
-
-                    this.currentAnsList = [];
-                    this.randomAnsList(this.list[this.no].id, this.list, this.minId);
-                    this.createAnsList(this.temp);
-                    this.wrongAnsIndex = -1;
-                    this.wrong = false;
-                    this.timeOut = false;
-                    this.minutes= 2;
-                    this.seconds= 0;
-                }, 100)
-
-                if(this.CnQ == 2){
-                    this.CnQ = 0;
-                    this.reData.curveDetail.push(this.tmpEnoData);
-                    console.log(this.reData.curveDetail)
-                    console.log('this.reData.curveDetail')
-                    this.tmpEnoData = [];
-
-                    if(this.lessonPoint.some(item => item === String(this.no+1))){
-                        
-                        var tm = []
-                        tm['time'] = 0
-                        tm['id'] = ''
-                        tm['rate'] = 0
-                        tm['time']= this.gtime;
-
-                        tm['GId'] = ''
-                        tm['GId'] = this.GId[this.gno]
-                            
-                        console.log('lesson point');
-                        tm['rate']= this.correctNum/(this.no+1);
-                        tm['id']= this.list[this.no].id;
-                        console.log('lesson point');
-                        this.tmpLessonData.push(tm);
-                        
-                        this.reData.curveGroup.push(this.tmpLessonData);
-                        
-                        console.log(this.reData.curveGroup)
-                        this.tmpLessonData = []; 
-                        console.log('lesson point');
-                        
-                        this.gno ++
-
-                        
-                    }
-                    
-                    this.no++;
-                }
-            },
-            flatten(arr, length) {
-                if(length == 1){
-                    return this.list[0].item;
-                }else if(length == 2){
-                    var tmp = [];
-                    tmp = arr[0].item.concat(arr[1].item);
-                    return tmp;
-                }else if(length == 3){
-                    var tmp = [];
-                    tmp = arr[0].item.concat(arr[1].item);
-                    tmp = tmp.concat(arr[2].item);
-                    return tmp;
-                }else if(length == 4){
-                    var tmp = [];
-                    var tmp2 = [];
-                    tmp = arr[0].item.concat(arr[1].item);
-                    tmp2 = arr[2].item.concat(arr[3].item);
-                    tmp = tmp.concat(tmp2);
-                    return tmp;
-                }else if(length == 5){
-                    var tmp = [];
-                    var tmp2 = [];
-                    tmp = arr[0].item.concat(arr[1].item);
-                    tmp2 = arr[2].item.concat(arr[3].item);
-                    tmp = tmp.concat(tmp2);
-                    tmp = tmp.concat(arr[4].item); 
-                    return tmp;
-                }else if(length == 6){
-                    var tmp = [];
-                    var tmp2 = [];
-                    var tmp3 = [];
-                    tmp = arr[0].item.concat(arr[1].item);
-                    tmp2 = arr[2].item.concat(arr[3].item);
-                    tmp3 = arr[4].item.concat(arr[5].item);
-                    tmp = tmp.concat(tmp2);
-                    tmp = tmp.concat(tmp3); 
-                    return tmp;
-                }
-            },
-            saveGroupStates() {
-            // console.log(this.wordList)
-                console.log(this.wId)
-                // this.$http({
-                //     url: `/api/updateGroupStates`,
-                //     method: 'POST',
-                //     data: {
-                //         states: "done",
-                //         wId: this.wId,
-                //         slug: this.slug
-                //     }
-                // })
-                // .then((res) => {
-                //     this.$router.push({ name: 'mains/course' })
-                // }, (res) => {
-                //     alert('Unable to get plan form')
-                // })
-            },
-            randomAnsList(ansNo, list, min){
+             randomAnsList(ansNo, list, min){
                 var i;
                 var rand = [];
                 var arr = [];
@@ -471,58 +279,159 @@
                     var ran = Math.floor(Math.random() * arr.length-1);
                     result.push(arr.splice(ran, 1)[0]); //舊陣列去除數字轉移到新陣列
                 };
-                // console.log(result);
+                // console.log('result',result);
                 
-                // console.log('result');
-                this.temp = result;
                 arr = [];
-                result = [];
                 rand = [];
                 l = [];
+                return result
             },
             createAnsList(li){
                 li.forEach((item) => {
                     if(this.CnQ == 0){
-                        // console.log(item)
+                        console.log(item.Word.chinese)
                         // console.log('this.list[item]')
-                        this.currentAnsList.push(item.chinese);
+                        this.currentAnsList.push(item.Word.chinese);
                     }else if(this.CnQ == 1){
-                        this.currentAnsList.push(item.english);
+                        this.currentAnsList.push(item.Word.english);
                     }
                 })
                 if(this.CnQ == 0){
-                    this.currentAns = this.list[this.no].chinese;
-                    this.currentQuestion = this.list[this.no].english;
+                    this.currentAns = this.list[this.no].Word.chinese;
+                    this.currentQuestion = this.list[this.no].Word.english;
                 }else if(this.CnQ == 1){
-                    this.currentAns = this.list[this.no].english;
-                    this.currentQuestion = this.list[this.no].chinese;
+                    this.currentAns = this.list[this.no].Word.english;
+                    this.currentQuestion = this.list[this.no].Word.chinese;
                 }
             },
+            nextWord() {
+                
+                setTimeout(() => {
+                    // console.log(this.minutes * 60 + this.seconds);
+                    console.log(this.no)
+                    
+                    
+                    //find each gid
+                    var tmpda = {totalTime: 0, Eno: '', rate: 0, GId: '',time:0};
+                    tmpda.totalTime = 60*2 -(this.minutes * 60 + this.seconds);
+
+                    tmpda.GId = this.list[this.no].id
+                        
+                    if(this.wrong == true){
+                        tmpda.rate= 0;
+                    }else if(this.wrong == false){
+                        tmpda.rate= 1;
+                    }
+                    tmpda.Eno= this.list[this.no].Word.id;
+                    tmpda.time= this.list[this.no].Word.level;
+                    this.tmpEnoData.push(tmpda);
+                    //each question use time and correct rate
+
+                    console.log('tmpEnoData', this.tmpEnoData);
+                    this.gtime += 60*2 -(this.minutes * 60 + this.seconds);
+                    
+                    //save lesson data
+
+                    
+                    if(this.CnQ == 2){
+                        this.CnQ = 0;
+                        this.curveDetail.push(this.tmpEnoData);
+                        console.log('this.curveDetail',this.curveDetail)
+                        // this.correctNum ++;
+                        this.tmpEnoData = [];
+
+                        if(this.lessonPoint.some(item => item === String(this.no+1))){
+                            
+                            var tm = []
+                            var tm = {time: 0, id: '', rate: 0, time:0, GId:'',totalTime:0};
+                        
+                            tm.totalTime= this.gtime;
+                            tm.time= this.list[this.no].time;
+
+                            tm.GId = this.list[this.no].id;
+                            tm.rate= this.correctNum/(this.countNum+1);
+                            tm.rate = tm.rate.toFixed(2);
+                            console.log('this.correctNum',this.correctNum)
+                            console.log('this.countNum',this.countNum+1)
+                            console.log('this.correctNum/(this.no+1)',this.correctNum/(this.countNum+1))
+                            console.log('tm.rate',tm.rate)
+                            this.correctNum = 0
+                            this.countNum = 0
+                            this.gtime = 0
+                            // tm.id= this.list[this.no].Word.id;
+                            
+                            tm.id = tm.GId;
+                            tm.id = tm.id.split("G")[1];
+                            console.log('lesson point', tm);
+                            
+                            this.curveGroup.push(tm);
+                            
+                            console.log('this.curveGroup',this.curveGroup)
+                            this.gno ++
+                        }
+                        
+                        this.no ++;
+                    }
+                    
+                        this.countNum ++;
+
+                        this.currentAnsList = [];
+                        this.temp = this.randomAnsList(this.list[this.no].id, this.list, this.minId);
+                        this.createAnsList(this.temp);
+                        this.wrongAnsIndex = -1;
+                        this.wrong = false;
+                        this.timeOut = false;
+                        this.minutes= 2;
+                        this.seconds= 0;
+                }, 100)
+
+                
+            },
+            add() {
+                let time = window.setInterval( ()=> {
+                    if (this.minutes !== 0 && this.seconds === 0) {
+                        this.minutes -= 1;
+                        this.seconds = 59;
+                    
+                    } else if (this.minutes === 0 && this.seconds === 0) {
+                        this.seconds = 0
+                        this.timeOut = true
+                        console.log(this.timeOut)
+                        // this.mark('','');
+                        window.clearInterval(time)
+                    } else {
+                        this.seconds -= 1;
+                    }
+                }, 1000)
+            },
             updateInfo () {
-                console.log(this.reData)
                 
-                console.log(typeof(this.reData.curveGroup))
-                
-                console.log('this.reData.curveGroup')
-               let param = new URLSearchParams()
-                param.append(this.reData.curveGroup, this.reData.curvcurveDetaileGroup)
-                // param.append("password", "woaini123")
+                console.log('this.curveDetail',this.curveDetail)
+                console.log('this.curveGroup',this.curveGroup)
                 this.$http({
                     url: `/api/updateCurveGroupInfo`,
                     method: 'POST',
                     data: {
-                        LessonDetail:param,
-                        // LessonData: JSON.stringify( this.reData.curvcurveDetaileGroup),
-                    }
+                        LessonDetail:this.curveDetail,
+                        LessonData: this.curveGroup
+                        
+                        // LessonDetail:this.reData.curveGroup,
+                    },
                 })
                 .then((res) => {
                     // this.$router.push({ name: 'mains/course' })
                 }, (res) => {
                     alert('Unable to get plan form')
                 })
+
             },
+            num(n) {
+                return n < 10 ? '0' + n : '' + n
+            },
+            
         }
     }
 </script>
-<style scoped>
+<style>
+
 </style>
