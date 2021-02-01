@@ -54,6 +54,12 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('updateCurveGroupInfo', 'curveController@updateCurveGroupInfo');
     Route::get('getTodayReviewData', 'curveController@getTodayReviewData');
     Route::get('checkTodayLearn', 'curveController@checkTodayLearn');
+    
+    //tradition review page
+    Route::get('getTraditionReviewData', 'curveController@getTraditionReviewData');
+    Route::post('updateTraGroupInfo', 'curveController@updateTraGroupInfo');
+    
+
 
 
 });

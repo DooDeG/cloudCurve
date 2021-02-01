@@ -9,6 +9,8 @@ use App\en_word;
 use App\group_word;
 use App\curve;
 use App\curveDetail;
+use App\tra;
+use App\traDetail;
 
 class curveController extends Controller
 {
@@ -288,6 +290,143 @@ class curveController extends Controller
                 return response()->json(['status' => 'success', 'result' => true], 200);
             }
 
+        }
+
+        public function getTraditionReviewData(){
+
+            $id = Auth::id(); 
+            if($id == null){
+                return response()->json(['status' => 'fail'], 200);
+            }
+            $time = [1, 2, 3, 4];
+    
+            $group = tra::where('UserId','=', $id)->where('time','=', 0)->get();
+            $les = [];
+            $les['day'] = [];
+            $les['id'] = [];
+            $les['Word'] = [];
+            $les['time'] = [];
+            $ENo = [];
+            $result = [];
+            foreach($group as $item){
+                $end = $item->date;
+                $start = date("Y-m-d");
+    
+                $datetime_start = new DateTime($start);
+                $datetime_end = new DateTime($end);
+                $days = $datetime_start->diff($datetime_end)->days;
+                
+                if(in_array($days, $time)){
+                    $les['day'] = $days;
+                    $les['id'] = $item->GId;
+                    $les['time'] = $item->time;
+                    
+                    //base on accuracy order
+                    // $tmp = curveDetail::where('GId','=', $item->GId)->where('time','=', 0)->get()->toArray();
+                    // $num = $this->reviewWord($tmp, $days);
+                    // array_multisort(array_column($tmp,'accuracy'),SORT_ASC,$tmp);
+                    //base on accuracy, sort of accuracy rate, if rate less, then priority select
+    
+                    //base on random order
+                    $tmp = traDetail::where('GId','=', $item->GId)->where('time','=', 0)->inRandomOrder()->get()->toArray();
+                    $num = $this->reviewWord($tmp, $days);
+                    
+                    //base on random order
+                    
+                    
+                    // $n = 0;
+                    foreach($tmp as $item){
+                        // if($n == $num){
+                        //     break;
+                        // }else{
+                            $d = en_word::where('id','=', $item['ENo'])->first();
+                            // unset($d->id);
+                            unset($d->level);
+                            unset($d->created_at);
+                            unset($d->updated_at);
+                            
+                            $ti = traDetail::where('UserId','=', $id)->where('ENo', '=', $d->id)->latest()->first();
+                            // return response()->json(['status' => 'success', 'result' => $time], 200);
+                            $d->level = $ti->time;
+                            
+                            // array_push($d, $item['time']);
+                            // $n ++;
+                            $les['Word'] = $d;
+                            array_push($result, $les);
+                            
+                        // }
+                    }
+                    $les['day'] = [];
+                    $les['id'] = [];
+                    $les['Word'] = [];
+                    $les['time'] = [];
+                    $les = [];
+                }
+            }
+            $result = array_reverse($result);
+            return response()->json(['status' => 'success', 'result' => $result], 200);
+            
+        }
+
+        function updateTraGroupInfo(Request $request){
+            // return response()->json(['status' => 'success', 'LessonDetail' => $request->LessonDetail, 'LessonData' => $request->LessonData], 200); 
+            
+            if(isset($request) && $request != null){
+
+                $id = Auth::id(); 
+                foreach($request->LessonData as $item){
+                    
+                    // $break = curve::where('GId','=', $item['GId'])->latest()->first();
+                    // if($break){
+                    //     return response()->json(['status' => 'success', 'LessonDetail' => $request->LessonDetail, 'LessonData' => $request->LessonData], 200); 
+            
+                    // }
+                    $cu = new tra();
+                    $cu->GId = $item['GId'];
+                    $cu->time = $item['time']+1;
+                    $cu->totalTime = $item['totalTime'];
+                    $cu->UserId = $id;
+                    $cu->isActive = "1";
+                    $cu->accuracy = round($item['rate'],2);
+                    $cu->date = date("Y-m-d H:i:s");
+                    $cu->save();
+                }
+                
+                $totaltimeTmp = 0;
+                $totalRate = 0;
+                $tmpGId = '';
+                $tmpENo = '';
+                $tmpTime = 0;
+                foreach($request->LessonDetail as $item){
+                    foreach($item as $it){
+                        $totaltimeTmp += $it['totalTime'];
+                        $totalRate += $it['rate'];
+                        
+                        $tmpGId = $it['GId'];
+                        $tmpENo = $it['Eno'];
+                        $tmpTime = $it['time'];
+
+                    }
+                    $dr = new traDetail();
+                    
+                    $dr->ENo = $tmpENo;
+                    $dr->GId = $tmpGId;
+                    $dr->UserId = $id;
+                    $dr->time = $tmpTime+1;
+                    $dr->totalTime = $totaltimeTmp;
+                    $dr->accuracy = $totalRate / 2;
+                    $dr->isActive = "1";
+                    $dr->date = date("Y-m-d H:i:s");
+                    $dr->save();
+                    $totaltimeTmp = 0;
+                    
+                    
+                }
+                return response()->json(['status' => 'success'], 200);
+            }else{
+                
+                return response()->json(['status' => 'fail'], 200);
+            }
         }
     
 }

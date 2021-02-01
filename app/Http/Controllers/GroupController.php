@@ -9,6 +9,8 @@ use App\en_word;
 use App\group_word;
 use App\curve;
 use App\curveDetail;
+use App\tra;
+use App\traDetail;
 
 use Illuminate\Support\Facades\Auth;
 
@@ -99,6 +101,22 @@ class GroupController extends Controller
                     $dr->isActive = "1";
                     $dr->date = date("Y-m-d H:i:s");
                     $dr->save();
+
+                }
+                
+                $CheckT = traDetail::where('GId','=', $gid)->where('ENo', '=', $item)->first();
+                if(!$CheckT && $CheckT == null){
+
+                    $dt = new traDetail();
+                    $dt->GId = $gid;
+                    $dt->ENo = $item;
+                    $dt->UserId = $id;
+                    $dt->time = 0;
+                    $dt->totalTime = 0;
+                    $dt->accuracy = 0;
+                    $dt->isActive = "1";
+                    $dt->date = date("Y-m-d H:i:s");
+                    $dt->save();
                 }
             }
             $Check = curve::where('GId','=', $gid)->first();
@@ -113,6 +131,19 @@ class GroupController extends Controller
                 $cu->accuracy = 0;
                 $cu->date = date("Y-m-d H:i:s");
                 $cu->save();
+            }
+            $Checktt = tra::where('GId','=', $gid)->first();
+                
+            if(!$Checktt && $Checktt == null){
+                $cud = new tra();
+                $cud->GId = $gid;
+                $cud->time = 0;
+                $cud->UserId = $id;
+                $cud->isActive = "1";
+                $cud->totalTime = 0;
+                $cud->accuracy = 0;
+                $cud->date = date("Y-m-d H:i:s");
+                $cud->save();
             }
             return response()->json(['status' => 'success'], 200);
         }else{

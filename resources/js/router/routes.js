@@ -20,6 +20,9 @@ export default [
           // review page
           { path: 'traning', name: 'mains/traning', component: page('mains/traning.vue') },
 
+          //tradition review page
+          { path: 'commanTraining', name: 'mains/commanTraining', component: page('mains/commanTraining.vue') },
+
     ] },
     { path: '/lesson', name: 'lesson', component: page('curriculum/lesson.vue') },
     { path: '/lessondata/:id', name: 'lessondata', component: page('curriculum/lessondata.vue') },
@@ -27,6 +30,7 @@ export default [
     { path: '/exam', name: 'exam', component: page('curriculum/exam.vue') },
     { path: '/review', name: 'review', component: page('curriculum/review.vue') },
     { path: '/reviewdata/:id', name: 'reviewdata', component: page('curriculum/reviewdata.vue') },
+    { path: '/commanReview', name: 'curve', component: page('curriculum/commanReview.vue') },
     
     { path: '/login', name: 'login', component: page('auth/login.vue') },
     { path: '/register', name: 'register', component: page('auth/register.vue') },

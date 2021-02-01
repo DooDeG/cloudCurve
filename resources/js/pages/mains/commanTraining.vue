@@ -35,7 +35,7 @@
 						<div class="flex">
                             <img class="h-16 w-16 rounded-full object-cover hidden md:flex" src="/img/graduation.jpg" alt="graduation.jpg">
 							<div class="flex flex-col ml-6">
-								<span class="text-lg font-bold">Curve review</span>
+								<span class="text-lg font-bold">Classic review</span>
 								<div class="mt-4 flex  flex-col lg:flex-row lg:justify-start">
 									<div class="flex justify-start">
 										<svg
@@ -188,7 +188,7 @@
 				setTimeout(() => {
 					if(this.check === true){
 						this.$router.push({
-							path: "/curve",
+							path: "/commanReview",
 							// query: { coursess: this.course }
 						})
 					}else{
