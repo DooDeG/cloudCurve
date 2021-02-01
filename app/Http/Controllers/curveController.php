@@ -105,13 +105,19 @@ class curveController extends Controller
                 $les['day'] = $days;
                 $les['id'] = $item->GId;
                 $les['time'] = $item->time;
+                
+                //base on accuracy order
+                // $tmp = curveDetail::where('GId','=', $item->GId)->where('time','=', 0)->get()->toArray();
+                // $num = $this->reviewWord($tmp, $days);
+                // array_multisort(array_column($tmp,'accuracy'),SORT_ASC,$tmp);
+                //base on accuracy, sort of accuracy rate, if rate less, then priority select
 
-                $tmp = curveDetail::where('GId','=', $item->GId)->where('time','=', 0)->get()->toArray();
+                //base on random order
+                $tmp = curveDetail::where('GId','=', $item->GId)->where('time','=', 0)->inRandomOrder()->get()->toArray();
                 $num = $this->reviewWord($tmp, $days);
                 
+                //base on random order
                 
-                array_multisort(array_column($tmp,'accuracy'),SORT_ASC,$tmp);
-                //base on accuracy, sort of accuracy rate, if rate less, then priority select
                 
                 $n = 0;
                 foreach($tmp as $item){
@@ -242,7 +248,7 @@ class curveController extends Controller
                 $tmpTime = 0;
                 foreach($request->LessonDetail as $item){
                     foreach($item as $it){
-                        $totaltimeTmp += $it[' '];
+                        $totaltimeTmp += $it['totalTime'];
                         $totalRate += $it['rate'];
                         
                         $tmpGId = $it['GId'];

@@ -167,49 +167,50 @@
                     method: 'GET',
                 })
                 .then((res) => {
-                    if(res){
-                        if(res.data.result){
-							this.list = res.data.result
-                            console.log(this.list)
-                            
-                            // this.$store.commit('curve/SET_CURVE','this.course')
-                            this.currentQuestion = this.list[0].Word.english
-                            // console.log(this.list)
-                            this.currentAns = this.list[0].Word.chinese
-                            this.currentWord = this.list[0].Word
-                            this.minId = this.list[0].Word.id
-                            this.length = this.list.length
-                            this.temp = this.randomAnsList(this.currentWord.id, this.list, this.minId)
-                            console.log('this.temp', this.temp)
-                            this.createAnsList(this.temp);
-                            var no = 0
-                            var g = ''
-                            this.list.forEach(element => {
-                                if(g != element.id){
-                                    if(element.day == 1){
-                                        no += 20
-                                        this.lessonPoint.push(String(no));
-                                    }else if(element.day ==2){
-                                        no += 10
-                                        this.lessonPoint.push(String(no));
-                                    }else if(element.day ==4){
-                                        no += 5
-                                        this.lessonPoint.push(String(no));
-                                    }else if(element.day ==7){
-                                        no += 5
-                                        this.lessonPoint.push(String(no));
-                                    }
+                    // if(res.data.result || res.data.result != null || res.data.result != []){
+                    if(Object.keys(res.data.result).length !== 0 && res.data.result.constructor === Array){
+                        console.log('Object.keys(res.data.result).length',Object.keys(res.data.result).length)
+                        console.log('res.data.result.constructor === Array',res.data.result.constructor === Array)
+                        this.list = res.data.result
+                        console.log('this.list',this.list)
+                        
+                        // this.$store.commit('curve/SET_CURVE','this.course')
+                        this.currentQuestion = this.list[0].Word.english
+                        // console.log(this.list)
+                        this.currentAns = this.list[0].Word.chinese
+                        this.currentWord = this.list[0].Word
+                        this.minId = this.list[0].Word.id
+                        this.length = this.list.length
+                        this.temp = this.randomAnsList(this.currentWord.id, this.list, this.minId)
+                        console.log('this.temp', this.temp)
+                        this.createAnsList(this.temp);
+                        var no = 0
+                        var g = ''
+                        this.list.forEach(element => {
+                            if(g != element.id){
+                                if(element.day == 1){
+                                    no += 20
+                                    this.lessonPoint.push(String(no));
+                                }else if(element.day ==2){
+                                    no += 10
+                                    this.lessonPoint.push(String(no));
+                                }else if(element.day ==4){
+                                    no += 5
+                                    this.lessonPoint.push(String(no));
+                                }else if(element.day ==7){
+                                    no += 5
+                                    this.lessonPoint.push(String(no));
                                 }
-                                g = element.id
-                                // console.log('lessonPoint',this.lessonPoint)
-                                // this.list.push({[tm]: element['Word']});
-                            });
+                            }
+                            g = element.id
+                            // console.log('lessonPoint',this.lessonPoint)
+                            // this.list.push({[tm]: element['Word']});
+                        });
 
-                        }else{
-                            this.course = [];
-                        }
                     }else{
-                        alert('無法取得後台數據123')
+                        alert('Today not review lesson')
+                        this.$router.push({ name: 'mains/course' })
+                        this.course = [];
                     }
                 }, (res) => {
                     // alert(res.response);
