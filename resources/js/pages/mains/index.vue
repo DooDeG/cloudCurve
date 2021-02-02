@@ -111,7 +111,7 @@
                           <router-link :to="{ name:  'mains/commanTraining'  }">
                           <button type="button" @click="select(3)" :aria-selected="selected === 3" class="py-3 px-4 w-full flex items-center focus:outline-none focus-visible:underline">
                         <svg
-                          :class="selected === 2 ? 'text-indigo-400' : 'text-gray-500'"
+                          :class="selected === 3 ? 'text-indigo-400' : 'text-gray-500'"
                           class="h-6 w-6 transition-all ease-out transition-medium"
                           viewBox="0 0 24 24"
                           fill="currentColor"
@@ -142,7 +142,7 @@
                         <router-link :to="{ name:  'mains/visualization'  }">
                           <button type="button" @click="select(4)" :aria-selected="selected === 4" class="py-3 px-4 w-full flex items-center focus:outline-none focus-visible:underline" >
                         <svg
-                          :class="selected === 3 ? 'text-indigo-400' : 'text-gray-500'"
+                          :class="selected === 4 ? 'text-indigo-400' : 'text-gray-500'"
                           class="h-6 w-6 transition-all ease-out transition-medium"
                           viewBox="0 0 24 24"
                           fill="currentColor"
@@ -203,7 +203,7 @@ export default {
     // this.updateInfo()
       // this.getuser();
       if(this.$route.name == 'mains/visualization'){
-          this.selected = 3
+          this.selected = 4
       }
       if(this.$route.name == 'mains/traning'){
           this.selected = 2

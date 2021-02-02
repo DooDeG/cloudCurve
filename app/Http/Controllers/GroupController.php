@@ -152,12 +152,4 @@ class GroupController extends Controller
         }
     }
 
-    public function getFinshWord(){
-        $id = Auth::id();
-        $FNo = group_word::where('UserId','=', $id)
-                        // ->where('States', '=', '')
-                        ->count();
-        $result = $FNo;
-        return response()->json(['status' => 'success', 'result' => $result], 200);  
-    }
 }

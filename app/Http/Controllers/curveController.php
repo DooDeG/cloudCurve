@@ -301,6 +301,7 @@ class curveController extends Controller
             $time = [1, 2, 3, 4];
     
             $group = tra::where('UserId','=', $id)->where('time','=', 0)->get();
+            
             $les = [];
             $les['day'] = [];
             $les['id'] = [];

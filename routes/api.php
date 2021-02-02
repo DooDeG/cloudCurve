@@ -36,7 +36,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('updateGroupStates', 'GroupController@saveGroupStates');
     
     //Visualization.vue
-    Route::get('getFinshWord', 'GroupController@getFinshWord');
+    Route::get('getFinshWord', 'viusalizationController@getFinshWord');
 
     //lessondata.vue pass data
     Route::post('getEnWorldListWithId', 'courseController@getEnListWithId');

@@ -420,7 +420,7 @@
                     },
                 })
                 .then((res) => {
-                    // this.$router.push({ name: 'mains/course' })
+                    this.$router.push({ name: 'mains/course' })
                 }, (res) => {
                     alert('Unable to get plan form')
                 })
