@@ -117,7 +117,8 @@
             timeOut: false,
             curveGroup:[],
             curveDetail:[],
-            lessonPoint:['0'],//when meet lessonPoint assgin gid
+            lesson:[]
+            //lessonPoint:['0'],//when meet lessonPoint assgin gid
             
         }),
         mounted() {
@@ -186,30 +187,30 @@
                         this.createAnsList(this.temp);
                         var no = 0
                         var g = ''
-                        this.list.forEach(element => {
-                            if(g != element.id){
-                                if(element.day == 1){
-                                    no += 20
-                                    this.lessonPoint.push(String(no));
-                                }else if(element.day ==2){
-                                    no += 10
-                                    this.lessonPoint.push(String(no));
-                                }else if(element.day ==4){
-                                    no += 5
-                                    this.lessonPoint.push(String(no));
-                                }else if(element.day ==7){
-                                    no += 5
-                                    this.lessonPoint.push(String(no));
-                                }
-                            }
-                            g = element.id
-                            // console.log('lessonPoint',this.lessonPoint)
-                            // this.list.push({[tm]: element['Word']});
-                        });
+                        // this.list.forEach(element => {
+                        //     if(g != element.id){
+                        //         if(element.day == 1){
+                        //             no += 20
+                        //             this.lessonPoint.push(String(no));
+                        //         }else if(element.day ==2){
+                        //             no += 10
+                        //             this.lessonPoint.push(String(no));
+                        //         }else if(element.day ==4){
+                        //             no += 5
+                        //             this.lessonPoint.push(String(no));
+                        //         }else if(element.day ==7){
+                        //             no += 5
+                        //             this.lessonPoint.push(String(no));
+                        //         }
+                        //     }
+                        //     g = element.id
+                        //     // console.log('lessonPoint',this.lessonPoint)
+                        //     // this.list.push({[tm]: element['Word']});
+                        // });
 
                     }else{
                         alert('Today not review lesson')
-                        // this.$router.push({ name: 'mains/course' })
+                        this.$router.push({ name: 'mains/course' })
                         this.course = [];
                     }
                 }, (res) => {
@@ -223,7 +224,7 @@
                     //選正確
                     if(this.no < this.list.length){
                         this.CnQ++;
-                        this.correctNum++;
+                        // this.correctNum++;
                         this.nextWord();
                     }else{
                         // this.no = this.wordList.length;
@@ -253,7 +254,7 @@
                     }
                 }
             },
-             randomAnsList(ansNo, list, min){
+            randomAnsList(ansNo, list, min){
                 var i;
                 var rand = [];
                 var arr = [];
@@ -329,7 +330,7 @@
                     //each question use time and correct rate
 
                     console.log('tmpEnoData', this.tmpEnoData);
-                    this.gtime += 60*2 -(this.minutes * 60 + this.seconds);
+                    // this.gtime += 60*2 -(this.minutes * 60 + this.seconds);
                     
                     //save lesson data
 
@@ -341,35 +342,44 @@
                         // this.correctNum ++;
                         this.tmpEnoData = [];
 
-                        if(this.lessonPoint.some(item => item === String(this.no+1))){
-                            
-                            var tm = []
-                            var tm = {time: 0, id: '', rate: 0, time:0, GId:'',totalTime:0};
+                        // if(this.lessonPoint.some(item => item === String(this.no+1))){
                         
-                            tm.totalTime= this.gtime;
+
+                        
+                        if(this.curveGroup.findIndex(p => p.GId ==  this.list[this.no].id) == -1){
+                            // add new record in Group
+                            var tm = []
+                            var tm = {time: 0, id: '', rate: 0, time:0, GId:'', totalTime:0, tmpCount:0};
+                        
+                            tm.totalTime += 60*2 -(this.minutes * 60 + this.seconds);
                             tm.time= this.list[this.no].time;
 
                             tm.GId = this.list[this.no].id;
-                            tm.rate= this.correctNum/(this.countNum+1);
-                            tm.rate = tm.rate.toFixed(2);
-                            console.log('this.correctNum',this.correctNum)
-                            console.log('this.countNum',this.countNum+1)
-                            console.log('this.correctNum/(this.no+1)',this.correctNum/(this.countNum+1))
-                            console.log('tm.rate',tm.rate)
-                            this.correctNum = 0
-                            this.countNum = 0
-                            this.gtime = 0
-                            // tm.id= this.list[this.no].Word.id;
+                            tm.rate= 0;
                             
                             tm.id = tm.GId;
                             tm.id = tm.id.split("G")[1];
-                            console.log('lesson point', tm);
+                            console.log('first time tm', tm);
                             
                             this.curveGroup.push(tm);
+                            console.log('first time curveGroup', this.curveGroup);
+                        }else{
+                            var i = this.curveGroup.findIndex(p => p.GId ==  this.list[this.no].id);
+                            console.log('i', i)
+                            this.curveGroup[i].totalTime += 60*2 -(this.minutes * 60 + this.seconds);
+                            if(this.wrong == true){
+                                this.curveGroup[i].rate += 0;
+                            }else if(this.wrong == false){
+                                this.curveGroup[i].rate += 1;
+                            }
+                            this.curveGroup[i].tmpCount ++;
                             
-                            console.log('this.curveGroup',this.curveGroup)
-                            this.gno ++
+                            console.log('this.curveGroup[i]', this.curveGroup[i])
                         }
+                            
+                        
+                        this.gno ++
+                        // }
                         
                         this.no ++;
                     }
