@@ -31,6 +31,18 @@
 ## Usage
 
 #### Development
+```bash
+cp .env.example .env 
+
+php artisan key:generate
+
+php artisan jwt:secret
+
+# build and watch
+npm run watch
+
+php artisan serve
+```
 
 ```bash
 # build and watch
