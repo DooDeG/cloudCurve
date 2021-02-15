@@ -47,8 +47,8 @@
                 <div class=" 2xl:ml-52 underline">Today Lesson</div>
             </div>
             <div class="flex justify-center">
-                <div class="flex xl:justify-around w-2/3 mt-3">
-                    <div class="flex justify-center mr-5">
+                <div class="flex flex-col md:flex-row md:justify-around w-5/6 md:w-2/3 mt-3">
+                    <div class="flex justify-center md:mr-5 mt-4 md:mt-1">
                         <div class="bg-white p-4 shadow rounded-md shadow-xl border-t-4 border-red-600 w-96">
                             <div class="flex">
                                 <div class="w-2/3">
@@ -98,7 +98,7 @@
                         </div>
                     
                     </div>
-                    <div class="flex justify-center mr-5">
+                    <div class="flex justify-center md:mr-5 mt-4 md:mt-1">
                         <div class="bg-white p-4 shadow rounded-md shadow-xl border-t-4 border-red-600 w-96">
                             <div class="flex">
                                 <div class="w-2/3">
