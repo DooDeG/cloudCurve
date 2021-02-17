@@ -58,6 +58,10 @@ Route::group(['middleware' => 'auth:api'], function () {
     //tradition review page
     Route::get('getTraditionReviewData', 'curveController@getTraditionReviewData');
     Route::post('updateTraGroupInfo', 'curveController@updateTraGroupInfo');
+
+    
+    //test page
+    Route::get('getExamData', 'examController@getExamData');
     
 
 

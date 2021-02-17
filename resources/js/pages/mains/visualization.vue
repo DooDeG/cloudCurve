@@ -30,7 +30,65 @@
                 </div>
             </div>
         </div>
+        <div>Review report
+        </div>
+        <div>Data for the latest week
+        </div>
+        <div>
+            <apexchart 
+                width="500" type="bar" 
+                :options="options" :series="series">
+            </apexchart>  
+        </div>
+        <div class="chart-wrapper">
+            <apexchart 
+                width="800" type="line" 
+                :options="options" :series="series">
+            </apexchart>
+        </div>
+        <div>
+            <apexchart width="380" type="donut" :options="options2" :series="series2"></apexchart>
+        </div>
+        
+        <!-- This is an example component -->
+        <div>
+    
+        <div class="relative flex flex-col flex-1 h-full max-h-full">
+        
+            <div class="flex flex-col flex-1 max-h-full pl-2 pr-2 rounded-md xl:pr-4">
+                <!-- Main Content -->
+                <main class="flex-1 pt-2">
+                    <!-- Placeholder Cards -->
+                    <div class="p-4 text-white bg-blue-500 rounded-md shadow-md">
+                    <div class="flex items-center justify-center">
+                        <span class="text-3xl font-semibold tracking-wider uppercase">In Progress</span>
+                    </div>
+                    </div>
+                    <div class="flex items-center justify-center p-4 mt-4 bg-white rounded-md shadow-md">
+                        <span class="text-xl tracking-wider text-gray-500 uppercase">placeholder</span>
+                    </div>
+                    <div class="grid grid-cols-1 gap-6 mt-4 md:grid-cols-2">
+                    <template x-for="i in 4" >
+                        <div class="flex items-center justify-center w-full h-32 bg-white rounded-md shadow-md">
+                        <span class="text-xl tracking-wider text-gray-500 uppercase">placeholder</span>
+                        </div>
+                    </template>
+                    </div>
+                    <div class="grid grid-cols-1 gap-6 my-4 mt-4">
+                    <template x-for="i in 4" >
+                        <div class="flex items-center justify-center w-full h-56 bg-white rounded-md shadow-md">
+                        <span class="text-xl tracking-wider text-gray-500 uppercase">placeholder</span>
+                        </div>
+                    </template>
+                    </div>
+                </main>
+            </div>
+        </div>
+      
     </div>
+     
+</div>
+    
 </template>
 
 <script>
@@ -46,7 +104,46 @@
             user: 'auth/user'
         }),
         data: () => ({
-            Fword: 1
+            Fword: 1,
+            //
+            options: {
+                chart: {
+                    id: 'vuechart-example'
+                },
+                xaxis: {
+                    categories: [
+                    "Jan",
+                    "Feb",
+                    "Mar",
+                    "Apr",
+                    "May",
+                    "Jun",
+                    "Jul",
+                    "Aug",
+                    "Sep",
+                    "Oct",
+                    "Nov",
+                    "Dec"
+                    ]
+                },
+                title: {
+                    text: 'Monthly Stock Pricing',
+                    align: 'center',
+                    style: {
+                    fontSize:  '20px',
+                    },
+                },
+                colors: ['#00897b']
+            },
+            series: [{
+            name: 'series-1',
+            data: [55, 62, 89, 66, 98, 72, 101, 75, 94, 120, 117, 139]
+            }],
+            //
+            //
+            options2: {},
+            series2: [44, 55, 41, 17, 15]
+            //
         }),
         created () {
             this.getFinshWord()
@@ -79,3 +176,4 @@
 <style scoped>
 
 </style>
+

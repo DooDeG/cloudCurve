@@ -112,5 +112,15 @@ class examController extends Controller
 
         }
     }
+
+    public function getExamData(){
+        $id = Auth::id(); 
+        $result = [];
+        $result = en_word::where('id', '>', 0)->where('id', '<=', 20)->get();
+        
+        return response()->json(['status' => 'success', "result" => $result], 200);
+        
+    }
+    
     
 }

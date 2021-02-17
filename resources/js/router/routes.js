@@ -12,16 +12,18 @@ export default [
       name: 'mains',
       component: page('mains/index.vue'),
       children: [
-          { path: '', redirect: { name: 'mains/course.vue' } },
-          { path: 'course', name: 'mains/course', component: page('mains/course.vue') },
-          { path: 'exercise', name: 'mains/exercise', component: page('mains/exercise.vue') },
-          { path: 'visualization', name: 'mains/visualization', component: page('mains/visualization.vue') },
-          
-          // review page
-          { path: 'traning', name: 'mains/traning', component: page('mains/traning.vue') },
+            { path: '', redirect: { name: 'mains/course.vue' } },
+            { path: 'course', name: 'mains/course', component: page('mains/course.vue') },
+            { path: 'exercise', name: 'mains/exercise', component: page('mains/exercise.vue') },
+            { path: 'visualization', name: 'mains/visualization', component: page('mains/visualization.vue') },
+            
+            // review page
+            { path: 'traning', name: 'mains/traning', component: page('mains/traning.vue') },
 
-          //tradition review page
-          { path: 'commanTraining', name: 'mains/commanTraining', component: page('mains/commanTraining.vue') },
+            //tradition review page
+            { path: 'commanTraining', name: 'mains/commanTraining', component: page('mains/commanTraining.vue') },
+            //tradition review page
+            { path: 'test', name: 'mains/test', component: page('mains/test.vue') },
 
     ] },
     { path: '/lesson', name: 'lesson', component: page('curriculum/lesson.vue') },
@@ -31,6 +33,7 @@ export default [
     { path: '/review', name: 'review', component: page('curriculum/review.vue') },
     { path: '/reviewdata/:id', name: 'reviewdata', component: page('curriculum/reviewdata.vue') },
     { path: '/commanReview', name: 'curve', component: page('curriculum/commanReview.vue') },
+    { path: '/SevenDayTest', name: 'SevenDayTest', component: page('curriculum/SevenDayTest.vue') },
     
     { path: '/login', name: 'login', component: page('auth/login.vue') },
     { path: '/register', name: 'register', component: page('auth/register.vue') },

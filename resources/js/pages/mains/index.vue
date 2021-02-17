@@ -169,6 +169,38 @@
                         </router-link>
                         <!-- <font-awesome-icon icon="adjust" size="xs" /> -->
                         </li>
+                        <li>
+                          
+                        <router-link :to="{ name:  'mains/test'  }">
+                          <button type="button" @click="select(5)" :aria-selected="selected === 5" class="py-3 px-4 w-full flex items-center focus:outline-none focus-visible:underline" >
+                        <svg
+                          :class="selected === 5 ? 'text-indigo-400' : 'text-gray-500'"
+                          class="h-6 w-6 transition-all ease-out transition-medium"
+                          viewBox="0 0 24 24"
+                          fill="currentColor"
+                        >
+                          <path
+                            fill-rule="evenodd"
+                            clip-rule="evenodd"
+                            d="M7 10a3 3 0 013-3h8a3 3 0 013 3v8a3 3 0 01-3 3h-8a3 3 0 01-3-3v-8zm3-1a1 1 0 00-1 1v8a1 1 0 001 1h8a1 1 0 001-1v-8a1 1 0 00-1-1h-8z"
+                          />
+                          <path
+                            fill-rule="evenodd"
+                            clip-rule="evenodd"
+                            d="M3 6a3 3 0 013-3h10a1 1 0 110 2H6a1 1 0 00-1 1v10a1 1 0 11-2 0V6z"
+                          />
+                        </svg>
+                        <span
+                          :class="selected === 5 ? 'text-indigo-600' : 'text-gray-700'"
+                          class="ml-2 text-lg font-medium transition-all ease-out transition-medium"
+                        >
+                          test
+                        </span>
+
+                      </button>
+                        </router-link>
+                        <!-- <font-awesome-icon icon="adjust" size="xs" /> -->
+                        </li>
                         
                       </ul>
                     </nav>
@@ -210,6 +242,9 @@ export default {
       }
       if(this.$route.name == 'mains/commanTraining'){
           this.selected = 3
+      }
+      if(this.$route.name == 'mains/test'){
+          this.selected = 5
       }
       
   },
