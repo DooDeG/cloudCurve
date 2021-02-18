@@ -409,21 +409,21 @@
                 
                 console.log('this.curveDetail',this.curveDetail)
                 console.log('this.curveGroup',this.curveGroup)
-                // this.$http({
-                //     url: `/api/updateTraGroupInfo`,
-                //     method: 'POST',
-                //     data: {
-                //         LessonDetail:this.curveDetail,
-                //         LessonData: this.curveGroup
+                this.$http({
+                    url: `/api/updatetestInfo`,
+                    method: 'POST',
+                    data: {
+                        LessonDetail:this.curveDetail,
+                        LessonData: this.curveGroup
                         
-                //         // LessonDetail:this.reData.curveGroup,
-                //     },
-                // })
-                // .then((res) => {
-                //     this.$router.push({ name: 'mains/course' })
-                // }, (res) => {
-                //     alert('Unable to get plan form')
-                // })
+                        // LessonDetail:this.reData.curveGroup,
+                    },
+                })
+                .then((res) => {
+                    this.$router.push({ name: 'mains/course' })
+                }, (res) => {
+                    alert('Unable to get plan form')
+                })
 
             },
             num(n) {

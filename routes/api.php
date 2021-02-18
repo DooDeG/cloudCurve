@@ -37,6 +37,9 @@ Route::group(['middleware' => 'auth:api'], function () {
     
     //Visualization.vue
     Route::get('getFinshWord', 'viusalizationController@getFinshWord');
+    Route::get('getTodayReviewDataVis', 'viusalizationController@getTodayReviewDataVis');
+    Route::get('getTestReviewDataVis', 'viusalizationController@getTestReviewDataVis');
+    Route::get('getTestVis', 'viusalizationController@getTestVis');
 
     //lessondata.vue pass data
     Route::post('getEnWorldListWithId', 'courseController@getEnListWithId');
@@ -62,6 +65,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     
     //test page
     Route::get('getExamData', 'examController@getExamData');
+    Route::post('updatetestInfo', 'examController@updatetestInfo');
     
 
 

@@ -435,21 +435,21 @@
                 });
                 
                 console.log('this.curveGroup new',this.curveGroup)
-                // this.$http({
-                //     url: `/api/updateCurveGroupInfo`,
-                //     method: 'POST',
-                //     data: {
-                //         LessonDetail:this.curveDetail,
-                //         LessonData: this.curveGroup
+                this.$http({
+                    url: `/api/updateCurveGroupInfo`,
+                    method: 'POST',
+                    data: {
+                        LessonDetail:this.curveDetail,
+                        LessonData: this.curveGroup
                         
-                //         // LessonDetail:this.reData.curveGroup,
-                //     },
-                // })
-                // .then((res) => {
-                //     this.$router.push({ name: 'mains/course' })
-                // }, (res) => {
-                //     alert('Unable to get plan form')
-                // })
+                        // LessonDetail:this.reData.curveGroup,
+                    },
+                })
+                .then((res) => {
+                    this.$router.push({ name: 'mains/course' })
+                }, (res) => {
+                    alert('Unable to get plan form')
+                })
 
             },
             num(n) {

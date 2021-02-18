@@ -11,6 +11,8 @@ use App\curve;
 use App\curveDetail;
 use App\tra;
 use App\traDetail;
+use App\test;
+use App\testDetail;
 
 class viusalizationController extends Controller
 {
@@ -21,5 +23,59 @@ class viusalizationController extends Controller
                         ->count();
         $result = $FNo;
         return response()->json(['status' => 'success', 'result' => $result], 200);  
+    }
+    public function getTodayReviewDataVis(){
+        $id = Auth::id();
+        $day = date("Y-m-d");
+        $data = curve::where('UserId','=', $id)->where('date','=', $day)->where('time','!=', 0)->get();
+        $result = array();
+        $check = array();
+        foreach($data as $item){
+            if (in_array($item->GId, $check)){  
+                } 
+            else{ 
+                array_push($check, $item->GId);
+                array_push($result, $item);
+
+            } 
+        }
+        return response()->json(['status' => 'success', 'result' => $result], 200);       
+
+    }
+    public function getTestReviewDataVis(){
+        $id = Auth::id();
+        $day = date("Y-m-d");
+        $data = curve::where('UserId','=', $id)->where('date','=', $day)->where('time','!=', 0)->get();
+        $result = array();
+        $check = array();
+        foreach($data as $item){
+            if (in_array($item->GId, $check)){  
+                } 
+            else{ 
+                array_push($check, $item->GId);
+                array_push($result, $item);
+
+            } 
+        }
+        return response()->json(['status' => 'success', 'result' => $result], 200);       
+
+    }
+    public function getTestVis(){
+        $id = Auth::id();
+        $day = date("Y-m-d");
+        $data = test::where('UserId','=', $id)->where('time','=', 1)->get();
+        $result = array();
+        $check = array();
+        foreach($data as $item){
+            if (in_array($item->GId, $check)){  
+                } 
+            else{ 
+                array_push($check, $item->GId);
+                array_push($result, $item);
+
+            } 
+        }
+        return response()->json(['status' => 'success', 'result' => $result], 200);       
+
     }
 }
