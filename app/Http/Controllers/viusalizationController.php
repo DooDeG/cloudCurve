@@ -62,6 +62,7 @@ class viusalizationController extends Controller
     }
     public function getTestVis(){
         $id = Auth::id();
+
         $day = date("Y-m-d");
         $data = test::where('UserId','=', $id)->where('time','=', 1)->get();
         $result = array();
@@ -75,7 +76,19 @@ class viusalizationController extends Controller
 
             } 
         }
-        return response()->json(['status' => 'success', 'result' => $result], 200);       
+        
+        $lesson1 = $id."G"."1";
+        $da = curve::where('UserId','=', $id)->where('GId','=', $lesson1)->get();
+        $result2 = [];
+        foreach($da as $item){
+            
+            array_push($result2, $item);
+        }
+        foreach($result as $item){
+            
+            array_push($result2, $item);
+        }
+        return response()->json(['status' => 'success', 'result' => $result, 'lesson1' =>$result2], 200);       
 
     }
 }

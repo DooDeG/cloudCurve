@@ -118,6 +118,7 @@
             curveGroup:[],
             curveDetail:[],
             lessonPoint:19,//when meet lessonPoint assgin gid
+            gid:0,
             
         }),
         mounted() {
@@ -173,7 +174,7 @@
                         console.log('res.data.result.constructor === Array',res.data.result.constructor === Array)
                         this.list = res.data.result
                         console.log('this.list',this.list)
-                        
+                        this.gid = res.data.GId
                         // this.$store.commit('curve/SET_CURVE','this.course')
                         this.currentQuestion = this.list[0].english
                         // console.log(this.list)
@@ -316,8 +317,8 @@
                     var tmpda = {totalTime: 0, Eno: '', rate: 0, GId: '',time:0};
                     tmpda.totalTime = 60*2 -(this.minutes * 60 + this.seconds);
 
-                    tmpda.GId = this.list[this.no].id
-                        
+                    // tmpda.GId = this.list[this.no].id
+                    tmpda.GId = this.gid
                     if(this.wrong == true){
                         tmpda.rate= 0;
                     }else if(this.wrong == false){
@@ -349,7 +350,8 @@
                             tm.totalTime= this.gtime;
                             tm.time= this.list[this.no].time;
 
-                            tm.GId = this.list[this.no].id;
+                            // tm.GId = this.list[this.no].id;
+                            tm.GId = this.gid;
                             tm.rate= this.correctNum/(this.countNum+1);
                             tm.rate = tm.rate.toFixed(2);
                             console.log('this.correctNum',this.correctNum)

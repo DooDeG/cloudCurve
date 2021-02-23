@@ -121,7 +121,8 @@ class examController extends Controller
         $result = [];
         $result = en_word::where('id', '>', 0)->where('id', '<=', 20)->get();
         
-        return response()->json(['status' => 'success', "result" => $result], 200);
+        $GId = $id."G"."1";
+        return response()->json(['status' => 'success', "result" => $result, "GId" => $GId], 200);
         
     }
 

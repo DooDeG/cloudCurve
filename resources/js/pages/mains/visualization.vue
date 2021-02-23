@@ -96,13 +96,56 @@
                     </div>
 
                     <div v-show="testdisplay" class="flex items-center justify-around  p-4 mt-4 bg-white rounded-md shadow-md"  @click="displayTestData()">
-                        <span class="text-xl tracking-wider text-gray-500 uppercase">Test data</span>
+                        <span class="text-xl tracking-wider text-gray-500 uppercase">Lesson 1 Test data</span>
                         <div>
                             <font-awesome-icon :icon="displayTest ? 'chevron-up' : 'chevron-down'" class="text-gray-500"  size="1x"/>
                         
                         </div>
                     </div>
-                    <div v-show="displayTest"  class="grid grid-cols-1 gap-6 my-4 mt-4">
+
+                    <div v-show="displayTest" class="grid grid-cols-1 gap-6 mt-4 md:grid-cols-2">
+                        <template x-for="i in 4" >
+                            <div class="flex items-center justify-center w-full h-32 bg-white rounded-md shadow-md">
+                                <span class="text-xl tracking-wider text-gray-500 uppercase">
+
+                                    <div class="col-span-12 sm:col-span-6 md:col-span-3">
+                                        <div class="flex flex-row bg-white p-4">
+                                            <div class="flex items-center justify-center flex-shrink-0 h-12 w-12 rounded-xl bg-red-100 text-red-400">
+                                                <!-- <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg> -->
+                                                
+                                                <font-awesome-icon icon="clock"/>
+                                            </div>
+                                            <div class="flex flex-col flex-grow ml-4">
+                                                <div class="text-sm text-gray-500">Time</div>
+                                                <div class="font-bold text-lg">{{testTime}}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </span>
+                            </div>
+                            <div class="flex items-center justify-center w-full h-32 bg-white rounded-md shadow-md">
+                                <span class="text-xl tracking-wider text-gray-500 uppercase">
+                                    
+                                    <div class="col-span-12 sm:col-span-6 md:col-span-3">
+                                        <div class="flex flex-row bg-white  p-4">
+                                            <div class="flex items-center justify-center flex-shrink-0 h-12 w-12 rounded-xl bg-yellow-100 text-yellow-500">
+                                                <!-- <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg> -->
+                                                <font-awesome-icon icon="check"/>
+                                            </div>
+                                            <div class="flex flex-col flex-grow ml-4">
+                                                <div class="text-sm text-gray-500">Accuracy</div>
+                                                <div class="font-bold text-lg">{{testAccuracy}}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </span>
+                            </div>
+                        </template>
+                    </div>
+
+                    <!-- <div v-show="displayTest"  class="grid grid-cols-1 gap-6 my-4 mt-4">
                         <template x-for="i in 4" >
                             <div class="flex items-center justify-center w-full h-96 bg-white rounded-md shadow-md">
                                 <span class="text-xl tracking-wider text-gray-500 uppercase">
@@ -116,13 +159,20 @@
                                 </span>
                             </div>
                         </template>
-                    </div>
+                    </div> -->
                     
 
                     <div class="grid grid-cols-1 gap-6 my-4 mt-4">
                         <template x-for="i in 4" >
-                            <div class="flex items-center justify-center w-full h-56 bg-white rounded-md shadow-md">
-                                <span class="text-xl tracking-wider text-gray-500 uppercase">placeholder</span>
+                            <div class="flex items-center justify-center w-full h-96 bg-white rounded-md shadow-md">
+                                <span class="text-xl tracking-wider text-gray-500 uppercase">
+                                    <div class="chart-wrapper">
+                                        <apexchart 
+                                            width="500" type="line" 
+                                            :options="options2" :series="series2">
+                                        </apexchart>
+                                    </div>
+                                </span>
                             </div>
                         </template>
                     </div>
@@ -168,10 +218,13 @@
         data: () => ({
             Fword: 1,
             todayDisplay: true,
-            displayTest:false,
+            displayTest:true,
             todayReviewData: [],
             todayTestData:[],
             testdisplay:false,
+            testTime: 0,
+            testAccuracy: 0,
+            lessondata:[],
             //
             options: {
                 chart: {
@@ -192,7 +245,7 @@
                 colors: ['#00897b']
             },
             series: [{
-                name: 'series-1',
+                name: 'ans rate',
                 data: [
                     
                 ]
@@ -209,7 +262,7 @@
                     ]
                 },
                 title: {
-                    text: 'Ans rate',
+                    text: 'Lesson 1 Ans rate',
                     align: 'center',
                     style: {
                         fontSize:  '20px',
@@ -218,14 +271,13 @@
                 colors: ['#00897b']
             },
             series2: [{
-                name: 'series-1',
+                name: 'Lesson 1 ',
                 data: [
                     
                 ]
             }],
             //
-            options2: {},
-            series2: [44, 55, 41, 17, 15]
+            
             //
         }),
         created () {
@@ -265,34 +317,30 @@
                         if(res.data.result){
                             this.todayReviewData = res.data.result
                             console.log("this.todayReviewData",this.todayReviewData)
-                    //         this.categories = [
-                    //             "Feb",
-                    // "Mar",]
-                    //         this.options.xaxis.categories  = [
-                    //             "Feb",
-                    // "Mar",]
-                        var result = []
-                        var resultData = []
-                        this.todayReviewData.forEach(item => {
-                            // console.log(item.GId)
-                            result.push(item.GId.split("G")[1]);
-                            resultData.push(item.accuracy);
-                        });
-                        // result.sort();
-                        // result.sort((old,New)=>{
-                        //     return old -New
-                        // })
-                        // cateArr = JSON.parse(JSON.stringify(result))
-                        console.log("result",result)
-                        console.log("resultData",resultData)
-                        this.options = {
-                            xaxis:{
-                                categories:result
-                            },
-                            series:[{
-                                data:resultData
-                            }]
-                        }
+                            var result = []
+                            var resultData = []
+                            this.todayReviewData.forEach(item => {
+                                // console.log(item.GId)
+                                result.push(item.GId.split("G")[1]);
+                                
+                                // result.push(item.date);
+                                resultData.push(item.accuracy);
+                            });
+                            result.sort();
+                            result.sort((old,New)=>{
+                                return old -New
+                            })
+                            cateArr = JSON.parse(JSON.stringify(result))
+                            console.log("result",result)
+                            console.log("resultData",resultData)
+                            this.options = {
+                                xaxis:{
+                                    categories:result
+                                },
+                                series:[{
+                                    data:resultData
+                                }]
+                            }
                             
 
                         }else{
@@ -315,36 +363,51 @@
                 .then((res) => {
                     if(res){
                         if(res.data.result){
-                            this.todayTestData = res.data.result
-                            console.log("this.todayTestData",this.todayTestData)
-                    //         this.categories = [
-                    //             "Feb",
-                    // "Mar",]
-                    //         this.options.xaxis.categories  = [
-                    //             "Feb",
-                    // "Mar",]
+                            
+                            this.testdisplay = true
+                            
+                            this.testTime =res.data.result[0].totalTime
+                            this.testAccuracy =res.data.result[0].accuracy
+
+                            this.lessondata = res.data.lesson1
+                            
+                            console.log("lessondata",this.lessondata)
                             var result = []
                             var resultData = []
-                            this.todayTestData.forEach(item => {
+                            this.lessondata.forEach(item => {
                                 // console.log(item.GId)
-                                result.push(item.GId.split("G")[1]);
+                                // result.push(item.GId.split("G")[1]);
+                                result.push(item.date);
                                 resultData.push(item.accuracy);
                             });
-                            // result.sort();
-                            // result.sort((old,New)=>{
-                            //     return old -New
-                            // })
-                            // cateArr = JSON.parse(JSON.stringify(result))
-                            console.log("result",result)
-                            console.log("resultData",resultData)
+                            
+                            console.log("lesson",result)
+                            console.log("lessonData",resultData)
                             this.options2 = {
                                 xaxis:{
                                     categories:result
                                 },
-                                series2:[{
+                                series:[{
                                     data:resultData
                                 }]
                             }
+                            // var result = []
+                            // var resultData = []
+                            // this.todayTestData.forEach(item => {
+                            //     // console.log(item.GId)
+                            //     result.push(item.GId.split("G")[1]);
+                            //     resultData.push(item.accuracy);
+                            // });
+                            // console.log("result",result)
+                            // console.log("resultData",resultData)
+                            // this.options2 = {
+                            //     xaxis:{
+                            //         categories:result
+                            //     },
+                            //     series2:[{
+                            //         data:resultData
+                            //     }]
+                            // }
                         }else{
                             console.log("4564")
                         }
