@@ -11,6 +11,10 @@ use App\Group_word;
 
 use App\test;
 use App\testDetail;
+use App\curve;
+use App\curveDetail;
+use App\tra;
+use App\traDetail;
 
 class examController extends Controller
 {
@@ -117,18 +121,166 @@ class examController extends Controller
     }
 
     public function getExamData(){
-        $id = Auth::id(); 
-        $result = [];
-        $result = en_word::where('id', '>', 0)->where('id', '<=', 20)->get();
+        // $id = Auth::id(); 
+        // $result = [];
+        // $result = en_word::where('id', '>', 0)->where('id', '<=', 20)->get();
         
-        $GId = $id."G"."1";
-        return response()->json(['status' => 'success', "result" => $result, "GId" => $GId], 200);
+        // $GId = $id."G"."1";
+        // return response()->json(['status' => 'success', "result" => $result, "GId" => $GId], 200);
+        
+
+        $id = Auth::id(); 
+        if($id == null){
+            return response()->json(['status' => 'fail'], 200);
+        }
+
+        $group = curve::where('UserId','=', $id)->where('time','=', 0)->where('date','!=', date("Y-m-d"))->get()->toArray();
+        // return response()->json(['status' => $group], 200);
+        if($id == null){
+            return response()->json(['status' => 'fail'], 200);
+        }
+        $len = count($group);
+        
+        $data = [];
+        $tmpNum = 0;
+        $group = array_reverse($group);
+        $countTotalNum = 0;
+        $randArr = [];
+        foreach($group as $item){
+            $countTotalNum ++;
+            $tmpArray = [];
+            //
+            $tmpRandomArray = [];
+            $tmpRandomArray[$item['GId']] = 0;
+            $tmpRandomArray['GId'] = $item['GId'];
+
+            // $randArr[$item['GId']] = 0;
+            $randArr[$item['GId']] = $tmpRandomArray;
+            //
+            // array_push($randArr, $tmpRandomArray);
+            array_push($tmpArray, $item['GId']);
+            // for ($i = 1; $i <= $len; $i++) {
+                array_push($tmpArray, $tmpNum);
+            //     $tmpNum ++;
+            // }
+            $tmpNum ++;
+            $data[$item['GId']] = $tmpArray;
+            $len --;
+        }
+        // return response()->json(['data' => $data,'group' => $group,], 200);
+
+        $les = [];
+        $les['day'] = [];
+        $les['id'] = [];
+        $les['Word'] = [];
+        $les['time'] = [];
+        $ENo = [];
+        $result = [];
+        
+        $tmpGId = [];
+        $tmpNum--;
+        $r = 0;
+
+        $countTotalNum = $countTotalNum *20;
+        // $group = curve::where('UserId','=', $id)->where('time','=', 0)->get()->toArray();
+
+        //
+        // return response()->json(['data' => $data,'data' => $countTotalNum,], 200);
+        $repeatArray = [];
+        $num =-1;      
+
+        // $tmpData = [];
+        // foreach($data as $item){
+        //     foreach($item as $i){
+        //         array_push($tmpData, $i);
+
+        //     }
+        // }
+        // return response()->json(['status' => $tmpData], 200);
+
+        for ($i = 1; $i <= 50; $i++) {
+            // if($i > $tmpNum){
+            //     break;
+            // }
+            if($i > $countTotalNum){
+                break;
+            }
+            $repeat = true;
+            while($repeat){
+                // if($num == -1 || in_array($num, $repeatArray)){
+                    
+                //     continue;
+                // }else{
+                    
+                //     $num = random_int(0, $tmpNum);
+                // }
+                // $num = random_int(0, $tmpNum);
+                $num = $this->randWithout(0, $tmpNum, $repeatArray);
+                // return response()->json(['select num' => $num], 200);
+                // continue;
+                foreach($data as $item){
+                    
+                    if(in_array($num, $item)){
+                        
+                        $randArr[$item[0]][$item[0]] ++;
+                        $repeat = false;
+                        if($randArr[$item[0]][$item[0]] == 20){
+                            foreach($item as $ddddd){
+                                array_push($repeatArray, $ddddd);
+                            }
+                            
+                            //return response()->json(['item' => $repeatArray,'data' => $data,'select num' => $num, 'result2222' => $randArr[$item[0]]], 200);
+                        
+                            
+                        }
+                        //return response()->json(['item' => $item,'data' => $data,'select num' => $num, 'result2222' => $randArr[$item[0]][$item[0]] ], 200);
+                        break;
+                    }
+                }
+
+            }
+            
+            
+        }
+                        
+        // return response()->json([gettype($randArr[0])], 200); 
+                
+        //return response()->json(['status' => $data, 'randArr' => $randArr, 'repeatArray' => $repeatArray], 200);
+        foreach($randArr as $item){ 
+            // $pd = settype($item, "int");
+        // return response()->json(['status' => $data, 'randArr' => $randArr,'item'=>$item['GId'], 'gid' =>array_keys($randArr, $item)], 200);
+            $tmpEn = curveDetail::where('GId','=', $item['GId'])->where('time','=', 0)->inRandomOrder()->limit($item[$item['GId']])->get();
+            
+            foreach($tmpEn as $i){
+                $les = [];
+                // $les['day'] = [];
+                $les['id'] = [];
+                $les['Word'] = [];
+                $les['time'] = [];
+                // $les['day'] = $days;
+                $les['id'] = $i->GId;
+                $les['time'] = $i->time;
+                array_push($tmpGId, $i->ENo);
+                $d = en_word::where('id','=', $i->ENo)->first();
+                // return response()->json(['status' => $data, 'statuss' => $tmpGId], 200);
+                $ti = curveDetail::where('UserId','=', $id)->where('ENo', '=', $d->id)->latest()->first();
+                $d->level = $ti->time;
+                $les['Word'] = $d;
+                array_push($result, $les);
+                $r ++;
+                // return response()->json(['status' => $result, 'GId'=>$i->GId, 'time'=>$i->time], 200);
+
+            }     
+            
+            
+        }
+        return response()->json(['status' => $data, 'result' => $result, 'r' => $r, 'tmpGId' => $tmpGId], 200);
+
         
     }
 
     function updatetestInfo(Request $request){
         // return response()->json(['status' => 'success', 'LessonDetail' => $request->LessonDetail, 'LessonData' => $request->LessonData], 200); 
-        
         if(isset($request) && $request != null){
 
             $id = Auth::id(); 
@@ -141,9 +293,6 @@ class examController extends Controller
                 // }
                 $cu = new test();
                 $cu->GId = $item['GId'];
-                $ti = test::where('GId','=', $item['GId'])->latest()->first();
-                
-                // $cu->time = $item['time']+1;
                 $cu->time = 1;
                 $cu->totalTime = $item['totalTime'];
                 $cu->UserId = $id;
@@ -173,7 +322,7 @@ class examController extends Controller
                 $dr->ENo = $tmpENo;
                 $dr->GId = $tmpGId;
                 $dr->UserId = $id;
-                $dr->time = 1;
+                $dr->time = $tmpTime+1;
                 $dr->totalTime = $totaltimeTmp;
                 $dr->accuracy = $totalRate / 2;
                 $dr->isActive = "1";
@@ -188,6 +337,21 @@ class examController extends Controller
             
             return response()->json(['status' => 'fail'], 200);
         }
+
+        
+    }
+
+    function randWithout($from, $to, array $exceptions) {
+        sort($exceptions); // lets us use break; in the foreach reliably
+        $number = rand($from, $to - count($exceptions)); // or mt_rand()
+        foreach ($exceptions as $exception) {
+            if ($number >= $exception) {
+                $number++; // make up for the gap
+            } else /*if ($number < $exception)*/ {
+                break;
+            }
+        }
+        return $number;
     }
     
     

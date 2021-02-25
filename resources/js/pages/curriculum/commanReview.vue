@@ -117,7 +117,7 @@
             timeOut: false,
             curveGroup:[],
             curveDetail:[],
-            lesson:[]
+            lesson:[],
             //lessonPoint:['0'],//when meet lessonPoint assgin gid
             
         }),
@@ -419,6 +419,10 @@
                 
                 console.log('this.curveDetail',this.curveDetail)
                 console.log('this.curveGroup',this.curveGroup)
+                this.curveGroup.forEach(item => {
+                    item.rate = item.rate / item.tmpCount;
+                    item.rate = item.rate.toFixed(2);
+                });
                 this.$http({
                     url: `/api/updateTraGroupInfo`,
                     method: 'POST',

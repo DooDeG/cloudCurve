@@ -89,19 +89,34 @@ class GroupController extends Controller
                     'States' => $request->states,
                 ]);
 
-                $CheckD = curveDetail::where('GId','=', $gid)->where('ENo', '=', $item)->first();
-                if(!$CheckD && $CheckD == null){
-                    $dr = new curveDetail();
-                    $dr->GId = $gid;
-                    $dr->ENo = $item;
-                    $dr->UserId = $id;
-                    $dr->time = 0;
-                    $dr->totalTime = 0;
-                    $dr->accuracy = 0;
-                    $dr->isActive = "1";
-                    $dr->date = date("Y-m-d H:i:s");
-                    $dr->save();
+                // $CheckCurve = curveDetail::where('GId','=', $gid)->where('ENo', '=', $item)->where('time', '=', 0)->first();
+                
+                // if(!$CheckCurve && $CheckCurve == null){
+                //     $dr = new curveDetail();
+                //     $dr->GId = $gid;
+                //     $dr->ENo = $item;
+                //     $dr->UserId = $id;
+                //     $dr->time = 0;
+                //     $dr->totalTime = 0;
+                //     $dr->accuracy = 0;
+                //     $dr->isActive = "1";
+                //     $dr->date = date("Y-m-d H:i:s");
+                //     $dr->save();
 
+                // }
+                $CheckCurve = curveDetail::where('GId','=', $gid)->where('ENo', '=', $item)->first();
+                if(!$CheckCurve && $CheckCurve == null){
+
+                    $dt = new curveDetail();
+                    $dt->GId = $gid;
+                    $dt->ENo = $item;
+                    $dt->UserId = $id;
+                    $dt->time = 0;
+                    $dt->totalTime = 0;
+                    $dt->accuracy = 0;
+                    $dt->isActive = "1";
+                    $dt->date = date("Y-m-d H:i:s");
+                    $dt->save();
                 }
                 
                 $CheckT = traDetail::where('GId','=', $gid)->where('ENo', '=', $item)->first();

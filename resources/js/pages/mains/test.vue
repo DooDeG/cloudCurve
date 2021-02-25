@@ -40,7 +40,7 @@
 
                 
             </div> -->
-            <div class="flex justify-center 2xl:justify-start text-gray-600 bold text-3xl font-serif">
+            <div class="flex justify-center text-gray-600 bold text-3xl font-serif">
                 
                 <!-- <div class=" 2xl:ml-52 underline">Today Lesson</div> -->
                 

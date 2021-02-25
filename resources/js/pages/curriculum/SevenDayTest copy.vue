@@ -65,7 +65,7 @@
             <div class="flex justify-center mb-5 md:p-24">
                 <div class="bg-white rounded-lg w-4/5 lg:w-1/2 xl:w-1/3 p-4 shadow -pb-1">
                     <div v-for="(ans, index) in curveGroup" :key="index" class="pt-3">
-                        <span class="flex justify-start text-gray-900 relative inline-block date uppercase font-medium">Lesson {{ans.id}}</span>
+                        <span class="flex justify-start text-gray-900 relative inline-block date uppercase font-medium">Test</span>
                         
 			            <div class="border dark:border-gray-700 transition duration-500 mt-2.5 mb-3"></div>
                         <div class="flex mb-2">
@@ -117,8 +117,8 @@
             timeOut: false,
             curveGroup:[],
             curveDetail:[],
-            lesson:[]
-            //lessonPoint:['0'],//when meet lessonPoint assgin gid
+            lessonPoint:19,//when meet lessonPoint assgin gid
+            gid:0,
             
         }),
         mounted() {
@@ -174,13 +174,14 @@
                         console.log('res.data.result.constructor === Array',res.data.result.constructor === Array)
                         this.list = res.data.result
                         console.log('this.list',this.list)
-                        
+                        this.gid = res.data.GId
                         // this.$store.commit('curve/SET_CURVE','this.course')
                         this.currentQuestion = this.list[0].Word.english
-                        // console.log(this.list)
+                        
+                        console.log('this.list[0].english', this.list[0].Word.english)
                         this.currentAns = this.list[0].Word.chinese
-                        this.currentWord = this.list[0].Word
-                        this.minId = this.list[0].Word.id
+                        this.currentWord = this.list[0]
+                        this.minId = this.list[0].id
                         this.length = this.list.length
                         this.temp = this.randomAnsList(this.currentWord.id, this.list, this.minId)
                         console.log('this.temp', this.temp)
@@ -210,7 +211,7 @@
 
                     }else{
                         alert('Today not review lesson')
-                        this.$router.push({ name: 'mains/course' })
+                        // this.$router.push({ name: 'mains/course' })
                         this.course = [];
                     }
                 }, (res) => {
@@ -224,7 +225,7 @@
                     //選正確
                     if(this.no < this.list.length){
                         this.CnQ++;
-                        // this.correctNum++;
+                        this.correctNum++;
                         this.nextWord();
                     }else{
                         // this.no = this.wordList.length;
@@ -254,7 +255,7 @@
                     }
                 }
             },
-            randomAnsList(ansNo, list, min){
+             randomAnsList(ansNo, list, min){
                 var i;
                 var rand = [];
                 var arr = [];
@@ -291,7 +292,7 @@
             createAnsList(li){
                 li.forEach((item) => {
                     if(this.CnQ == 0){
-                        console.log(item.Word.chinese)
+                        console.log(item.chinese)
                         // console.log('this.list[item]')
                         this.currentAnsList.push(item.Word.chinese);
                     }else if(this.CnQ == 1){
@@ -317,8 +318,8 @@
                     var tmpda = {totalTime: 0, Eno: '', rate: 0, GId: '',time:0};
                     tmpda.totalTime = 60*2 -(this.minutes * 60 + this.seconds);
 
-                    tmpda.GId = this.list[this.no].id
-                        
+                    // tmpda.GId = this.list[this.no].id
+                    tmpda.GId = this.gid
                     if(this.wrong == true){
                         tmpda.rate= 0;
                     }else if(this.wrong == false){
@@ -330,7 +331,7 @@
                     //each question use time and correct rate
 
                     console.log('tmpEnoData', this.tmpEnoData);
-                    // this.gtime += 60*2 -(this.minutes * 60 + this.seconds);
+                    this.gtime += 60*2 -(this.minutes * 60 + this.seconds);
                     
                     //save lesson data
 
@@ -341,45 +342,37 @@
                         console.log('this.curveDetail',this.curveDetail)
                         // this.correctNum ++;
                         this.tmpEnoData = [];
-
-                        // if(this.lessonPoint.some(item => item === String(this.no+1))){
-                        
-
-                        
-                        if(this.curveGroup.findIndex(p => p.GId ==  this.list[this.no].id) == -1){
-                            // add new record in Group
+                        console.log(this.no)
+                        if(this.lessonPoint === this.no){
+                            
                             var tm = []
-                            var tm = {time: 0, id: '', rate: 0, time:0, GId:'', totalTime:0, tmpCount:0};
+                            var tm = {time: 0, id: '', rate: 0, time:0, GId:'',totalTime:0};
                         
-                            tm.totalTime += 60*2 -(this.minutes * 60 + this.seconds);
+                            tm.totalTime= this.gtime;
                             tm.time= this.list[this.no].time;
 
-                            tm.GId = this.list[this.no].id;
-                            tm.rate= 0;
+                            // tm.GId = this.list[this.no].id;
+                            tm.GId = this.gid;
+                            tm.rate= this.correctNum/(this.countNum+1);
+                            tm.rate = tm.rate.toFixed(2);
+                            console.log('this.correctNum',this.correctNum)
+                            console.log('this.countNum',this.countNum+1)
+                            console.log('this.correctNum/(this.no+1)',this.correctNum/(this.countNum+1))
+                            console.log('tm.rate',tm.rate)
+                            this.correctNum = 0
+                            this.countNum = 0
+                            this.gtime = 0
+                            // tm.id= this.list[this.no].Word.id;
                             
                             tm.id = tm.GId;
-                            tm.id = tm.id.split("G")[1];
-                            console.log('first time tm', tm);
+                            // tm.id = tm.id.split("G")[1];
+                            console.log('lesson point', tm);
                             
                             this.curveGroup.push(tm);
-                            console.log('first time curveGroup', this.curveGroup);
-                        }else{
-                            var i = this.curveGroup.findIndex(p => p.GId ==  this.list[this.no].id);
-                            console.log('i', i)
-                            this.curveGroup[i].totalTime += 60*2 -(this.minutes * 60 + this.seconds);
-                            if(this.wrong == true){
-                                this.curveGroup[i].rate += 0;
-                            }else if(this.wrong == false){
-                                this.curveGroup[i].rate += 1;
-                            }
-                            this.curveGroup[i].tmpCount ++;
                             
-                            console.log('this.curveGroup[i]', this.curveGroup[i])
+                            console.log('this.curveGroup',this.curveGroup)
+                            this.gno ++
                         }
-                            
-                        
-                        this.gno ++
-                        // }
                         
                         this.no ++;
                     }
@@ -419,10 +412,6 @@
                 
                 console.log('this.curveDetail',this.curveDetail)
                 console.log('this.curveGroup',this.curveGroup)
-                this.curveGroup.forEach(item => {
-                    item.rate = item.rate / item.tmpCount;
-                    item.rate = item.rate.toFixed(2);
-                });
                 this.$http({
                     url: `/api/updatetestInfo`,
                     method: 'POST',

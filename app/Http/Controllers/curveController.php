@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use DateTime;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 use App\en_word;
 use App\group_word;
@@ -543,93 +544,223 @@ class curveController extends Controller
             return response()->json(['status' => 'success', 'result' => $result], 200);
             
         }
+        
         public function getTraditionReviewData(){
-
             $id = Auth::id(); 
-            if($id == null){
-                return response()->json(['status' => 'fail'], 200);
+        if($id == null){
+            return response()->json(['status' => 'fail'], 200);
+        }
+
+        $group = curve::where('UserId','=', $id)->where('time','=', 0)->where('date','!=', date("Y-m-d"))->get()->toArray();
+        // return response()->json(['status' => $group], 200);
+        if($id == null){
+            return response()->json(['status' => 'fail'], 200);
+        }
+        $len = count($group);
+        
+        $data = [];
+        $tmpNum = 0;
+        // $group = array_reverse($group);
+        $countTotalNum = 0;
+        $randArr = [];
+        foreach($group as $item){
+            $countTotalNum ++;
+            $tmpArray = [];
+            //
+            $tmpRandomArray = [];
+            $tmpRandomArray[$item['GId']] = 0;
+            $tmpRandomArray['GId'] = $item['GId'];
+
+            // $randArr[$item['GId']] = 0;
+            $randArr[$item['GId']] = $tmpRandomArray;
+            //
+            // array_push($randArr, $tmpRandomArray);
+            array_push($tmpArray, $item['GId']);
+            for ($i = 1; $i <= $len; $i++) {
+                array_push($tmpArray, $tmpNum);
+                $tmpNum ++;
             }
-    
-            $group = curve::where('UserId','=', $id)->where('time','=', 0)->get();
-            
-            $len = count($group);
-            $data = [];
-            $tmpNum = 0;
-            foreach($group as $item){
-                $tmpArray = [];
-                for ($i = 1; $i <= $len; $i++) {
-                    array_push($tmpArray, $tmpNum);
-                    $tmpNum ++;
-                }
-                $data[$item->GId] = $tmpArray;
-                $len --;
+            $data[$item['GId']] = $tmpArray;
+            $len --;
+        }
+        // return response()->json(['data' => $data,'group' => $group,], 200);
+
+        $les = [];
+        $les['day'] = [];
+        $les['id'] = [];
+        $les['Word'] = [];
+        $les['time'] = [];
+        $ENo = [];
+        $result = [];
+        
+        $tmpGId = [];
+        $tmpNum--;
+        $r = 0;
+
+        $countTotalNum = $countTotalNum *20;
+        // $group = curve::where('UserId','=', $id)->where('time','=', 0)->get()->toArray();
+
+        //
+        // return response()->json(['data' => $data,'data' => $countTotalNum,], 200);
+        $repeatArray = [];
+        $num =-1;      
+
+     
+        // return response()->json(['status' => $tmpData], 200);
+
+        for ($i = 1; $i <= 50; $i++) {
+          
+            if($i > $countTotalNum){
+                break;
             }
-    
-            $les = [];
-            $les['day'] = [];
-            $les['id'] = [];
-            $les['Word'] = [];
-            $les['time'] = [];
-            $ENo = [];
-            $result = [];
-            
-            $tmpGId = [];
-            $tmpNum--;
-            $r = 0;
-                        
-            for ($i = 1; $i <= 50; $i++) {
-                if($i > $tmpNum){
-                    break;
-                }
-                $num = random_int(0, $tmpNum);
-    
+            $repeat = true;
+            while($repeat){
+                
+                $num = $this->randWithout(0, $tmpNum, $repeatArray);
+                // return response()->json(['select num' => $num], 200);
+                // continue;
                 foreach($data as $item){
+                    
                     if(in_array($num, $item)){
-                        // return response()->json(['status' => array_keys($data, $item),'statuss' => $item,'statusss' => $data], 200);
                         
-                        $reply = -1;
-                        while($reply){
-                            $tmpEn = curveDetail::where('GId','=', array_keys($data, $item))->where('time','=', 0)->inRandomOrder()->limit(1)->get();
-                            
-                            // return response()->json(['status' => $tmpEn[0]->GId, $tmpGId], 200);
-    
-                            if(in_array($tmpEn[0]->ENo, $tmpGId)){
-                                
-                                // $reply ++;
-                                
-                            }else{
-                                $les = [];
-                                // $les['day'] = [];
-                                $les['id'] = [];
-                                $les['Word'] = [];
-                                $les['time'] = [];
-                                // $les['day'] = $days;
-                                $les['id'] = $tmpEn[0]->GId;
-                                $les['time'] = $tmpEn[0]->time;
-                                array_push($tmpGId, $tmpEn[0]->ENo);
-                                $d = en_word::where('id','=', $tmpEn[0]->ENo)->first();
-                                // return response()->json(['status' => $data, 'statuss' => $tmpGId], 200);
-                                $ti = curveDetail::where('UserId','=', $id)->where('ENo', '=', $d->id)->latest()->first();
-                                $d->level = $ti->time;
-                                $les['Word'] = $d;
-                                array_push($result, $les);
-                                $reply ++;
-                                $r ++;
-    
+                        $randArr[$item[0]][$item[0]] ++;
+                        $repeat = false;
+                        if($randArr[$item[0]][$item[0]] == 20){
+                            foreach($item as $ddddd){
+                                array_push($repeatArray, $ddddd);
                             }
-                            // $reply ++;
+                            
+                            //return response()->json(['item' => $repeatArray,'data' => $data,'select num' => $num, 'result2222' => $randArr[$item[0]]], 200);
+                        
+                            
                         }
-                        
+                        //return response()->json(['item' => $item,'data' => $data,'select num' => $num, 'result2222' => $randArr[$item[0]][$item[0]] ], 200);
                         break;
-    
-                        
                     }
                 }
+
+            }
+            
+            
+        }
+                        
+        // return response()->json([gettype($randArr[0])], 200); 
+             
+        //return response()->json(['status' => $data, 'randArr' => $randArr, 'repeatArray' => $repeatArray], 200);
+        foreach($randArr as $item){ 
+        // return response()->json(['status' => $data, 'randArr' => $randArr,'item'=>$item['GId'], 'gid' =>array_keys($randArr, $item)], 200);
+            $tmpEn = curveDetail::where('GId','=', $item['GId'])->where('time','=', 0)->inRandomOrder()->limit($item[$item['GId']])->get();
+            
+            foreach($tmpEn as $i){
+                $les = [];
+                // $les['day'] = [];
+                $les['id'] = [];
+                $les['Word'] = [];
+                $les['time'] = [];
+                // $les['day'] = $days;
+                $les['id'] = $i->GId;
+                $les['time'] = $i->time;
+                array_push($tmpGId, $i->ENo);
+                $d = en_word::where('id','=', $i->ENo)->first();
+                // return response()->json(['status' => $data, 'statuss' => $tmpGId], 200);
+                $ti = traDetail::where('UserId','=', $id)->where('ENo', '=', $d->id)->latest()->first();
+                $d->level = $ti->time;
+                $les['Word'] = $d;
+                array_push($result, $les);
+                $r ++;
+                // return response()->json(['status' => $result, 'GId'=>$i->GId, 'time'=>$i->time], 200);
+
+            }     
+            
+           
+        }
+        return response()->json(['status' => $data, 'result' => $result, 'r' => $r, 'tmpGId' => $tmpGId], 200);
+
+            // $id = Auth::id(); 
+            // if($id == null){
+            //     return response()->json(['status' => 'fail'], 200);
+            // }
+    
+            // $group = curve::where('UserId','=', $id)->where('time','=', 0)->get();
+            
+            // $len = count($group);
+            // $data = [];
+            // $tmpNum = 0;
+            // foreach($group as $item){
+            //     $tmpArray = [];
+            //     for ($i = 1; $i <= $len; $i++) {
+            //         array_push($tmpArray, $tmpNum);
+            //         $tmpNum ++;
+            //     }
+            //     $data[$item->GId] = $tmpArray;
+            //     $len --;
+            // }
+    
+            // $les = [];
+            // $les['day'] = [];
+            // $les['id'] = [];
+            // $les['Word'] = [];
+            // $les['time'] = [];
+            // $ENo = [];
+            // $result = [];
+            
+            // $tmpGId = [];
+            // $tmpNum--;
+            // $r = 0;
+                        
+            // for ($i = 1; $i <= 50; $i++) {
+            //     if($i > $tmpNum){
+            //         break;
+            //     }
+            //     $num = random_int(0, $tmpNum);
+    
+            //     foreach($data as $item){
+            //         if(in_array($num, $item)){
+            //             // return response()->json(['status' => array_keys($data, $item),'statuss' => $item,'statusss' => $data], 200);
+                        
+            //             $reply = -1;
+            //             while($reply){
+            //                 $tmpEn = curveDetail::where('GId','=', array_keys($data, $item))->where('time','=', 0)->inRandomOrder()->limit(1)->get();
+                            
+            //                 // return response()->json(['status' => $tmpEn[0]->GId, $tmpGId], 200);
+    
+            //                 if(in_array($tmpEn[0]->ENo, $tmpGId)){
+                                
+            //                     // $reply ++;
+                                
+            //                 }else{
+            //                     $les = [];
+            //                     // $les['day'] = [];
+            //                     $les['id'] = [];
+            //                     $les['Word'] = [];
+            //                     $les['time'] = [];
+            //                     // $les['day'] = $days;
+            //                     $les['id'] = $tmpEn[0]->GId;
+            //                     $les['time'] = $tmpEn[0]->time;
+            //                     array_push($tmpGId, $tmpEn[0]->ENo);
+            //                     $d = en_word::where('id','=', $tmpEn[0]->ENo)->first();
+            //                     // return response()->json(['status' => $data, 'statuss' => $tmpGId], 200);
+            //                     $ti = curveDetail::where('UserId','=', $id)->where('ENo', '=', $d->id)->latest()->first();
+            //                     $d->level = $ti->time;
+            //                     $les['Word'] = $d;
+            //                     array_push($result, $les);
+            //                     $reply ++;
+            //                     $r ++;
+    
+            //                 }
+            //                 // $reply ++;
+            //             }
+                        
+            //             break;
+    
+                        
+            //         }
+            //     }
                 
     
                 
-            }
-            return response()->json(['status' => $data, 'result' => $result, 'r' => $r, 'tmpGId' => $tmpGId], 200);
+            // }
+            // return response()->json(['status' => $data, 'result' => $result, 'r' => $r, 'tmpGId' => $tmpGId], 200);
       
             
         }
@@ -694,5 +825,6 @@ class curveController extends Controller
                 return response()->json(['status' => 'fail'], 200);
             }
         }
+        
     
 }

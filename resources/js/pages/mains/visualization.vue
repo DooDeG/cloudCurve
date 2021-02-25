@@ -95,7 +95,7 @@
                         </template>
                     </div>
 
-                    <div v-show="testdisplay" class="flex items-center justify-around  p-4 mt-4 bg-white rounded-md shadow-md"  @click="displayTestData()">
+                    <div v-show="todayDisplay" class="flex items-center justify-around  p-4 mt-4 bg-white rounded-md shadow-md"  @click="displayTestData()">
                         <span class="text-xl tracking-wider text-gray-500 uppercase">Lesson 1 Test data</span>
                         <div>
                             <font-awesome-icon :icon="displayTest ? 'chevron-up' : 'chevron-down'" class="text-gray-500"  size="1x"/>
@@ -134,8 +134,8 @@
                                                 <font-awesome-icon icon="check"/>
                                             </div>
                                             <div class="flex flex-col flex-grow ml-4">
-                                                <div class="text-sm text-gray-500">Accuracy</div>
-                                                <div class="font-bold text-lg">{{testAccuracy}}</div>
+                                                <div class="text-sm text-gray-500">Date</div>
+                                                <div class="font-bold text-lg">{{curDate}}</div>
                                             </div>
                                         </div>
                                     </div>
@@ -162,7 +162,7 @@
                     </div> -->
                     
 
-                    <div class="grid grid-cols-1 gap-6 my-4 mt-4">
+                    <!-- <div v-show="displayTest" class="grid grid-cols-1 gap-6 my-4 mt-4">
                         <template x-for="i in 4" >
                             <div class="flex items-center justify-center w-full h-96 bg-white rounded-md shadow-md">
                                 <span class="text-xl tracking-wider text-gray-500 uppercase">
@@ -175,7 +175,41 @@
                                 </span>
                             </div>
                         </template>
+                    </div> -->
+                    <div v-show="todayDisplay"  class="grid grid-cols-1 gap-6 my-4 mt-4">
+                        <template x-for="i in 4" >
+                            <div class="flex justify-center w-full h-96 bg-white rounded-md shadow-md">
+                                <!-- <div class="flex justify-end">
+                                    <font-awesome-icon icon="align-justify" class="text-gray-500"  size="1x"/>
+                                </div> -->
+                                <span class="text-xl tracking-wider text-gray-500 uppercase">
+                                    <div class="flex justify-center mt-5">
+                                        <apexchart 
+                                            width="500" type="bar" 
+                                            :options="options2" :series="series2">
+                                        </apexchart>  
+                                    </div>
+                                </span>
+                                
+                                <font-awesome-icon icon="align-justify" class="text-gray-500 flex items-start mt-5"  size="1x"/>
+                            </div>
+                        </template>
                     </div>
+                    <!-- <div v-show="displayTest" class="grid grid-cols-1 gap-6 my-4 mt-4">
+                        <template x-for="i in 4" >
+                            <div class="flex items-center justify-center w-full h-96 bg-white rounded-md shadow-md">
+                                <span class="text-xl tracking-wider text-gray-500 uppercase">
+                                    <div class="chart-wrapper">
+                                        <apexchart 
+                                            width="500" type="line" 
+                                            :options="options2" :series="series2">
+                                        </apexchart>
+                                    </div>
+                                </span>
+                            </div>
+                        </template>
+                    </div> -->
+
                 </main>
             </div>
         </div>
@@ -225,6 +259,8 @@
             testTime: 0,
             testAccuracy: 0,
             lessondata:[],
+            
+            curDate:'',
             //
             options: {
                 chart: {
@@ -252,6 +288,7 @@
             }],
 
             //
+            testData: [],
             options2: {
                 chart: {
                     id: 'vuechart-example',
@@ -262,7 +299,7 @@
                     ]
                 },
                 title: {
-                    text: 'Lesson 1 Ans rate',
+                    text: 'Ans rate',
                     align: 'center',
                     style: {
                         fontSize:  '20px',
@@ -271,11 +308,35 @@
                 colors: ['#00897b']
             },
             series2: [{
-                name: 'Lesson 1 ',
+                name: 'ans rate',
                 data: [
                     
                 ]
             }],
+            // options2: {
+            //     chart: {
+            //         id: 'vuechart-example',
+            //         toolbar: { show: false }
+            //     },
+            //     xaxis: {
+            //         categories: [
+            //         ]
+            //     },
+            //     title: {
+            //         text: 'Lesson 1 Ans rate',
+            //         align: 'center',
+            //         style: {
+            //             fontSize:  '20px',
+            //         },
+            //     },
+            //     colors: ['#00897b']
+            // },
+            // series2: [{
+            //     name: 'Lesson 1 ',
+            //     data: [
+                    
+            //     ]
+            // }],
             //
             
             //
@@ -330,7 +391,7 @@
                             result.sort((old,New)=>{
                                 return old -New
                             })
-                            cateArr = JSON.parse(JSON.stringify(result))
+                            // cateArr = JSON.parse(JSON.stringify(result))
                             console.log("result",result)
                             console.log("resultData",resultData)
                             this.options = {
@@ -366,23 +427,48 @@
                             
                             this.testdisplay = true
                             
-                            this.testTime =res.data.result[0].totalTime
-                            this.testAccuracy =res.data.result[0].accuracy
 
-                            this.lessondata = res.data.lesson1
+                            // this.testTime =res.data.result[0].totalTime
+                            // this.testAccuracy =res.data.result[0].accuracy
+
+                            // this.lessondata = res.data.lesson1
                             
-                            console.log("lessondata",this.lessondata)
+                            // console.log("lessondata",this.lessondata)
+                            // var result = []
+                            // var resultData = []
+                            // this.lessondata.forEach(item => {
+                            //     // console.log(item.GId)
+                            //     // result.push(item.GId.split("G")[1]);
+                            //     result.push(item.date);
+                            //     resultData.push(item.accuracy);
+                            // });
+                            
+                            // console.log("lesson",result)
+                            // console.log("lessonData",resultData)
+                            this.testData = res.data.result
+                            console.log("this.testData",this.testData)
                             var result = []
                             var resultData = []
-                            this.lessondata.forEach(item => {
-                                // console.log(item.GId)
-                                // result.push(item.GId.split("G")[1]);
-                                result.push(item.date);
+                            var tmpCount = 0;
+                            this.testData.forEach(item => {
+                                console.log(item)
+                                result.push(item.GId.split("G")[1]);
+                                // result.push(item.date);
                                 resultData.push(item.accuracy);
+                                this.testAccuracy = this.testAccuracy + item.accuracy;
+                                this.testTime = this.testTime + item.totalTime;
+                                tmpCount ++;
+                                this.curDate = item.date;
                             });
-                            
-                            console.log("lesson",result)
-                            console.log("lessonData",resultData)
+                            this.testAccuracy = this.testAccuracy / tmpCount;
+                            this.testAccuracy = this.testAccuracy .toFixed(2);
+                            result.sort();
+                            result.sort((old,New)=>{
+                                return old -New
+                            })
+                            // cateArr = JSON.parse(JSON.stringify(result))
+                            console.log("result",result)
+                            console.log("resultData",resultData)
                             this.options2 = {
                                 xaxis:{
                                     categories:result
