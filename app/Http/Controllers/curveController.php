@@ -780,7 +780,9 @@ class curveController extends Controller
                     // }
                     $cu = new tra();
                     $cu->GId = $item['GId'];
-                    $cu->time = $item['time']+1;
+                    $ti = tra::where('GId','=', $item['GId'])->latest()->first();
+                    // $cu->time = $item['time']+1;
+                    $cu->time = $ti->time+1;
                     $cu->totalTime = $item['totalTime'];
                     $cu->UserId = $id;
                     $cu->isActive = "1";
