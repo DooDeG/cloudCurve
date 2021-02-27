@@ -13,8 +13,8 @@
 
 
 -- Dumping database structure for words
-CREATE DATABASE IF NOT EXISTS `fyp` /*!40100 DEFAULT CHARACTER SET utf8 */;
-USE `fyp`;
+CREATE DATABASE IF NOT EXISTS `curve` /*!40100 DEFAULT CHARACTER SET utf8 */;
+USE `curve`;
 
 -- Dumping data for table words.cet: ~4,447 rows (approximately)
 /*!40000 ALTER TABLE `cet` DISABLE KEYS */;
@@ -43,7 +43,7 @@ INSERT IGNORE INTO `en_words` (`id`, `english`, `chinese`, `sent`, `level`) VALU
 	(22, 'accurate', 'a.准确的，正确无误的', '/‘ækjurit/', '4'),
 	(23, 'accustomed', 'a.惯常的；习惯的', '/ə’kΛstəmd/', '4'),
 	(24, 'acid', 'n.酸；酸的，酸性的', '/‘æsid/', '4'),
-	(25, 'acquaintance', 'n.认识；了解；熟人', '/ə’kweintəns/', '4'),
+	(25, 'acquaintance', 'n.认识；了解；熟人', '/ə’kweintəns/', '4'),fyp_test
 	(26, 'acquire', 'vt.取得；获得；学到', '/ə’kwaiə/', '4'),
 	(27, 'acre', 'n.英亩(=6.07亩)', '/‘eikə/', '4'),
 	(28, 'adapt', 'vt.使适应；改编', '/ə’dæpt/', '4'),
