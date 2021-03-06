@@ -34,6 +34,9 @@
                         Ans: {{currentAns}}
                     </div>
                 </div>
+                <div @click="playVoice">
+                    <font-awesome-icon icon="headphones" size="2x" style="color:rgba(75, 85, 99, var(--tw-bg-opacity)) !important;"/>
+                </div>
                 
                 <!-- <div class="text-2xl bold mb-4 font-serif underline">Do</div> -->
                 <!-- <div class="text-center font-serif text-md flex flex-col">
@@ -72,10 +75,12 @@
                             <div class="w-6/12">
                                 <span class="text-sm text-gray-600 block">Total time used:</span>
                                 <span class="text-sm text-gray-600 block">Correct rate:</span>
+                                <span class="text-sm text-gray-600 block">Total question:</span>
                             </div>
                             <div class="w-6/12">
                                 <span class="text-sm font-semibold block">{{ans.totalTime}}</span>
                                 <span class="text-sm font-semibold block">{{ans.rate}}</span>
+                                <span class="text-sm font-semibold block">{{ans.tmpCount}}</span>
                             </div>
                         </div>
                     
@@ -92,7 +97,8 @@
 </template>
 
 <script>
-
+    const synth = window.speechSynthesis;
+    const msg = new SpeechSynthesisUtterance();
     export default {
         middleware: 'auth',
         
@@ -162,6 +168,23 @@
             },
         },
         methods:{
+            playVoice() {
+                this.handleSpeak(this.currentQuestion)
+            },
+            handleSpeak(text) {
+                msg.text = text;    
+                // msg.lang = "en-US"; 
+                msg.volume = 1;   
+                msg.rate = 1;       
+                msg.pitch = 1;       
+                synth.speak(msg); 
+            },
+            // 语音停止
+            handleStop(e) {
+                msg.text = e;
+                msg.lang = "zh-CN";
+                synth.cancel(msg);
+            },
             getForgettingCurve(){
                 this.$http({
                     url: `/api/getExamData`,
@@ -346,36 +369,7 @@
                         
 
                         
-                        if(this.curveGroup.findIndex(p => p.GId ==  this.list[this.no].id) == -1){
-                            // add new record in Group
-                            var tm = []
-                            var tm = {time: 0, id: '', rate: 0, time:0, GId:'', totalTime:0, tmpCount:0};
                         
-                            tm.totalTime += 60*2 -(this.minutes * 60 + this.seconds);
-                            tm.time= this.list[this.no].time;
-
-                            tm.GId = this.list[this.no].id;
-                            tm.rate= 0;
-                            
-                            tm.id = tm.GId;
-                            tm.id = tm.id.split("G")[1];
-                            console.log('first time tm', tm);
-                            
-                            this.curveGroup.push(tm);
-                            console.log('first time curveGroup', this.curveGroup);
-                        }else{
-                            var i = this.curveGroup.findIndex(p => p.GId ==  this.list[this.no].id);
-                            console.log('i', i)
-                            this.curveGroup[i].totalTime += 60*2 -(this.minutes * 60 + this.seconds);
-                            if(this.wrong == true){
-                                this.curveGroup[i].rate += 0;
-                            }else if(this.wrong == false){
-                                this.curveGroup[i].rate += 1;
-                            }
-                            this.curveGroup[i].tmpCount ++;
-                            
-                            console.log('this.curveGroup[i]', this.curveGroup[i])
-                        }
                             
                         
                         this.gno ++
@@ -383,17 +377,47 @@
                         
                         this.no ++;
                     }
+                    if(this.curveGroup.findIndex(p => p.GId ==  this.list[this.no].id) == -1){
+                        // add new record in Group
+                        var tm = []
+                        var tm = {time: 0, id: '', rate: 0, time:0, GId:'', totalTime:0, tmpCount:0};
                     
-                        this.countNum ++;
+                        tm.totalTime += 60*2 -(this.minutes * 60 + this.seconds);
+                        tm.time= this.list[this.no].time;
 
-                        this.currentAnsList = [];
-                        this.temp = this.randomAnsList(this.list[this.no].id, this.list, this.minId);
-                        this.createAnsList(this.temp);
-                        this.wrongAnsIndex = -1;
-                        this.wrong = false;
-                        this.timeOut = false;
-                        this.minutes= 2;
-                        this.seconds= 0;
+                        tm.GId = this.list[this.no].id;
+                        tm.rate= 0;
+                        
+                        tm.id = tm.GId;
+                        tm.id = tm.id.split("G")[1];
+                        console.log('first time tm', tm);
+                        
+                        this.curveGroup.push(tm);
+                        console.log('first time curveGroup', this.curveGroup);
+                    }else{
+                        var i = this.curveGroup.findIndex(p => p.GId ==  this.list[this.no].id);
+                        console.log('i', i)
+                        this.curveGroup[i].totalTime += 60*2 -(this.minutes * 60 + this.seconds);
+                        if(this.wrong == true){
+                            this.curveGroup[i].rate += 0;
+                        }else if(this.wrong == false){
+                            this.curveGroup[i].rate += 1;
+                        }
+                        this.curveGroup[i].tmpCount ++;
+                        
+                        console.log('this.curveGroup[i]', this.curveGroup[i])
+                    }
+                    
+                    this.countNum ++;
+
+                    this.currentAnsList = [];
+                    this.temp = this.randomAnsList(this.list[this.no].id, this.list, this.minId);
+                    this.createAnsList(this.temp);
+                    this.wrongAnsIndex = -1;
+                    this.wrong = false;
+                    this.timeOut = false;
+                    this.minutes= 2;
+                    this.seconds= 0;
                 }, 100)
 
                 

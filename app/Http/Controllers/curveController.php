@@ -104,129 +104,90 @@ class curveController extends Controller
         return $number;
     }
     public function getTodayReviewData(){
-
-        $id = Auth::id(); 
+        $id = Auth::id();
         if($id == null){
             return response()->json(['status' => 'fail'], 200);
-        }
-
+        } 
         $group = curve::where('UserId','=', $id)->where('time','=', 0)->where('date','!=', date("Y-m-d"))->get()->toArray();
-        // return response()->json(['status' => $group], 200);
-        if($id == null){
-            return response()->json(['status' => 'fail'], 200);
-        }
-        $len = count($group);
-        
         $data = [];
         $tmpNum = 0;
         $group = array_reverse($group);
-        $countTotalNum = 0;
-        $randArr = [];
+        $len = count($group);
+        $list = [];
+        $randomList = [];
         foreach($group as $item){
-            $countTotalNum ++;
             $tmpArray = [];
-            //
-            $tmpRandomArray = [];
-            $tmpRandomArray[$item['GId']] = 0;
-            $tmpRandomArray['GId'] = $item['GId'];
-
-            // $randArr[$item['GId']] = 0;
-            $randArr[$item['GId']] = $tmpRandomArray;
-            //
-            // array_push($randArr, $tmpRandomArray);
             array_push($tmpArray, $item['GId']);
+            $randomList[$item['GId']] = [];
+            array_push($randomList[$item['GId']], $item['GId'], 0);
             for ($i = 1; $i <= $len; $i++) {
                 array_push($tmpArray, $tmpNum);
+                array_push($list, $tmpNum);
                 $tmpNum ++;
             }
             $data[$item['GId']] = $tmpArray;
             $len --;
         }
-        // return response()->json(['data' => $data,'group' => $group,], 200);
-
-        $les = [];
-        $les['day'] = [];
-        $les['id'] = [];
-        $les['Word'] = [];
-        $les['time'] = [];
-        $ENo = [];
-        $result = [];
+        $countTotalNum = count($group) * 20;
+        $num = 0;
+        $count = 1;
         
-        $tmpGId = [];
-        $tmpNum--;
-        $r = 0;
-
-        $countTotalNum = $countTotalNum *20;
-        // $group = curve::where('UserId','=', $id)->where('time','=', 0)->get()->toArray();
-
-        //
-        // return response()->json(['data' => $data,'data' => $countTotalNum,], 200);
-        $repeatArray = [];
-        $num =-1;      
-
-        // $tmpData = [];
-        // foreach($data as $item){
-        //     foreach($item as $i){
-        //         array_push($tmpData, $i);
-
-        //     }
-        // }
-        // return response()->json(['status' => $tmpData], 200);
-
-        for ($i = 1; $i <= 50; $i++) {
-            // if($i > $tmpNum){
-            //     break;
-            // }
-            if($i > $countTotalNum){
+        $tm = [];
+        $record = [];
+        $record12 = 0;
+        while($count<=50){
+            if($count > $countTotalNum){
                 break;
             }
-            $repeat = true;
-            while($repeat){
-                // if($num == -1 || in_array($num, $repeatArray)){
-                    
-                //     continue;
-                // }else{
-                    
-                //     $num = random_int(0, $tmpNum);
-                // }
-                // $num = random_int(0, $tmpNum);
-                $num = $this->randWithout(0, $tmpNum, $repeatArray);
-                // return response()->json(['select num' => $num], 200);
-                // continue;
-                foreach($data as $item){
-                    
-                    if(in_array($num, $item)){
-                        
-                        $randArr[$item[0]][$item[0]] ++;
-                        $repeat = false;
-                        if($randArr[$item[0]][$item[0]] == 20){
-                            foreach($item as $ddddd){
-                                array_push($repeatArray, $ddddd);
-                            }
-                            
-                            //return response()->json(['item' => $repeatArray,'data' => $data,'select num' => $num, 'result2222' => $randArr[$item[0]]], 200);
-                        
-                            
-                        }
-                        //return response()->json(['item' => $item,'data' => $data,'select num' => $num, 'result2222' => $randArr[$item[0]][$item[0]] ], 200);
-                        break;
-                    }
-                }
+            if(count($list)==0 || $list== null || $list==[]){
+                break;
+            }
+            // $num = random_int(0, $tmpNum);
+            $num = random_int(0, count($list)-1);
+            if($list[$num]){
 
             }
-            
-            
-        }
+            $num = $list[$num];
+            foreach($data as $item){
+                if(in_array($num, $item)){
+                    if($randomList[$item[0]][1] >=20){
                         
-        // return response()->json([gettype($randArr[0])], 200); 
-             
-        //return response()->json(['status' => $data, 'randArr' => $randArr, 'repeatArray' => $repeatArray], 200);
-        foreach($randArr as $item){ 
-            // $pd = settype($item, "int");
-        // return response()->json(['status' => $data, 'randArr' => $randArr,'item'=>$item['GId'], 'gid' =>array_keys($randArr, $item)], 200);
-            $tmpEn = curveDetail::where('GId','=', $item['GId'])->where('time','=', 0)->inRandomOrder()->limit($item[$item['GId']])->get();
+
+                        $list = array_diff($list,$item);
+                        $list = array_values($list);
+                        $record12 ++;
+                        continue;
+                    }else{
+                        
+                        $randomList[$item[0]][1] ++;
+                        array_push($record, $num);
+                        $count ++;
+                    }
+                    
+
+                }
+                
+            }
+        }
+        
+        
+
+        // return response()->json(['data' => $data,'$list'=> $list, 
+        //                         'countTotalNum' => $countTotalNum, 
+        //                         'randomList' => $randomList, 
+        //                         'record' => $record,
+        //                         'count' => $count,
+        //                         '$record12' => $record12,
+        //                         'date now' => now()], 200);
+        $r=0;
+        $tmpGId = [];
+        $result = [];
+        foreach($randomList as $item){ 
+            $tmpEn = curveDetail::where('GId','=', $item[0])->where('time','=', 0)->inRandomOrder()->limit($item[1])->get();
+            // return response()->json(['status' => $tmpEn], 200);
             
             foreach($tmpEn as $i){
+                // return response()->json(['status' => $i], 200);
                 $les = [];
                 // $les['day'] = [];
                 $les['id'] = [];
@@ -238,7 +199,7 @@ class curveController extends Controller
                 array_push($tmpGId, $i->ENo);
                 $d = en_word::where('id','=', $i->ENo)->first();
                 // return response()->json(['status' => $data, 'statuss' => $tmpGId], 200);
-                $ti = curveDetail::where('UserId','=', $id)->where('ENo', '=', $d->id)->latest()->first();
+                $ti = traDetail::where('UserId','=', $id)->where('ENo', '=', $d->id)->latest()->first();
                 $d->level = $ti->time;
                 $les['Word'] = $d;
                 array_push($result, $les);
@@ -246,89 +207,243 @@ class curveController extends Controller
                 // return response()->json(['status' => $result, 'GId'=>$i->GId, 'time'=>$i->time], 200);
 
             }     
+                
+                
+            }
+            return response()->json(['status' => $data, 
+                                    'result' => $result, 
+                                    'r' => $r, 
+                                    'randomList' => $randomList,
+                                    'tmpGId' => $tmpGId], 200);
+                            
+    
+    }
+    // public function getTodayReviewData(){
+
+    //     $id = Auth::id(); 
+    //     if($id == null){
+    //         return response()->json(['status' => 'fail'], 200);
+    //     }
+
+    //     $group = curve::where('UserId','=', $id)->where('time','=', 0)->where('date','!=', date("Y-m-d"))->get()->toArray();
+    //     // return response()->json(['status' => $group], 200);
+    //     if($id == null){
+    //         return response()->json(['status' => 'fail'], 200);
+    //     }
+    //     $len = count($group);
+        
+    //     $data = [];
+    //     $tmpNum = 0;
+    //     $group = array_reverse($group);
+    //     $countTotalNum = 0;
+    //     $randArr = [];
+    //     foreach($group as $item){
+    //         $countTotalNum ++;
+    //         $tmpArray = [];
+    //         //
+    //         $tmpRandomArray = [];
+    //         $tmpRandomArray[$item['GId']] = 0;
+    //         $tmpRandomArray['GId'] = $item['GId'];
+
+    //         // $randArr[$item['GId']] = 0;
+    //         $randArr[$item['GId']] = $tmpRandomArray;
+    //         //
+    //         // array_push($randArr, $tmpRandomArray);
+    //         array_push($tmpArray, $item['GId']);
+    //         for ($i = 1; $i <= $len; $i++) {
+    //             array_push($tmpArray, $tmpNum);
+    //             $tmpNum ++;
+    //         }
+    //         $data[$item['GId']] = $tmpArray;
+    //         $len --;
+    //     }
+    //     // return response()->json(['data' => $data,'group' => $group,], 200);
+
+    //     $les = [];
+    //     $les['day'] = [];
+    //     $les['id'] = [];
+    //     $les['Word'] = [];
+    //     $les['time'] = [];
+    //     $ENo = [];
+    //     $result = [];
+        
+    //     $tmpGId = [];
+    //     $tmpNum--;
+    //     $r = 0;
+
+    //     $countTotalNum = $countTotalNum *20;
+    //     // $group = curve::where('UserId','=', $id)->where('time','=', 0)->get()->toArray();
+
+    //     //
+    //     // return response()->json(['data' => $data,'data' => $countTotalNum,], 200);
+    //     $repeatArray = [];
+    //     $num =-1;      
+
+    //     // $tmpData = [];
+    //     // foreach($data as $item){
+    //     //     foreach($item as $i){
+    //     //         array_push($tmpData, $i);
+
+    //     //     }
+    //     // }
+    //     // return response()->json(['status' => $tmpData], 200);
+
+    //     for ($i = 1; $i <= 50; $i++) {
+    //         // if($i > $tmpNum){
+    //         //     break;
+    //         // }
+    //         if($i > $countTotalNum){
+    //             break;
+    //         }
+    //         $repeat = true;
+    //         while($repeat){
+    //             // if($num == -1 || in_array($num, $repeatArray)){
+                    
+    //             //     continue;
+    //             // }else{
+                    
+    //             //     $num = random_int(0, $tmpNum);
+    //             // }
+    //             // $num = random_int(0, $tmpNum);
+    //             $num = $this->randWithout(0, $tmpNum, $repeatArray);
+    //             // return response()->json(['select num' => $num], 200);
+    //             // continue;
+    //             foreach($data as $item){
+                    
+    //                 if(in_array($num, $item)){
+                        
+    //                     $randArr[$item[0]][$item[0]] ++;
+    //                     $repeat = false;
+    //                     if($randArr[$item[0]][$item[0]] == 20){
+    //                         foreach($item as $ddddd){
+    //                             array_push($repeatArray, $ddddd);
+    //                         }
+                            
+    //                         //return response()->json(['item' => $repeatArray,'data' => $data,'select num' => $num, 'result2222' => $randArr[$item[0]]], 200);
+                        
+                            
+    //                     }
+    //                     //return response()->json(['item' => $item,'data' => $data,'select num' => $num, 'result2222' => $randArr[$item[0]][$item[0]] ], 200);
+    //                     break;
+    //                 }
+    //             }
+
+    //         }
+            
+            
+    //     }
+                        
+    //     // return response()->json([gettype($randArr[0])], 200); 
+             
+    //     //return response()->json(['status' => $data, 'randArr' => $randArr, 'repeatArray' => $repeatArray], 200);
+    //     foreach($randArr as $item){ 
+    //         // $pd = settype($item, "int");
+    //     // return response()->json(['status' => $data, 'randArr' => $randArr,'item'=>$item['GId'], 'gid' =>array_keys($randArr, $item)], 200);
+    //         $tmpEn = curveDetail::where('GId','=', $item['GId'])->where('time','=', 0)->inRandomOrder()->limit($item[$item['GId']])->get();
+            
+    //         foreach($tmpEn as $i){
+    //             $les = [];
+    //             // $les['day'] = [];
+    //             $les['id'] = [];
+    //             $les['Word'] = [];
+    //             $les['time'] = [];
+    //             // $les['day'] = $days;
+    //             $les['id'] = $i->GId;
+    //             $les['time'] = $i->time;
+    //             array_push($tmpGId, $i->ENo);
+    //             $d = en_word::where('id','=', $i->ENo)->first();
+    //             // return response()->json(['status' => $data, 'statuss' => $tmpGId], 200);
+    //             $ti = curveDetail::where('UserId','=', $id)->where('ENo', '=', $d->id)->latest()->first();
+    //             $d->level = $ti->time;
+    //             $les['Word'] = $d;
+    //             array_push($result, $les);
+    //             $r ++;
+    //             // return response()->json(['status' => $result, 'GId'=>$i->GId, 'time'=>$i->time], 200);
+
+    //         }     
             
            
-        }
-        //
-        // for ($i = 1; $i <= 50; $i++) {
-        //     // if($i > $tmpNum){
-        //     //     break;
-        //     // }
-        //     if($i > $countTotalNum){
-        //         break;
-        //     }
-        //     $num = random_int(0, $tmpNum);
+    //     }
+    //     //
+    //     // for ($i = 1; $i <= 50; $i++) {
+    //     //     // if($i > $tmpNum){
+    //     //     //     break;
+    //     //     // }
+    //     //     if($i > $countTotalNum){
+    //     //         break;
+    //     //     }
+    //     //     $num = random_int(0, $tmpNum);
 
-        //     // return response()->json(['status' => $data, 'result2222' => random_int(0, $tmpNum)], 200);
-        //     foreach($data as $item){
-        //         if(in_array($num, $item)){
-        //             // return response()->json(['status' => array_keys($data, $item),'statuss' => $item,'statusss' => $data], 200);
+    //     //     // return response()->json(['status' => $data, 'result2222' => random_int(0, $tmpNum)], 200);
+    //     //     foreach($data as $item){
+    //     //         if(in_array($num, $item)){
+    //     //             // return response()->json(['status' => array_keys($data, $item),'statuss' => $item,'statusss' => $data], 200);
                     
-        //             $reply = -1;
-        //             while($reply){
-        //                 $tmpEn = curveDetail::where('GId','=', array_keys($data, $item))->where('time','=', 0)->inRandomOrder()->limit(1)->get();
+    //     //             $reply = -1;
+    //     //             while($reply){
+    //     //                 $tmpEn = curveDetail::where('GId','=', array_keys($data, $item))->where('time','=', 0)->inRandomOrder()->limit(1)->get();
                         
-        //                 // $tmpEn = curveDetail::where('GId','=', array_keys($data, $item))->where('time','=', 0)->inRandomOrder()->first();
+    //     //                 // $tmpEn = curveDetail::where('GId','=', array_keys($data, $item))->where('time','=', 0)->inRandomOrder()->first();
                         
-        //                 // return response()->json(['status' => $tmpEn[0]->GId, $tmpGId], 200);
+    //     //                 // return response()->json(['status' => $tmpEn[0]->GId, $tmpGId], 200);
 
-        //                 // if(in_array($tmpEn[0]->ENo, $tmpGId)){
+    //     //                 // if(in_array($tmpEn[0]->ENo, $tmpGId)){
                             
-        //                 //     // $reply ++;
+    //     //                 //     // $reply ++;
                             
-        //                 // }else{
-        //                 //     $les = [];
-        //                 //     // $les['day'] = [];
-        //                 //     $les['id'] = [];
-        //                 //     $les['Word'] = [];
-        //                 //     $les['time'] = [];
-        //                 //     // $les['day'] = $days;
-        //                 //     $les['id'] = $tmpEn[0]->GId;
-        //                 //     $les['time'] = $tmpEn[0]->time;
-        //                 //     array_push($tmpGId, $tmpEn[0]->ENo);
-        //                 //     $d = en_word::where('id','=', $tmpEn[0]->ENo)->first();
-        //                 //     // return response()->json(['status' => $data, 'statuss' => $tmpGId], 200);
-        //                 //     $ti = curveDetail::where('UserId','=', $id)->where('ENo', '=', $d->id)->latest()->first();
-        //                 //     $d->level = $ti->time;
-        //                 //     $les['Word'] = $d;
-        //                 //     array_push($result, $les);
-        //                 //     $reply ++;
-        //                 //     $r ++;
+    //     //                 // }else{
+    //     //                 //     $les = [];
+    //     //                 //     // $les['day'] = [];
+    //     //                 //     $les['id'] = [];
+    //     //                 //     $les['Word'] = [];
+    //     //                 //     $les['time'] = [];
+    //     //                 //     // $les['day'] = $days;
+    //     //                 //     $les['id'] = $tmpEn[0]->GId;
+    //     //                 //     $les['time'] = $tmpEn[0]->time;
+    //     //                 //     array_push($tmpGId, $tmpEn[0]->ENo);
+    //     //                 //     $d = en_word::where('id','=', $tmpEn[0]->ENo)->first();
+    //     //                 //     // return response()->json(['status' => $data, 'statuss' => $tmpGId], 200);
+    //     //                 //     $ti = curveDetail::where('UserId','=', $id)->where('ENo', '=', $d->id)->latest()->first();
+    //     //                 //     $d->level = $ti->time;
+    //     //                 //     $les['Word'] = $d;
+    //     //                 //     array_push($result, $les);
+    //     //                 //     $reply ++;
+    //     //                 //     $r ++;
 
-        //                 // }
-        //                 $les = [];
-        //                     // $les['day'] = [];
-        //                     $les['id'] = [];
-        //                     $les['Word'] = [];
-        //                     $les['time'] = [];
-        //                     // $les['day'] = $days;
-        //                     $les['id'] = $tmpEn[0]->GId;
-        //                     $les['time'] = $tmpEn[0]->time;
-        //                     array_push($tmpGId, $tmpEn[0]->ENo);
-        //                     $d = en_word::where('id','=', $tmpEn[0]->ENo)->first();
-        //                     // return response()->json(['status' => $data, 'statuss' => $tmpGId], 200);
-        //                     $ti = curveDetail::where('UserId','=', $id)->where('ENo', '=', $d->id)->latest()->first();
-        //                     $d->level = $ti->time;
-        //                     $les['Word'] = $d;
-        //                     array_push($result, $les);
-        //                     $reply ++;
-        //                     $r ++;
-        //                 // $reply ++;
-        //             }
+    //     //                 // }
+    //     //                 $les = [];
+    //     //                     // $les['day'] = [];
+    //     //                     $les['id'] = [];
+    //     //                     $les['Word'] = [];
+    //     //                     $les['time'] = [];
+    //     //                     // $les['day'] = $days;
+    //     //                     $les['id'] = $tmpEn[0]->GId;
+    //     //                     $les['time'] = $tmpEn[0]->time;
+    //     //                     array_push($tmpGId, $tmpEn[0]->ENo);
+    //     //                     $d = en_word::where('id','=', $tmpEn[0]->ENo)->first();
+    //     //                     // return response()->json(['status' => $data, 'statuss' => $tmpGId], 200);
+    //     //                     $ti = curveDetail::where('UserId','=', $id)->where('ENo', '=', $d->id)->latest()->first();
+    //     //                     $d->level = $ti->time;
+    //     //                     $les['Word'] = $d;
+    //     //                     array_push($result, $les);
+    //     //                     $reply ++;
+    //     //                     $r ++;
+    //     //                 // $reply ++;
+    //     //             }
                     
-        //             break;
+    //     //             break;
 
                     
-        //         }
-        //     }
+    //     //         }
+    //     //     }
             
 
             
-        // }
-        return response()->json(['status' => $data, 'result' => $result, 'r' => $r, 'tmpGId' => $tmpGId], 200);
+    //     // }
+    //     return response()->json(['status' => $data, 'result' => $result, 'r' => $r, 'tmpGId' => $tmpGId], 200);
 
         
-    }
+    // }
     public function getCurveData(Request $request){
         if(isset($request) && $request != null && isset($request->slug) && $request->slug != null){
             $amount = [20, 10, 5, 5, 5, 5];
@@ -544,8 +659,120 @@ class curveController extends Controller
             return response()->json(['status' => 'success', 'result' => $result], 200);
             
         }
-        
         public function getTraditionReviewData(){
+            $id = Auth::id();
+            if($id == null){
+                return response()->json(['status' => 'fail'], 200);
+            } 
+            $group = curve::where('UserId','=', $id)->where('time','=', 0)->where('date','!=', date("Y-m-d"))->get()->toArray();
+            $data = [];
+            $tmpNum = 0;
+            // $group = array_reverse($group);
+            $len = count($group);
+            $list = [];
+            $randomList = [];
+            foreach($group as $item){
+                $tmpArray = [];
+                array_push($tmpArray, $item['GId']);
+                $randomList[$item['GId']] = [];
+                array_push($randomList[$item['GId']], $item['GId'], 0);
+                for ($i = 1; $i <= $len; $i++) {
+                    array_push($tmpArray, $tmpNum);
+                    array_push($list, $tmpNum);
+                    $tmpNum ++;
+                }
+                $data[$item['GId']] = $tmpArray;
+                $len --;
+            }
+            $countTotalNum = count($group) * 20;
+            $num = 0;
+            $count = 1;
+            
+            $tm = [];
+            $record = [];
+            
+            while($count<=50){
+                if($count > $countTotalNum){
+                    break;
+                }
+                if(count($list)==0 || $list== null || $list==[]){
+                    break;
+                }
+                // $num = random_int(0, $tmpNum);
+                $num = random_int(0, count($list)-1);
+                if($list[$num]){
+    
+                }
+                $num = $list[$num];
+                foreach($data as $item){
+                    if(in_array($num, $item)){
+                        if($randomList[$item[0]][1] >=20){
+                            
+    
+                            $list = array_diff($list,$item);
+                            $list = array_values($list);
+                            continue;
+                        }else{
+                            
+                            $randomList[$item[0]][1] ++;
+                            $count ++;
+                        }
+                        
+                        array_push($record, $list);
+    
+                    }
+                    
+                }
+            }
+            
+            
+    
+            // return response()->json(['data' => $data,'$list'=> $list, 
+            //                         'countTotalNum' => $countTotalNum, 
+            //                         'randomList' => $randomList, 
+            //                         'record' => $record,
+            //                         'count' => $count,
+            //                         'date now' => now()], 200);
+            $r=0;
+            $tmpGId = [];
+            $result = [];
+            foreach($randomList as $item){ 
+                $tmpEn = curveDetail::where('GId','=', $item[0])->where('time','=', 0)->inRandomOrder()->limit($item[1])->get();
+                // return response()->json(['status' => $tmpEn], 200);
+                
+                foreach($tmpEn as $i){
+                    // return response()->json(['status' => $i], 200);
+                    $les = [];
+                    // $les['day'] = [];
+                    $les['id'] = [];
+                    $les['Word'] = [];
+                    $les['time'] = [];
+                    // $les['day'] = $days;
+                    $les['id'] = $i->GId;
+                    $les['time'] = $i->time;
+                    array_push($tmpGId, $i->ENo);
+                    $d = en_word::where('id','=', $i->ENo)->first();
+                    // return response()->json(['status' => $data, 'statuss' => $tmpGId], 200);
+                    $ti = traDetail::where('UserId','=', $id)->where('ENo', '=', $d->id)->latest()->first();
+                    $d->level = $ti->time;
+                    $les['Word'] = $d;
+                    array_push($result, $les);
+                    $r ++;
+                    // return response()->json(['status' => $result, 'GId'=>$i->GId, 'time'=>$i->time], 200);
+    
+                }     
+                    
+                    
+                }
+                return response()->json(['status' => $data, 
+                                        'result' => $result, 
+                                        'r' => $r, 
+                                        'randomList' => $randomList,
+                                        'tmpGId' => $tmpGId], 200);
+                                
+        
+        }
+        public function getTraditionReviewDataOld(){
             $id = Auth::id(); 
         if($id == null){
             return response()->json(['status' => 'fail'], 200);

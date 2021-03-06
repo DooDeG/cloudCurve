@@ -28,6 +28,10 @@ class viusalizationController extends Controller
         $id = Auth::id();
         $day = date("Y-m-d");
         $data = curve::where('UserId','=', $id)->where('date','=', $day)->where('time','!=', 0)->get();
+        
+        //tradition page
+
+        // $data = tra::where('UserId','=', $id)->where('date','=', $day)->where('time','!=', 0)->get();
         $result = array();
         $check = array();
         foreach($data as $item){

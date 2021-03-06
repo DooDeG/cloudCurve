@@ -28,6 +28,9 @@
         <div class="flex justify-center mt-24">
             <div class="text-2xl md:text-4xl bold font-serif mb-10 border-b-2 border-black w-1/4 pl-2 text-center">{{currentEn}}<div class="text-lg text-gray-500 mt-2 ml-2">{{sent}}</div></div>
             <!-- <div class="text-2xl bold mb-4 font-serif underline">Do</div> -->
+            <div @click="playVoice">
+                <font-awesome-icon icon="headphones" size="2x" style="color:rgba(75, 85, 99, var(--tw-bg-opacity)) !important;"/>
+            </div>
         </div>
         <div class="flex justify-center mt-10">
             <div class="text-2xl bold mb-4 font-serif">
@@ -49,6 +52,8 @@
 </template>
 
 <script>
+    const synth = window.speechSynthesis;
+    const msg = new SpeechSynthesisUtterance();
 export default {
     middleware: 'auth',
 
@@ -70,6 +75,26 @@ export default {
         this.getEnWorldList(this.slug);
     },
     methods:{
+        playVoice() {
+            console.log(this.currentEn);
+            this.handleSpeak(this.currentEn) 
+        },
+        // 语音播报的函数
+        handleSpeak(text) {
+            msg.text = text;   
+            // msg.lang = "en-US"; 
+            msg.lang = "zh-CN"; 
+            msg.volume = 1;     
+            msg.rate = 1;      
+            msg.pitch = 1;      
+            synth.speak(msg); 
+        },
+        // 语音停止
+        handleStop(e) {
+            msg.text = e;
+            // msg.lang = "zh-CN";
+            synth.cancel(msg);
+        },
         getParams() {
             console.log(this.$route.params.id);
             this.slug = this.$route.params.id

@@ -30,6 +30,9 @@
                 <div class="text-2xl bold font-serif mb-10 border-b-2 border-black w-1/4 pl-2 mr-5 capitalize ">
                     {{currentQuestion}}
                 </div>
+                <div @click="playVoice">
+                    <font-awesome-icon icon="headphones" size="2x" style="color:rgba(75, 85, 99, var(--tw-bg-opacity)) !important;"/>
+                </div>
                 <!-- <div class="text-2xl bold mb-4 font-serif underline">Do</div> -->
                 <!-- <div class="text-center font-serif text-md flex flex-col">
                     <div class="text-center font-serif text-xl " v-show="no > 0">
@@ -63,6 +66,7 @@
         </div>
         <transition name="ModalAppear">
             <lesson v-if="wrongAns  == true" v-on:closedModal="closeModal" :Ch="currentAns" :En="currentQuestion"/>
+            
         </transition>
         
     </div>
@@ -70,7 +74,8 @@
 </template>
 
 <script>
-
+    const synth = window.speechSynthesis;
+    const msg = new SpeechSynthesisUtterance();
     import lesson from "../../components/learnComponent.vue";
     export default {
         middleware: 'auth',
@@ -102,6 +107,24 @@
         watch:{
         },
         methods:{
+            playVoice() {
+                this.handleSpeak(this.currentQuestion) 
+            },
+            // 语音播报的函数
+            handleSpeak(text) {
+                msg.text = text;   
+                // msg.lang = "en-US";  
+                msg.volume = 1;     
+                msg.rate = 1;      
+                msg.pitch = 1;      
+                synth.speak(msg); 
+            },
+            // 语音停止
+            handleStop(e) {
+                msg.text = e;
+                // msg.lang = "zh-CN";
+                synth.cancel(msg);
+            },
             getParams() {
                 console.log(this.$route.params.id);
                 this.slug = this.$route.params.id
