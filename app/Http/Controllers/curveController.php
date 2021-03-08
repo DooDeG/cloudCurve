@@ -561,6 +561,7 @@ class curveController extends Controller
                     $dr->date = date("Y-m-d H:i:s");
                     $dr->save();
                     $totaltimeTmp = 0;
+                    $totalRate = 0;
                     
                     
                 }
