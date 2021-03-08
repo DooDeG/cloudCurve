@@ -288,7 +288,7 @@
                 });
                 //set total list
                 var l = rand;
-                arr.push(l.splice(ansNo, 1)[0]); 
+                arr.push(this.list[this.no]);
                 // console.log(l)
                 // console.log('l')
                 l.splice(ansNo, 1)
