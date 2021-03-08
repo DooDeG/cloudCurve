@@ -1047,6 +1047,8 @@ class curveController extends Controller
                     $dr->save();
                     $totaltimeTmp = 0;
                     
+                    $totalRate = 0;
+                    
                     
                 }
                 return response()->json(['status' => 'success'], 200);
