@@ -30,7 +30,7 @@
                 <p>Countdown :{{minute}}:{{second}}</p>
                 <div class="text-2xl bold font-serif mb-10 border-b-2 border-black w-1/4 pl-2 mr-5 capitalize ">
                     {{currentQuestion}}
-                    <div v-if="wrong" class="text-red-600">
+                    <div v-if="wrong && CnQ == 2" class="text-red-600">
                         Ans: {{currentAns}}
                     </div>
                 </div>
@@ -288,7 +288,7 @@
                 });
                 //set total list
                 var l = rand;
-                arr.push(this.list[this.no]);
+                arr.push(l.splice(ansNo, 1)[0]); 
                 // console.log(l)
                 // console.log('l')
                 l.splice(ansNo, 1)
